@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>월간 기도나무 · 95년 동기</title>
+
+<!-- Kakao/Facebook/Twitter link preview -->
+<meta property="og:title" content="월간 기도나무" />
+<meta property="og:description" content="95년 동기가 함께 쌓아가는 월간 기도제목 아카이브" />
+<meta property="og:image" content="https://gkssk2890.github.io/prayer-tree/og-image.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #f4f1e6; }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; color: #26332c; }
+  .pt-scroll::-webkit-scrollbar { height: 6px; }
+  .pt-scroll::-webkit-scrollbar-thumb { background: #cfd8c9; border-radius: 4px; }
+  .pt-fade { animation: pt-fade-in .25s ease; }
+  @keyframes pt-fade-in { from { opacity: 0; transform: translateY(4px);} to { opacity: 1; transform: translateY(0);} }
+  button { font-family: inherit; }
+  .pt-btn:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid #6f9271; outline-offset: 2px;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; column-gap: 16px; row-gap: 4px; padding: 6px 2px 4px; }
+  .tag-item { display: flex; flex-direction: column; align-items: center; width: 162px; }
+  .tag-item.compact { width: 138px; }
+  .tag-string { width: 1px; background: linear-gradient(to bottom, #c7bb9a, #a9987a); position: relative; }
+  .tag-string::after {
+    content: ''; position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 7px; height: 7px; border-radius: 50%; border: 1.4px solid #a9987a; background: #f4f1e6;
+  }
+  .tag-card {
+    position: relative; width: 100%; background: #fbf8ef; border: 1px solid #e6ddc4;
+    box-shadow: 0 8px 16px rgba(38,51,44,0.11); padding: 17px 12px 12px;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 12% 100%, 0 88%);
+  }
+  .tag-item.compact .tag-card { padding: 14px 10px 10px; }
+  .tag-leaf {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-14deg);
+    font-size: 14px; background: #f4f1e6; border-radius: 50%; padding: 1px 3px; line-height: 1;
+  }
+  .tag-delete {
+    position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; display: grid; place-items: center;
+    border: none; background: transparent; color: #c9bfa5; cursor: pointer; border-radius: 5px; font-size: 12px;
+  }
+  .tag-delete:hover { color: #a1524f; }
+
+  .twine-wrap { position: relative; max-width: 720px; margin: 0 auto; padding: 12px 22px 0; }
+  .twine-leaves { display: flex; justify-content: space-between; padding: 0 6px; margin-top: -15px; font-size: 13px; }
+  .twine-leaves span:nth-child(1) { display:inline-block; transform: rotate(-18deg); }
+  .twine-leaves span:nth-child(2) { display:inline-block; transform: rotate(12deg); }
+  .twine-leaves span:nth-child(3) { display:inline-block; transform: rotate(-8deg); }
+  .twine-leaves span:nth-child(4) { display:inline-block; transform: rotate(16deg); }
+  .twine-leaves span:nth-child(5) { display:inline-block; transform: rotate(-14deg); }
+</style>
+</head>
+<body>
+<div id="root">
+  <div style="text-align:center; padding:60px 20px; color:#748072; font-family:'Noto Sans KR',sans-serif;">불러오는 중…</div>
+</div>
+
+<!-- ======================================================================
+  1) Firebase 설정 — 반드시 본인 프로젝트 값으로 바꿔주세요.
+     Firebase 콘솔(console.firebase.google.com) → 프로젝트 설정 → 내 앱 → SDK 설정
+     에서 firebaseConfig 값을 그대로 복사해 아래에 붙여넣으면 됩니다.
+======================================================================= -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.__fb = { db, collection, doc, setDoc, deleteDoc, onSnapshot };
+</script>
+
+<!-- 2) React (빌드 없이 CDN으로 바로 실행) -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo } = React;
+
+const MONTH_NAMES = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+const COLLECTION = "prayers";
+const todayStr = () => new Date().toISOString().slice(0, 10);
+
+function useEntries() {
+  const [entries, setEntries] = useState([]);
+  const [status, setStatus] = useState("loading");
+
+  useEffect(() => {
+    let unsub = null;
+    let tries = 0;
+    const tryInit = () => {
+      if (window.__fb) {
+        const { db, collection, onSnapshot } = window.__fb;
+        unsub = onSnapshot(
+          collection(db, COLLECTION),
+          (snap) => {
+            setEntries(snap.docs.map((d) => d.data()));
+            setStatus("ready");
+          },
+          () => setStatus("error")
+        );
+      } else if (tries++ < 100) {
+        setTimeout(tryInit, 50);
+      } else {
+        setStatus("error");
+      }
+    };
+    tryInit();
+    return () => unsub && unsub();
+  }, []);
+
+  async function addEntry(entry) {
+    const { db, doc, setDoc } = window.__fb;
+    await setDoc(doc(window.__fb.db, COLLECTION, entry.id), entry);
+  }
+  async function removeEntry(id) {
+    const { db, doc, deleteDoc } = window.__fb;
+    await deleteDoc(doc(window.__fb.db, COLLECTION, id));
+  }
+
+  return { entries, status, addEntry, removeEntry };
+}
+
+function hashOf(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function formatDate(iso) {
+  const d = new Date(iso + "T00:00:00");
+  const days = ["일","월","화","수","목","금","토"];
+  return `${d.getMonth() + 1}.${d.getDate()} (${days[d.getDay()]})`;
+}
+
+function EntryCard({ entry, onDelete, compact }) {
+  const h = hashOf(entry.id);
+  const rotate = (h % 7) - 3;
+  const stringLen = [14, 22, 30][h % 3];
+  return (
+    <div className={`tag-item${compact ? " compact" : ""}`}>
+      <div className="tag-string" style={{ height: stringLen }} />
+      <div className="tag-card" style={{ transform: `rotate(${rotate}deg)` }}>
+        <span className="tag-leaf">🌿</span>
+        <button className="pt-btn tag-delete" onClick={onDelete} aria-label="삭제" title="삭제">✕</button>
+        <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 8, paddingRight: 16 }}>
+          <span style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: 14, color: "#173327", wordBreak: "keep-all" }}>{entry.name}</span>
+          <span style={{ fontSize: 10.5, color: "#748072" }}>{formatDate(entry.date)}</span>
+        </div>
+        <div style={{ height: 0, borderTop: "1px dashed #ece6d6", margin: "0 0 9px" }} />
+        <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 7 }}>
+          {entry.prayers.map((p, i) => (
+            <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, lineHeight: 1.5, color: "#26332c" }}>
+              <span style={{ flex: "0 0 auto", display: "grid", placeItems: "center", width: 15, height: 15, marginTop: 1, borderRadius: "50%", background: "#e7efe3", color: "#3f6b52", fontSize: 9.5, fontWeight: 700 }}>{i + 1}</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+function PrayerTree() {
+  const { entries, status, addEntry, removeEntry } = useEntries();
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [monthIdx, setMonthIdx] = useState(new Date().getMonth());
+  const [mode, setMode] = useState("month");
+  const [formOpen, setFormOpen] = useState(false);
+  const [fDate, setFDate] = useState(todayStr());
+  const [fName, setFName] = useState("");
+  const [fPrayers, setFPrayers] = useState(["", "", ""]);
+  const [saving, setSaving] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  const yearEntries = useMemo(
+    () => entries.filter((e) => new Date(e.date + "T00:00:00").getFullYear() === year),
+    [entries, year]
+  );
+  const monthEntries = useMemo(
+    () => yearEntries.filter((e) => new Date(e.date + "T00:00:00").getMonth() === monthIdx)
+      .sort((a, b) => (a.date < b.date ? 1 : -1)),
+    [yearEntries, monthIdx]
+  );
+  const countsByMonth = useMemo(() => {
+    const c = Array(12).fill(0);
+    yearEntries.forEach((e) => c[new Date(e.date + "T00:00:00").getMonth()]++);
+    return c;
+  }, [yearEntries]);
+  const grouped = useMemo(() => {
+    const g = {};
+    yearEntries.forEach((e) => {
+      const m = new Date(e.date + "T00:00:00").getMonth();
+      (g[m] = g[m] || []).push(e);
+    });
+    Object.values(g).forEach((arr) => arr.sort((a, b) => (a.date < b.date ? 1 : -1)));
+    return g;
+  }, [yearEntries]);
+  const totalThisYear = yearEntries.length;
+
+  function resetForm() {
+    setFDate(todayStr());
+    setFName("");
+    setFPrayers(["", "", ""]);
+  }
+
+  async function submitEntry() {
+    const cleanPrayers = fPrayers.map((p) => p.trim()).filter(Boolean);
+    if (!fName.trim() || cleanPrayers.length === 0) {
+      setNotice("이름과 기도제목을 하나 이상 입력해 주세요.");
+      setTimeout(() => setNotice(""), 2500);
+      return;
+    }
+    setSaving(true);
+    const entry = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      date: fDate,
+      name: fName.trim(),
+      prayers: cleanPrayers,
+      createdAt: new Date().toISOString(),
+    };
+    try {
+      await addEntry(entry);
+      setYear(new Date(fDate + "T00:00:00").getFullYear());
+      setMonthIdx(new Date(fDate + "T00:00:00").getMonth());
+      setMode("month");
+      resetForm();
+      setFormOpen(false);
+    } catch (e) {
+      setNotice("저장에 실패했어요. Firebase 설정을 확인해주세요.");
+    }
+    setSaving(false);
+  }
+
+  const GREEN_DARK = "#173327", GREEN_MID = "#3f6b52", CREAM_DEEP = "#ece6d6", MUTED = "#748072";
+
+  return (
+    <div>
+      <header style={{ position: "relative", background: "radial-gradient(120% 100% at 50% -10%, #234a3a 0%, #173327 55%, #0f231b 100%)", padding: "40px 20px 34px", textAlign: "center", overflow: "hidden" }}>
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#c9dcc7", background: "rgba(127,163,131,0.16)", border: "1px solid rgba(197,216,192,0.25)", borderRadius: 999, padding: "5px 12px", fontSize: 12, marginBottom: 14 }}>
+            🌿 <span>95년 동기</span>
+          </div>
+          <h1 style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: "clamp(26px, 6vw, 34px)", color: "#f5f3ea", margin: "0 0 14px" }}>월간 기도나무</h1>
+          <p style={{ color: "#d9e3d4", fontFamily: "'Noto Serif KR', serif", fontSize: 14.5, lineHeight: 1.7, margin: "0 0 8px" }}>
+            네 짐을 여호와께 맡기라 그가 너를 붙드시고<br />의인의 요동함을 영원히 허락하지 아니하시리로다
+          </p>
+          <p style={{ color: "#8fa88f", fontSize: 12, margin: 0 }}>시편 55:22</p>
+        </div>
+      </header>
+
+      <div className="twine-wrap" aria-hidden="true">
+        <svg viewBox="0 0 720 30" preserveAspectRatio="none" style={{ width: "100%", height: 22, display: "block" }}>
+          <path d="M0 16 C 90 2, 180 28, 270 14 S 450 0, 540 16 S 660 26, 720 12" stroke="#b7a888" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeDasharray="1 6" />
+        </svg>
+        <div className="twine-leaves">
+          {[0,1,2,3,4].map((i) => <span key={i}>🌿</span>)}
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 720, margin: "0 auto", padding: "22px 16px 40px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+          <button className="pt-btn" onClick={() => setYear((y) => y - 1)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${CREAM_DEEP}`, background: "#fff", color: GREEN_MID, cursor: "pointer" }}>‹</button>
+          <div style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: 19, color: GREEN_DARK, minWidth: 62, textAlign: "center" }}>{year}년</div>
+          <button className="pt-btn" onClick={() => setYear((y) => y + 1)} style={{ width: 30, height: 30, borderRadius: 8, border: `1px solid ${CREAM_DEEP}`, background: "#fff", color: GREEN_MID, cursor: "pointer" }}>›</button>
+          <div style={{ marginLeft: "auto", fontSize: 12.5, color: GREEN_MID, background: "#e7efe3", border: "1px solid #d3e0cc", borderRadius: 999, padding: "5px 10px" }}>{year}년 누적 {totalThisYear}건</div>
+          <div style={{ display: "flex", background: "#fff", border: `1px solid ${CREAM_DEEP}`, borderRadius: 10, padding: 3, gap: 2, width: "100%", marginTop: 6 }}>
+            <button className="pt-btn" onClick={() => setMode("month")} style={{ flex: 1, border: "none", background: mode === "month" ? GREEN_DARK : "transparent", color: mode === "month" ? "#fff" : MUTED, padding: "7px 10px", fontSize: 13, borderRadius: 7, cursor: "pointer" }}>월별 보기</button>
+            <button className="pt-btn" onClick={() => setMode("all")} style={{ flex: 1, border: "none", background: mode === "all" ? GREEN_DARK : "transparent", color: mode === "all" ? "#fff" : MUTED, padding: "7px 10px", fontSize: 13, borderRadius: 7, cursor: "pointer" }}>전체 누적</button>
+          </div>
+        </div>
+
+        <div className="pt-scroll" style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 6, marginBottom: 18 }}>
+          {MONTH_NAMES.map((m, i) => (
+            <button key={m} className="pt-btn" onClick={() => { setMonthIdx(i); setMode("month"); }}
+              style={{ flex: "0 0 auto", display: "inline-flex", alignItems: "center", gap: 5, padding: "7px 13px", borderRadius: 999, border: `1px solid ${CREAM_DEEP}`, background: mode === "month" && monthIdx === i ? GREEN_MID : "#fff", borderColor: mode === "month" && monthIdx === i ? GREEN_MID : CREAM_DEEP, color: mode === "month" && monthIdx === i ? "#fff" : "#26332c", fontSize: 13.5, cursor: "pointer", whiteSpace: "nowrap" }}>
+              {m}
+              {countsByMonth[i] > 0 && <span style={{ fontSize: 11, background: mode === "month" && monthIdx === i ? "rgba(255,255,255,0.25)" : "#eef2ea", color: mode === "month" && monthIdx === i ? "#fff" : GREEN_MID, borderRadius: 999, padding: "1px 6px", fontWeight: 600 }}>{countsByMonth[i]}</span>}
+            </button>
+          ))}
+        </div>
+
+        {status === "loading" && <div style={{ textAlign: "center", color: MUTED, padding: "40px 0", fontSize: 14 }}>불러오는 중…</div>}
+        {status === "error" && <div style={{ textAlign: "center", color: "#a1524f", padding: "40px 0", fontSize: 13.5 }}>Firebase 연결에 실패했어요. index.html 상단의 firebaseConfig 값을 확인해주세요.</div>}
+
+        {status === "ready" && mode === "month" && (
+          <section className="pt-fade">
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+              <h2 style={{ fontFamily: "'Noto Serif KR', serif", fontSize: 18, fontWeight: 700, color: GREEN_DARK, margin: 0 }}>
+                {year}년 {MONTH_NAMES[monthIdx]} <span style={{ fontFamily: "'Noto Sans KR', sans-serif", fontWeight: 500, fontSize: 13, color: MUTED }}>· {monthEntries.length}건</span>
+              </h2>
+              <button className="pt-btn" onClick={() => setFormOpen((v) => !v)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: GREEN_DARK, color: "#fff", border: "none", borderRadius: 8, padding: "8px 13px", fontSize: 13, cursor: "pointer" }}>
+                {formOpen ? "✕ 닫기" : "＋ 기도제목 추가"}
+              </button>
+            </div>
+
+            {formOpen && (
+              <div className="pt-fade" style={{ background: "#fff", border: `1px solid ${CREAM_DEEP}`, borderRadius: 14, padding: 16, marginBottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <label style={{ fontSize: 12.5, color: GREEN_MID, fontWeight: 600 }}>📅 작성 날짜</label>
+                  <input type="date" value={fDate} onChange={(e) => setFDate(e.target.value)} style={{ border: `1px solid ${CREAM_DEEP}`, borderRadius: 8, padding: "9px 11px", fontSize: 14, background: "#f4f1e6" }} />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <label style={{ fontSize: 12.5, color: GREEN_MID, fontWeight: 600 }}>✎ 이름</label>
+                  <input type="text" value={fName} onChange={(e) => setFName(e.target.value)} placeholder="이름을 입력하세요" style={{ border: `1px solid ${CREAM_DEEP}`, borderRadius: 8, padding: "9px 11px", fontSize: 14, background: "#f4f1e6" }} />
+                </div>
+                {[0,1,2].map((i) => (
+                  <div key={i} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                    <label style={{ fontSize: 12.5, color: GREEN_MID, fontWeight: 600 }}>기도제목 {i + 1}</label>
+                    <textarea rows={2} value={fPrayers[i]} onChange={(e) => { const next = [...fPrayers]; next[i] = e.target.value; setFPrayers(next); }}
+                      placeholder={i === 0 ? "기도제목을 적어주세요 (필수)" : "기도제목 (선택)"}
+                      style={{ border: `1px solid ${CREAM_DEEP}`, borderRadius: 8, padding: "9px 11px", fontSize: 14, background: "#f4f1e6", resize: "vertical", fontFamily: "inherit" }} />
+                  </div>
+                ))}
+                {notice && <div style={{ fontSize: 12.5, color: "#a1524f" }}>{notice}</div>}
+                <button type="button" onClick={submitEntry} disabled={saving}
+                  style={{ background: GREEN_MID, color: "#fff", border: "none", borderRadius: 9, padding: "11px", fontSize: 14, fontWeight: 600, cursor: "pointer", opacity: saving ? 0.7 : 1 }}>
+                  {saving ? "저장 중…" : "기도나무에 새기기"}
+                </button>
+              </div>
+            )}
+
+            {monthEntries.length === 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: MUTED, padding: "36px 0", fontSize: 13.5, textAlign: "center" }}>
+                <span style={{ fontSize: 22 }}>🌿</span>
+                <p>아직 이 달에 심어진 기도제목이 없어요.</p>
+              </div>
+            ) : (
+              <div className="tag-row">
+                {monthEntries.map((e) => <EntryCard key={e.id} entry={e} onDelete={() => removeEntry(e.id)} />)}
+              </div>
+            )}
+          </section>
+        )}
+
+        {status === "ready" && mode === "all" && (
+          <section className="pt-fade">
+            {totalThisYear === 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: MUTED, padding: "36px 0", fontSize: 13.5, textAlign: "center" }}>
+                <span style={{ fontSize: 22 }}>🌿</span>
+                <p>{year}년에 기록된 기도제목이 아직 없어요.</p>
+              </div>
+            ) : (
+              MONTH_NAMES.map((m, i) => grouped[i] ? (
+                <div key={m} style={{ marginBottom: 22 }}>
+                  <h3 style={{ fontFamily: "'Noto Serif KR', serif", fontSize: 15.5, fontWeight: 700, color: GREEN_DARK, borderBottom: `1px solid ${CREAM_DEEP}`, paddingBottom: 6, marginBottom: 10 }}>
+                    {m} <span style={{ fontFamily: "'Noto Sans KR', sans-serif", fontWeight: 500, fontSize: 13, color: MUTED }}>· {grouped[i].length}건</span>
+                  </h3>
+                  <div className="tag-row">
+                    {grouped[i].map((e) => <EntryCard key={e.id} entry={e} compact onDelete={() => removeEntry(e.id)} />)}
+                  </div>
+                </div>
+              ) : null)
+            )}
+          </section>
+        )}
+      </main>
+
+      <footer style={{ textAlign: "center", color: MUTED, fontSize: 12, padding: "10px 0 28px" }}>이 페이지의 기록은 95년 동기 모두에게 함께 보여요 🌿</footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<PrayerTree />);
+</script>
+</body>
+</html>
