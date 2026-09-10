@@ -78,12 +78,12 @@
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCVtSTVaeF98c5P2J_fDY5BeLOMpTkRGlg",
+    authDomain: "prayer-tree-b4553.firebaseapp.com",
+    projectId: "prayer-tree-b4553",
+    storageBucket: "prayer-tree-b4553.firebasestorage.app",
+    messagingSenderId: "250561450400",
+    appId: "1:250561450400:web:0fbcb4ad53fd1c2ecb54c5"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -96,7 +96,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<script type="text/babel" data-presets="react">
+<script type="text/plain" id="app-src">
 const { useState, useEffect, useMemo } = React;
 
 const MONTH_NAMES = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
@@ -384,6 +384,14 @@ function PrayerTree() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<PrayerTree />);
+</script>
+
+<script>
+  (function () {
+    var raw = document.getElementById("app-src").textContent;
+    var result = Babel.transform(raw, { presets: [["react", { runtime: "classic" }]] });
+    (0, eval)(result.code);
+  })();
 </script>
 </body>
 </html>
