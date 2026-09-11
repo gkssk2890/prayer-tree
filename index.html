@@ -29,27 +29,30 @@
   }
 
   .tag-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; column-gap: 16px; row-gap: 4px; padding: 6px 2px 4px; }
-  .tag-item { display: flex; flex-direction: column; align-items: center; width: 162px; }
-  .tag-item.compact { width: 138px; }
+  .tag-item { display: flex; flex-direction: column; align-items: center; width: 210px; min-width: 0; max-width: 100%; }
+  .tag-item.compact { width: 190px; }
   .tag-string { width: 1px; background: linear-gradient(to bottom, #c7bb9a, #a9987a); position: relative; }
   .tag-string::after {
     content: ''; position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
     width: 7px; height: 7px; border-radius: 50%; border: 1.4px solid #a9987a; background: #f4f1e6;
   }
   .tag-card {
-    position: relative; width: 100%; background: #fbf8ef; border: 1px solid #e6ddc4;
-    box-shadow: 0 8px 16px rgba(38,51,44,0.11); padding: 17px 12px 12px;
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 12% 100%, 0 88%);
+    position: relative; width: 100%; min-width: 0; box-sizing: border-box; background: #fbf8ef; border: 1px solid #e6ddc4;
+    box-shadow: 0 8px 16px rgba(38,51,44,0.11); padding: 18px 14px 14px;
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 94% 100%, 6% 100%, 0 92%);
   }
-  .tag-item.compact .tag-card { padding: 14px 10px 10px; }
+  .tag-card, .tag-card * { overflow-wrap: anywhere; word-break: keep-all; }
+  .tag-item.compact .tag-card { padding: 15px 12px 12px; }
   .tag-leaf {
     position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-14deg);
     font-size: 14px; background: #f4f1e6; border-radius: 50%; padding: 1px 3px; line-height: 1;
   }
-  .tag-delete {
-    position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; display: grid; place-items: center;
+  .tag-actions { position: absolute; top: 5px; right: 5px; display: flex; gap: 1px; }
+  .tag-edit, .tag-delete {
+    width: 21px; height: 21px; display: grid; place-items: center;
     border: none; background: transparent; color: #c9bfa5; cursor: pointer; border-radius: 5px; font-size: 12px;
   }
+  .tag-edit:hover { color: #3f6b52; }
   .tag-delete:hover { color: #a1524f; }
 
   .twine-wrap { position: relative; max-width: 720px; margin: 0 auto; padding: 12px 22px 0; }
@@ -338,29 +341,45 @@ function formatDate(iso) {
   return `${d.getMonth() + 1}.${d.getDate()} (${days[d.getDay()]})`;
 }
 
-function EntryCard({ entry, onDelete, compact }) {
+function EntryCard({ entry, onDelete, onEdit, compact }) {
   const h = hashOf(entry.id);
   const rotate = (h % 7) - 3;
   const stringLen = [14, 22, 30][h % 3];
+  const total = entry.prayers.length;
+  const [page, setPage] = useState(0);
+  const cur = Math.min(page, total - 1);
+
   return (
     <div className={`tag-item${compact ? " compact" : ""}`}>
       <div className="tag-string" style={{ height: stringLen }} />
       <div className="tag-card" style={{ transform: `rotate(${rotate}deg)` }}>
         <span className="tag-leaf">🌿</span>
-        <button className="pt-btn tag-delete" onClick={onDelete} aria-label="삭제" title="삭제">✕</button>
-        <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 8, paddingRight: 16 }}>
-          <span style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: 14, color: "#173327", wordBreak: "keep-all" }}>{entry.name}</span>
-          <span style={{ fontSize: 10.5, color: "#748072" }}>{formatDate(entry.date)}</span>
+        <div className="tag-actions">
+          {onEdit && <button className="pt-btn tag-edit" onClick={onEdit} aria-label="수정" title="수정">✎</button>}
+          <button className="pt-btn tag-delete" onClick={onDelete} aria-label="삭제" title="삭제">✕</button>
         </div>
-        <div style={{ height: 0, borderTop: "1px dashed #ece6d6", margin: "0 0 9px" }} />
-        <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 7 }}>
-          {entry.prayers.map((p, i) => (
-            <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, lineHeight: 1.5, color: "#26332c" }}>
-              <span style={{ flex: "0 0 auto", display: "grid", placeItems: "center", width: 15, height: 15, marginTop: 1, borderRadius: "50%", background: "#e7efe3", color: "#3f6b52", fontSize: 9.5, fontWeight: 700 }}>{i + 1}</span>
-              <span>{p}</span>
-            </li>
-          ))}
-        </ol>
+        <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 9, paddingRight: 38 }}>
+          <span style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: 14.5, color: "#173327" }}>{entry.name}</span>
+          <span style={{ fontSize: 11, color: "#748072" }}>{formatDate(entry.date)}</span>
+        </div>
+        <div style={{ height: 0, borderTop: "1px dashed #ece6d6", margin: "0 0 10px" }} />
+
+        <div
+          onClick={total > 1 ? () => setPage((cur + 1) % total) : undefined}
+          style={{ minHeight: 58, display: "flex", alignItems: "center", cursor: total > 1 ? "pointer" : "default" }}
+        >
+          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "#26332c" }}>{entry.prayers[cur]}</p>
+        </div>
+
+        {total > 1 && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, paddingTop: 8, borderTop: "1px dashed #ece6d6" }}>
+            <button className="pt-btn" onClick={() => setPage((cur - 1 + total) % total)} aria-label="이전 기도제목"
+              style={{ border: "none", background: "transparent", color: "#3f6b52", fontSize: 15, cursor: "pointer", padding: "2px 6px" }}>‹</button>
+            <span style={{ fontSize: 11, color: "#748072" }}>{cur + 1} / {total}</span>
+            <button className="pt-btn" onClick={() => setPage((cur + 1) % total)} aria-label="다음 기도제목"
+              style={{ border: "none", background: "transparent", color: "#3f6b52", fontSize: 15, cursor: "pointer", padding: "2px 6px" }}>›</button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -368,7 +387,7 @@ function EntryCard({ entry, onDelete, compact }) {
 
 const LEAF_PALETTE = ["#2f5a44", "#3f6b52", "#557d5f", "#6f8f66", "#7fa383"];
 
-function TreeView({ grouped, onDelete }) {
+function TreeView({ grouped, onDelete, onEdit }) {
   const [filterName, setFilterName] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -473,7 +492,7 @@ function TreeView({ grouped, onDelete }) {
                 {b.name} <span style={{ fontFamily: "'Noto Sans KR', sans-serif", fontWeight: 500, fontSize: 13, color: "#748072" }}>· {b.items.length}건</span>
               </h3>
               <div className="tag-row">
-                {b.items.map((e) => <EntryCard key={e.id} entry={e} compact onDelete={() => onDelete(e.id)} />)}
+                {b.items.map((e) => <EntryCard key={e.id} entry={e} compact onDelete={() => onDelete(e.id)} onEdit={() => onEdit(e)} />)}
               </div>
             </div>
           ));
@@ -489,6 +508,7 @@ function PrayerTree() {
   const [monthIdx, setMonthIdx] = useState(new Date().getMonth());
   const [mode, setMode] = useState("month");
   const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [fDate, setFDate] = useState(todayStr());
   const [fName, setFName] = useState("");
   const [fPrayers, setFPrayers] = useState(["", "", ""]);
@@ -525,6 +545,19 @@ function PrayerTree() {
     setFDate(todayStr());
     setFName("");
     setFPrayers(["", "", ""]);
+    setEditingId(null);
+  }
+
+  function startEdit(entry) {
+    setFDate(entry.date);
+    setFName(entry.name);
+    setFPrayers(entry.prayers.length ? [...entry.prayers] : [""]);
+    setEditingId(entry.id);
+    const d = new Date(entry.date + "T00:00:00");
+    setYear(d.getFullYear());
+    setMonthIdx(d.getMonth());
+    setMode("month");
+    setFormOpen(true);
   }
 
   async function submitEntry() {
@@ -536,7 +569,7 @@ function PrayerTree() {
     }
     setSaving(true);
     const entry = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      id: editingId || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       date: fDate,
       name: fName.trim(),
       prayers: cleanPrayers,
@@ -615,13 +648,18 @@ function PrayerTree() {
               <h2 style={{ fontFamily: "'Noto Serif KR', serif", fontSize: 18, fontWeight: 700, color: GREEN_DARK, margin: 0 }}>
                 {year}년 {MONTH_NAMES[monthIdx]} <span style={{ fontFamily: "'Noto Sans KR', sans-serif", fontWeight: 500, fontSize: 13, color: MUTED }}>· {monthEntries.length}건</span>
               </h2>
-              <button className="pt-btn" onClick={() => setFormOpen((v) => !v)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: GREEN_DARK, color: "#fff", border: "none", borderRadius: 8, padding: "8px 13px", fontSize: 13, cursor: "pointer" }}>
+              <button className="pt-btn" onClick={() => { if (formOpen) { resetForm(); } setFormOpen((v) => !v); }} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: GREEN_DARK, color: "#fff", border: "none", borderRadius: 8, padding: "8px 13px", fontSize: 13, cursor: "pointer" }}>
                 {formOpen ? "✕ 닫기" : "＋ 기도제목 추가"}
               </button>
             </div>
 
             {formOpen && (
               <div className="pt-fade" style={{ background: "#fff", border: `1px solid ${CREAM_DEEP}`, borderRadius: 14, padding: 16, marginBottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
+                {editingId && (
+                  <div style={{ fontSize: 12.5, color: "#a1524f", background: "#fbeceb", border: "1px solid #f0d8d6", borderRadius: 8, padding: "7px 10px" }}>
+                    ✎ 기도제목을 수정하는 중이에요
+                  </div>
+                )}
                 <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                   <label style={{ fontSize: 12.5, color: GREEN_MID, fontWeight: 600 }}>📅 작성 날짜</label>
                   <input type="date" value={fDate} onChange={(e) => setFDate(e.target.value)} style={{ border: `1px solid ${CREAM_DEEP}`, borderRadius: 8, padding: "9px 11px", fontSize: 14, background: "#f4f1e6" }} />
@@ -652,7 +690,7 @@ function PrayerTree() {
                 {notice && <div style={{ fontSize: 12.5, color: "#a1524f" }}>{notice}</div>}
                 <button type="button" onClick={submitEntry} disabled={saving}
                   style={{ background: GREEN_MID, color: "#fff", border: "none", borderRadius: 9, padding: "11px", fontSize: 14, fontWeight: 600, cursor: "pointer", opacity: saving ? 0.7 : 1 }}>
-                  {saving ? "저장 중…" : "기도나무에 새기기"}
+                  {saving ? "저장 중…" : editingId ? "수정 완료" : "기도나무에 새기기"}
                 </button>
               </div>
             )}
@@ -664,7 +702,7 @@ function PrayerTree() {
               </div>
             ) : (
               <div className="tag-row">
-                {monthEntries.map((e) => <EntryCard key={e.id} entry={e} onDelete={() => removeEntry(e.id)} />)}
+                {monthEntries.map((e) => <EntryCard key={e.id} entry={e} onDelete={() => removeEntry(e.id)} onEdit={() => startEdit(e)} />)}
               </div>
             )}
           </section>
@@ -678,7 +716,7 @@ function PrayerTree() {
                 <p>{year}년에 기록된 기도제목이 아직 없어요.</p>
               </div>
             ) : (
-              <TreeView grouped={grouped} onDelete={removeEntry} />
+              <TreeView grouped={grouped} onDelete={removeEntry} onEdit={startEdit} />
             )}
           </section>
         )}
