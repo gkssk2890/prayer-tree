@@ -47,13 +47,27 @@
     position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-14deg);
     font-size: 14px; background: #f4f1e6; border-radius: 50%; padding: 1px 3px; line-height: 1;
   }
-  .tag-actions { position: absolute; top: 5px; right: 5px; display: flex; gap: 1px; }
+  .tag-actions { position: absolute; top: 6px; right: 6px; display: flex; gap: 6px; z-index: 2; }
   .tag-edit, .tag-delete {
-    width: 21px; height: 21px; display: grid; place-items: center;
-    border: none; background: transparent; color: #c9bfa5; cursor: pointer; border-radius: 5px; font-size: 12px;
+    width: 30px; height: 30px; display: grid; place-items: center;
+    border: none; background: #f4f1e6; color: #6f8066; cursor: pointer; border-radius: 50%; font-size: 15px;
+    box-shadow: 0 1px 2px rgba(38,51,44,0.12);
   }
-  .tag-edit:hover { color: #3f6b52; }
-  .tag-delete:hover { color: #a1524f; }
+  .tag-edit:hover { color: #3f6b52; background: #e7efe3; }
+  .tag-delete { color: #a1524f; }
+  .tag-delete:hover { background: #fbeceb; }
+  .tag-confirm {
+    position: absolute; top: -8px; right: -8px; width: 152px; z-index: 6;
+    background: #fff; border: 1px solid #e6ddc4; border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(38,51,44,0.2); padding: 11px;
+  }
+  .tag-confirm p { margin: 0 0 9px; font-size: 12.5px; color: #26332c; line-height: 1.4; text-align: center; }
+  .tag-confirm-btns { display: flex; gap: 6px; }
+  .tag-confirm-btns button {
+    flex: 1; border: none; border-radius: 7px; padding: 7px 0; font-size: 12.5px; cursor: pointer; font-weight: 600;
+  }
+  .tag-confirm-cancel { background: #f4f1e6; color: #26332c; }
+  .tag-confirm-ok { background: #a1524f; color: #fff; }
 
   .twine-wrap { position: relative; max-width: 720px; margin: 0 auto; padding: 12px 22px 0; }
   .twine-leaves { display: flex; justify-content: space-between; padding: 0 6px; margin-top: -15px; font-size: 13px; }
@@ -347,6 +361,7 @@ function EntryCard({ entry, onDelete, onEdit, compact }) {
   const stringLen = [14, 22, 30][h % 3];
   const total = entry.prayers.length;
   const [page, setPage] = useState(0);
+  const [confirming, setConfirming] = useState(false);
   const cur = Math.min(page, total - 1);
 
   return (
@@ -354,11 +369,23 @@ function EntryCard({ entry, onDelete, onEdit, compact }) {
       <div className="tag-string" style={{ height: stringLen }} />
       <div className="tag-card" style={{ transform: `rotate(${rotate}deg)` }}>
         <span className="tag-leaf">🌿</span>
-        <div className="tag-actions">
-          {onEdit && <button className="pt-btn tag-edit" onClick={onEdit} aria-label="수정" title="수정">✎</button>}
-          <button className="pt-btn tag-delete" onClick={onDelete} aria-label="삭제" title="삭제">✕</button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 9, paddingRight: 38 }}>
+
+        {confirming ? (
+          <div className="tag-confirm pt-fade">
+            <p>이 기도제목을<br />삭제할까요?</p>
+            <div className="tag-confirm-btns">
+              <button className="tag-confirm-cancel" onClick={() => setConfirming(false)}>취소</button>
+              <button className="tag-confirm-ok" onClick={() => { onDelete(); setConfirming(false); }}>삭제</button>
+            </div>
+          </div>
+        ) : (
+          <div className="tag-actions">
+            {onEdit && <button className="pt-btn tag-edit" onClick={onEdit} aria-label="수정" title="수정">✎</button>}
+            <button className="pt-btn tag-delete" onClick={() => setConfirming(true)} aria-label="삭제" title="삭제">✕</button>
+          </div>
+        )}
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 9, paddingRight: 68 }}>
           <span style={{ fontFamily: "'Noto Serif KR', serif", fontWeight: 700, fontSize: 14.5, color: "#173327" }}>{entry.name}</span>
           <span style={{ fontSize: 11, color: "#748072" }}>{formatDate(entry.date)}</span>
         </div>
