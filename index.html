@@ -3,210 +3,350 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#173327" />
-<title>월간 기도나무 · 95년 동기</title>
+<meta name="theme-color" content="#1b1b1b" />
+<title>95 기도나무 · 우리 공동체</title>
 
 <!-- Kakao/Facebook/Twitter link preview -->
-<meta property="og:title" content="월간 기도나무" />
-<meta property="og:description" content="95년 동기가 함께 쌓아가는 기도제목 · 감사일기 · 감사사진" />
+<meta property="og:title" content="95 기도나무" />
+<meta property="og:description" content="내 캐릭터로 입장해서 기도제목을 나누고, 오늘의 말씀 카드를 뒤집어 보세요" />
 <meta property="og:image" content="https://gkssk2890.github.io/prayer-tree/og-image.png" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
 
 <style>
   :root {
-    --cream:#f4f1e6; --paper:#fbf8ef; --line:#e6ddc4; --g9:#173327; --g7:#2f5a44; --g6:#3f6b52;
-    --g4:#6f8f66; --g2:#e7efe3; --muted:#748072; --ink:#26332c; --red:#a1524f; --nav:64px;
+    --ink:#1b1b1b; --paper:#f6f0e1; --bg:#efe6d2; --y:#ffd23f; --o:#ff8a3d; --r:#ef4b4b; --p:#f7a8c8;
+    --pu:#a66be0; --b:#5db7f0; --g:#45b36b; --m:#9be3c9; --muted:#6b6457; --nav:66px;
   }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { margin:0; background:var(--cream); color:var(--ink); -webkit-text-size-adjust:100%;
+  html, body { margin:0; background:var(--bg); color:var(--ink); -webkit-text-size-adjust:100%;
     font-family:'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif; font-size:16px; }
   button { font-family:inherit; font-size:inherit; color:inherit; cursor:pointer; }
-  input, textarea, select { font-family:inherit; font-size:16px; color:var(--ink); } /* 16px: iOS 확대 방지 */
-  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:2px solid var(--g4); outline-offset:2px; }
+  input, textarea, select { font-family:inherit; font-size:16px; color:var(--ink); }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--b); outline-offset:2px; }
+  .disp { font-family:'Black Han Sans', 'Noto Sans KR', sans-serif; font-weight:400; letter-spacing:.3px; }
 
-  .app { max-width:560px; margin:0 auto; min-height:100vh; padding-bottom:calc(var(--nav) + 96px + env(safe-area-inset-bottom)); }
+  .app { overflow-x:hidden; max-width:560px; margin:0 auto; min-height:100vh; padding-bottom:calc(var(--nav) + 100px + env(safe-area-inset-bottom)); }
   .boot { text-align:center; padding:100px 20px; color:var(--muted); line-height:2; }
-  .demo-badge { background:#d9a441; color:#2b2206; text-align:center; font-size:12.5px; padding:6px; font-weight:700; }
+  .demo-badge { background:var(--y); border-bottom:3px solid var(--ink); text-align:center; font-size:12.5px; padding:6px; font-weight:900; }
+  .admin-badge { background:var(--r); color:#fff; text-align:center; font-size:12.5px; padding:5px; font-weight:900; }
 
   /* 상단 바 */
   .topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:8px;
-    padding:10px 12px 10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); background:rgba(23,51,39,.97); color:#f5f3ea; }
-  .brand { font-family:'Noto Serif KR', serif; font-weight:700; font-size:18px; display:flex; align-items:center; gap:7px; white-space:nowrap; }
-  .brand small { font-family:'Noto Sans KR', sans-serif; font-weight:500; font-size:11px; color:#a9c3a6; border:1px solid rgba(197,216,192,.3); border-radius:99px; padding:2px 8px; }
-  .yearsw { display:flex; align-items:center; background:rgba(255,255,255,.08); border-radius:12px; }
-  .yearsw button { width:38px; height:38px; border:0; background:none; color:#c9dcc7; font-size:20px; }
-  .yearsw span { font-weight:700; font-size:15px; min-width:56px; text-align:center; }
+    padding:8px 12px 8px 16px; padding-top:calc(8px + env(safe-area-inset-top)); background:var(--ink); color:#fff; }
+  .logo { display:flex; align-items:center; gap:8px; }
+  .logo { min-width:0; }
+  .logo b { font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:21px; color:var(--y); letter-spacing:.3px; white-space:nowrap; }
+  .logo small { font-size:9px; font-weight:900; letter-spacing:1.2px; color:#bdb6a6; line-height:1.1; }
+  @media (max-width:400px) { .logo small { display:none; } }
+  .top-r { display:flex; align-items:center; gap:6px; }
+  .yearsw { display:flex; align-items:center; background:#2f2f2f; border-radius:10px; }
+  .yearsw button { width:34px; height:36px; border:0; background:none; color:var(--y); font-size:19px; }
+  .yearsw span { font-weight:900; font-size:14px; min-width:50px; text-align:center; }
+  .me-btn { width:42px; height:42px; border-radius:12px; border:3px solid var(--y); padding:0; overflow:hidden; background:#fff; }
+  .me-btn .av, .me-btn svg { width:100%; height:100%; display:block; }
+  .enter-btn { white-space:nowrap; border:3px solid var(--y); background:var(--y); color:var(--ink); border-radius:10px; padding:7px 12px; font-weight:900; font-size:14px; }
 
-  .hero { background:radial-gradient(120% 100% at 50% -10%, #234a3a 0, #173327 60%, #0f231b 100%); color:#d9e3d4;
-    text-align:center; padding:16px 20px 22px; font-family:'Noto Serif KR', serif; font-size:14.5px; line-height:1.8; word-break:keep-all; }
-  .hero cite { display:block; font-style:normal; color:#8fa88f; font-size:12px; margin-top:4px; font-family:'Noto Sans KR', sans-serif; }
   .wrap { padding:16px; }
+  .sec { margin:22px 0 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .sec h2 { margin:0; font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:21px; }
+  .sec small { color:var(--muted); font-size:13px; }
+  .box { background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:4px 4px 0 var(--ink); }
+  .btn { border:3px solid var(--ink); border-radius:12px; box-shadow:3px 3px 0 var(--ink); background:var(--y); font-weight:900; padding:12px 16px; font-size:15.5px; transition:transform .08s, box-shadow .08s; }
+  .btn:active { transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+  .btn.white { background:#fff; } .btn.ink { background:var(--ink); color:#fff; } .btn.full { width:100%; }
+  .btn:disabled { opacity:.55; }
 
+  /* 인사 카드 */
+  .hello { display:flex; gap:12px; align-items:center; padding:12px; background:var(--m); }
+  .hello .av { width:64px; height:64px; border:3px solid var(--ink); border-radius:12px; overflow:hidden; flex:0 0 auto; background:#fff; }
+  .hello .av svg { width:100%; height:100%; display:block; }
+  .hello b { font-size:17px; display:block; }
+  .hello p { margin:3px 0 0; font-size:13.5px; color:#2a3a33; line-height:1.5; }
+  .fire { display:inline-flex; align-items:center; gap:3px; background:var(--ink); color:var(--y); border-radius:99px; padding:2px 9px; font-weight:900; font-size:12.5px; margin-top:5px; }
+  .progress { margin-top:12px; padding:12px 14px; }
+  .progress-top { display:flex; justify-content:space-between; font-size:13.5px; font-weight:700; margin-bottom:7px; }
+  .bar { height:16px; border:3px solid var(--ink); border-radius:99px; background:#fff; overflow:hidden; }
+  .bar i { display:block; height:100%; background:repeating-linear-gradient(-45deg, var(--g) 0 10px, #5fc583 10px 20px); border-right:3px solid var(--ink); }
+  .faces { display:flex; margin-top:9px; }
+  .faces .av { width:30px; height:30px; border:2px solid var(--ink); border-radius:50%; overflow:hidden; margin-left:-7px; background:#fff; }
+  .faces .av:first-child { margin-left:0; }
+  .faces .av svg { width:100%; height:100%; display:block; }
+  .faces span { margin-left:6px; font-size:12.5px; color:var(--muted); align-self:center; }
+
+  /* 오늘의 말씀 카드 뒤집기 */
+  .flip { perspective:1200px; margin-top:14px; cursor:pointer; }
+  .face { border:3px solid var(--ink); border-radius:18px; box-shadow:5px 5px 0 var(--ink); }
+  .front.turn { animation:turnOut .3s ease-in forwards; }
+  .back { animation:turnIn .55s cubic-bezier(.3,1.5,.5,1); }
+  @keyframes turnOut { to { transform:rotateY(90deg); } }
+  @keyframes turnIn { from { transform:rotateY(-90deg); } }
+  .front { background:var(--y); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:22px 16px; text-align:center; min-height:200px; position:relative; overflow:hidden; }
+  .front h3 { margin:6px 0 4px; font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:32px; }
+  .front p { margin:0; font-size:14px; font-weight:700; }
+  .front .q { width:64px; height:64px; border:3px solid var(--ink); border-radius:50%; background:#fff; display:grid; place-items:center; font-family:'Black Han Sans'; font-size:36px; animation:bob 1.6s ease-in-out infinite; }
+  .front .tap { position:absolute; right:14px; bottom:12px; background:var(--ink); color:var(--y); font-weight:900; font-size:12px; border-radius:99px; padding:4px 10px; transform:rotate(-6deg); }
+  .front .corner { position:absolute; left:14px; top:12px; font-weight:900; font-size:12px; letter-spacing:1px; }
+  .front .stars { position:absolute; right:14px; top:10px; font-size:16px; }
+  .back { background:#24364b; color:#fff; padding:16px; }
+  .back .vh { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .back .vh b { font-family:'Black Han Sans'; font-weight:400; font-size:19px; color:var(--y); }
+  .back .vh small { font-size:12px; color:#b9c7d8; }
+  @keyframes bob { 50% { transform:translateY(-6px) rotate(6deg); } }
+
+  .tags { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0; }
+  .tags span { font-size:12px; font-weight:700; background:rgba(255,255,255,.14); border-radius:99px; padding:3px 10px; }
+  .vq { margin:10px 0 0; padding:12px 14px; background:rgba(255,255,255,.08); border-left:4px solid var(--y); border-radius:10px; }
+  .vq p { margin:0; font-family:'Noto Serif KR', serif; font-size:15.5px; line-height:1.8; word-break:keep-all; }
+  .vq cite { display:block; text-align:right; font-style:normal; font-size:12.5px; color:var(--y); margin-top:6px; font-weight:700; }
+  .vnote { font-size:12.5px; color:#b9c7d8; margin:10px 0 0; text-align:center; }
+
+  /* 미션 */
+  .mission { padding:12px 14px; margin-top:14px; }
+  .mission h4 { margin:0 0 8px; display:flex; justify-content:space-between; font-size:15px; }
+  .mission h4 span { font-family:'Black Han Sans'; font-weight:400; font-size:15px; background:var(--ink); color:var(--y); border-radius:99px; padding:1px 10px; }
+  .mrow { display:flex; align-items:center; gap:10px; padding:9px 0; border-top:2px dashed #e4dccb; font-size:15px; }
+  .mrow:first-of-type { border-top:0; }
+  .chk { width:26px; height:26px; border:3px solid var(--ink); border-radius:8px; display:grid; place-items:center; font-weight:900; flex:0 0 auto; background:#fff; }
+  .mrow.done .chk { background:var(--g); color:#fff; }
+  .mrow.done span { text-decoration:line-through; color:var(--muted); }
+  .mrow button { margin-left:auto; border:2px solid var(--ink); background:var(--y); border-radius:99px; padding:4px 11px; font-size:12.5px; font-weight:900; }
+  .allclear { margin-top:6px; background:var(--g); color:#fff; border:3px solid var(--ink); border-radius:12px; padding:9px; text-align:center; font-weight:900; font-size:14px; }
+
+  /* 성령의 열매 */
+  .fruits { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+  .fruit { border:3px solid var(--ink); border-radius:14px; background:#fff; padding:10px 4px 8px; text-align:center; box-shadow:3px 3px 0 var(--ink); position:relative; }
+  .fruit .em { font-size:30px; display:block; line-height:1.2; }
+  .fruit b { font-size:14px; display:block; margin-top:2px; }
+  .fruit small { font-size:11.5px; color:var(--muted); }
+  .fruit.on { background:var(--fc); transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .fruit.on::after { content:'MY'; position:absolute; top:-9px; right:-6px; background:var(--ink); color:var(--y); font-size:10px; font-weight:900; border-radius:99px; padding:2px 7px; }
+  .fdetail { margin-top:12px; padding:14px; background:#fffaf0; }
+  .fdetail h4 { margin:0 0 4px; font-size:18px; display:flex; align-items:center; gap:8px; }
+  .fdetail p.d { margin:0 0 8px; font-size:14px; color:var(--muted); }
+  .fdetail .vq { background:#fff; border-left-color:var(--fc, var(--g)); }
+  .fdetail .vq cite { color:#7a5a1c; }
+
+  /* 나무 */
+  .tree-box { padding:6px 4px 10px; background:#fdfaf1; }
+  .tree-box svg { display:block; width:100%; height:auto; }
+  .legend { display:flex; justify-content:center; gap:12px; font-size:12.5px; font-weight:700; padding:2px 6px 4px; flex-wrap:wrap; }
+  .hint { font-size:12.5px; color:var(--muted); text-align:center; margin:2px 8px 0; line-height:1.5; }
   .stats { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; }
-  .stat { background:#fff; border:1px solid var(--line); border-radius:14px; padding:10px 4px; text-align:center; }
-  .stat b { display:block; font-size:23px; color:var(--g9); font-family:'Noto Serif KR', serif; line-height:1.3; }
-  .stat span { font-size:12px; color:var(--muted); }
-  .total-line { text-align:center; font-size:13px; color:var(--muted); margin:6px 0 2px; line-height:1.6; }
-  .total-line b { color:var(--g6); }
+  .stat { text-align:center; padding:9px 4px; }
+  .stat b { display:block; font-family:'Black Han Sans'; font-weight:400; font-size:25px; line-height:1.2; }
+  .stat span { font-size:12px; font-weight:700; color:var(--muted); }
+  .psalm { text-align:center; font-family:'Noto Serif KR', serif; font-size:13.5px; line-height:1.75; color:#4b463c; margin:12px 6px 0; word-break:keep-all; }
+  .psalm cite { display:block; font-style:normal; font-size:12px; color:var(--muted); font-family:'Noto Sans KR'; }
 
-  .tree-card { background:linear-gradient(#fff, #fbfaf4); border:1px solid var(--line); border-radius:20px; padding:8px 6px 10px; margin-bottom:12px; }
-  .tree-card svg { display:block; width:100%; height:auto; max-height:60vh; }
-  .legend { display:flex; justify-content:center; gap:16px; font-size:13px; color:var(--muted); padding:4px 0; flex-wrap:wrap; }
-  .legend span { display:inline-flex; align-items:center; gap:5px; }
-  .hint { font-size:12.5px; color:var(--muted); text-align:center; margin:2px 0 0; }
+  /* 트레이딩 카드 */
+  .tcard { --cc:#f6f0e1; color:var(--ink); font-family:'Noto Sans KR', sans-serif; background:var(--cc); border:3px solid var(--ink); border-radius:12px; padding:7px 7px 6px; box-shadow:4px 4px 0 var(--ink); position:relative; text-align:left; width:100%; }
+  button.tcard { padding:7px 7px 6px; }
+  .tc-top { display:flex; justify-content:space-between; align-items:center; gap:4px; padding:0 2px 5px; }
+  .tc-top b { font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:19px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tc-stars { font-size:13px; letter-spacing:-2px; white-space:nowrap; }
+  .tc-pic { position:relative; border:3px solid var(--ink); border-radius:6px; overflow:hidden; aspect-ratio:5/6; background:#fff; }
+  .tc-pic .av, .tc-pic svg { width:100%; height:100%; display:block; }
+  .tc-fruit { position:absolute; right:5px; bottom:5px; width:32px; height:32px; border-radius:50%; background:var(--ink); display:grid; place-items:center; font-size:17px; border:2px solid #fff; }
+  .tc-mbti { position:absolute; left:5px; top:5px; background:#fff; border:2px solid var(--ink); border-radius:6px; font-weight:900; font-size:11px; padding:0 5px; }
+  .tc-anim { position:absolute; left:5px; bottom:5px; background:var(--ink); color:#fff; border-radius:6px; font-weight:700; font-size:10.5px; padding:1px 6px; }
+  .tc-stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:3px; margin:6px 0 3px; }
+  .tc-stats span { display:flex; align-items:center; justify-content:center; gap:1px; font-size:11.5px; }
+  .tc-stats em { font-style:normal; background:#fff; border:2px solid var(--ink); border-radius:4px; min-width:21px; text-align:center; font-weight:900; font-size:11.5px; padding:0 2px; line-height:1.35; }
+  .tc-foot { display:flex; justify-content:space-between; align-items:baseline; gap:4px; font-size:8.5px; font-weight:900; letter-spacing:.2px; padding:0 2px; white-space:nowrap; }
+  .tc-foot span { overflow:hidden; text-overflow:ellipsis; }
+  .tc-foot b { font-family:'Black Han Sans'; font-weight:400; font-size:13px; }
+  .tcard.big { padding:10px 10px 8px; }
+  .tcard.big .tc-top b { font-size:27px; } .tcard.big .tc-stars { font-size:19px; }
+  .tcard.big .tc-stats span { font-size:15px; } .tcard.big .tc-stats em { font-size:15px; min-width:30px; }
+  .tcard.big .tc-foot { font-size:11px; } .tcard.big .tc-foot b { font-size:17px; }
+  .tcard.big .tc-fruit { width:44px; height:44px; font-size:24px; } .tcard.big .tc-mbti { font-size:14px; } .tcard.big .tc-anim { font-size:13px; }
+  .tcard.ghost .tc-pic { filter:grayscale(.85) contrast(.9); opacity:.75; }
+  .tcard.mine { outline:3px dashed var(--r); outline-offset:3px; }
+  .ghost-tag { position:absolute; inset:auto 0 40% 0; text-align:center; }
+  .ghost-tag span { background:var(--ink); color:#fff; font-size:11px; font-weight:900; padding:3px 8px; border-radius:6px; }
+  .cards { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 12px; }
+  .cards .tc-stats em { min-width:0; padding:0 3px; }
+  .tcard { min-width:0; }
+  .tc-stats span { min-width:0; }
 
-  /* 탭 공통 */
-  .seg { display:flex; background:#fff; border:1px solid var(--line); border-radius:14px; padding:4px; gap:4px; margin-bottom:12px; }
-  .seg button { flex:1; border:0; background:none; padding:11px 4px; border-radius:10px; font-size:14.5px; color:var(--muted); font-weight:500; }
-  .seg button.on { background:var(--g9); color:#fff; font-weight:700; }
+  /* 목록 */
+  .seg { display:flex; background:#fff; border:3px solid var(--ink); border-radius:14px; padding:4px; gap:4px; margin-bottom:10px; }
+  .seg button { flex:1; border:0; background:none; padding:10px 4px; border-radius:9px; font-size:14.5px; font-weight:700; color:var(--muted); }
+  .seg button.on { background:var(--ink); color:var(--y); }
   .chips { display:flex; gap:6px; overflow-x:auto; margin:0 -16px 8px; padding:2px 16px 8px; scrollbar-width:none; }
   .chips::-webkit-scrollbar { display:none; }
-  .chip { flex:0 0 auto; border:1px solid var(--line); background:#fff; border-radius:99px; padding:9px 15px; font-size:14.5px;
+  .chip { flex:0 0 auto; border:2.5px solid var(--ink); background:#fff; border-radius:99px; padding:7px 14px; font-size:14.5px; font-weight:700;
     display:inline-flex; gap:6px; align-items:center; white-space:nowrap; }
-  .chip.on { background:var(--g6); border-color:var(--g6); color:#fff; font-weight:700; }
-  .chip i { font-style:normal; font-size:11.5px; background:var(--g2); color:var(--g6); border-radius:99px; padding:1px 7px; font-weight:700; }
-  .chip.on i { background:rgba(255,255,255,.25); color:#fff; }
-  .chip.zero { color:#aab1a6; }
-  .select { width:100%; appearance:none; -webkit-appearance:none; border:1px solid var(--line); border-radius:14px; padding:12px 40px 12px 14px; margin-bottom:12px;
-    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%233f6b52' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; }
-  .summary { font-size:13.5px; color:var(--muted); margin:2px 2px 12px; }
-  .summary b { color:var(--g6); }
-  .month-h { font-family:'Noto Serif KR', serif; font-weight:700; font-size:16.5px; color:var(--g9); margin:22px 2px 10px; display:flex; align-items:baseline; gap:6px; }
+  .chip.on { background:var(--y); box-shadow:2px 2px 0 var(--ink); }
+  .chip i { font-style:normal; font-size:11.5px; background:var(--ink); color:#fff; border-radius:99px; padding:0 7px; }
+  .chip.zero { color:#a49d8f; border-color:#bfb6a3; }
+  .select { width:100%; appearance:none; -webkit-appearance:none; border:3px solid var(--ink); border-radius:14px; padding:11px 40px 11px 14px; margin-bottom:12px; font-weight:700;
+    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231b1b1b' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; }
+  .summary { font-size:13.5px; color:var(--muted); margin:2px 2px 12px; font-weight:500; }
+  .summary b { color:var(--ink); }
+  .month-h { font-family:'Black Han Sans'; font-weight:400; font-size:18px; margin:22px 2px 10px; }
   .month-h:first-child { margin-top:4px; }
-  .month-h small { font-family:'Noto Sans KR', sans-serif; font-weight:500; font-size:12.5px; color:var(--muted); }
+  .month-h small { font-family:'Noto Sans KR'; font-size:12.5px; color:var(--muted); font-weight:500; }
 
-  /* 카드 */
-  .card { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:14px 14px 8px; margin-bottom:12px; box-shadow:0 4px 12px rgba(38,51,44,.06); }
-  .card.thanks { background:#fffaf0; border-color:#f0e2bf; }
-  .card-h { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
-  .avatar { width:40px; height:40px; border-radius:50%; display:grid; place-items:center; color:#fff; font-weight:700; font-size:13.5px; flex:0 0 auto; }
+  .card { background:#fff; border:3px solid var(--ink); border-radius:18px; padding:12px 13px 10px; margin-bottom:14px; box-shadow:4px 4px 0 var(--ink); }
+  .card.thanks { background:#fffaf0; }
+  .card-h { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+  .card-h .av { width:46px; height:46px; border:2.5px solid var(--ink); border-radius:12px; overflow:hidden; flex:0 0 auto; background:#fff; }
+  .card-h .av svg { width:100%; height:100%; display:block; }
   .who { flex:1; min-width:0; }
-  .who b { display:block; font-size:16px; color:var(--g9); }
-  .who span { font-size:12.5px; color:var(--muted); }
-  .mini { border:1px solid var(--line); background:#fff; border-radius:99px; padding:7px 12px; font-size:13px; color:var(--g6); font-weight:500; }
-  .mini.del { color:var(--red); }
-  .plist { list-style:none; margin:0; padding:0; }
-  .plist li { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-top:1px dashed var(--line); font-size:15.5px; line-height:1.65; }
+  .who b { font-size:16.5px; display:inline-flex; align-items:center; gap:5px; }
+  .who b i { font-style:normal; font-size:10.5px; font-weight:900; border:2px solid var(--ink); border-radius:5px; padding:0 4px; }
+  .who span { display:block; font-size:12.5px; color:var(--muted); }
+  .mini { border:2px solid var(--ink); background:#fff; border-radius:99px; padding:5px 11px; font-size:12.5px; font-weight:700; }
+  .mini.del { color:var(--r); }
+  .plist { list-style:none; margin:4px 0 0; padding:0; }
+  .plist li { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-top:2px dashed #ebe3d1; font-size:15.5px; line-height:1.65; }
   .plist li:first-child { border-top:0; }
   .txt { flex:1; min-width:0; word-break:keep-all; overflow-wrap:anywhere; white-space:pre-wrap; }
-  .num { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:var(--g2); color:var(--g6); font-size:12px; font-weight:700; display:grid; place-items:center; margin-top:2px; }
-  .card.thanks .num { background:#f8ead0; color:#9a6b1f; }
-  .ans { flex:0 0 auto; border:1px solid var(--line); background:#fff; border-radius:99px; font-size:12.5px; padding:5px 10px; color:var(--muted); white-space:nowrap; }
-  .ans.on { background:#fbeceb; border-color:#f0d0cd; color:var(--red); font-weight:700; }
+  .num { flex:0 0 auto; width:25px; height:25px; border-radius:8px; border:2px solid var(--ink); background:var(--y); font-size:12px; font-weight:900; display:grid; place-items:center; margin-top:2px; }
+  .card.thanks .num { background:var(--p); }
+  .ans { flex:0 0 auto; border:2px solid var(--ink); background:#fff; border-radius:99px; font-size:12px; padding:3px 9px; font-weight:700; white-space:nowrap; }
+  .ans.on { background:var(--r); color:#fff; }
+  .ans.ro { border-style:dashed; color:var(--muted); }
   li.done .txt { color:var(--muted); }
+  .react { display:flex; align-items:center; gap:8px; padding-top:10px; margin-top:4px; border-top:2px solid #ebe3d1; flex-wrap:wrap; }
+  .react-btn { border:2.5px solid var(--ink); background:#fff; border-radius:99px; padding:6px 13px; font-weight:900; font-size:14px; box-shadow:2px 2px 0 var(--ink); }
+  .react-btn.on { background:var(--b); color:#fff; }
+  .react .faces { margin-top:0; }
+  .react .faces .av { width:26px; height:26px; }
+  .verse-btn { width:100%; border:0; background:none; color:#7a5a1c; font-weight:900; font-size:14px; padding:10px 0 2px; text-align:left; }
+  .vbox { background:#24364b; color:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px; margin-top:8px; }
   .empty { text-align:center; color:var(--muted); padding:40px 10px; font-size:15px; line-height:1.7; }
-  .empty .big { font-size:36px; display:block; margin-bottom:6px; }
-  .notice { background:#fff7e6; border:1px solid #f0dcae; color:#7a5a1c; border-radius:14px; padding:14px; font-size:14px; line-height:1.65; }
+  .empty .big { font-size:38px; display:block; margin-bottom:6px; }
+  .notice { background:#fff7e6; border:3px solid var(--ink); border-radius:14px; padding:14px; font-size:14px; line-height:1.65; }
 
   /* 쓰기 버튼 + 하단 메뉴 */
   .fab { position:fixed; z-index:30; right:max(16px, calc(50% - 264px)); bottom:calc(var(--nav) + 14px + env(safe-area-inset-bottom));
-    border:0; background:var(--g9); color:#fff; border-radius:99px; padding:15px 22px; font-size:16px; font-weight:700;
-    box-shadow:0 8px 22px rgba(23,51,39,.35); display:flex; gap:6px; align-items:center; }
-  .nav { position:fixed; z-index:40; left:0; right:0; bottom:0; background:#fff; border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); }
-  .nav-in { max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(4, 1fr); height:var(--nav); }
-  .nav button { border:0; background:none; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:12.5px; color:#97a296; }
-  .nav button svg { width:25px; height:25px; }
-  .nav button.on { color:var(--g9); font-weight:700; }
+    border:3px solid var(--ink); background:var(--y); border-radius:99px; padding:13px 20px; font-size:16px; font-weight:900; box-shadow:4px 4px 0 var(--ink); }
+  .fab:active { transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink); }
+  .nav { position:fixed; z-index:40; left:0; right:0; bottom:0; background:#fff; border-top:3px solid var(--ink); padding-bottom:env(safe-area-inset-bottom); }
+  .nav-in { max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(5, 1fr); height:var(--nav); }
+  .nav button { border:0; background:none; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:12px; font-weight:700; color:#8b8475; }
+  .nav button .ni { font-size:22px; line-height:1; filter:grayscale(1); opacity:.6; }
+  .nav button.on { color:var(--ink); }
+  .nav button.on .ni { filter:none; opacity:1; transform:scale(1.12); }
 
-  /* 아래에서 올라오는 입력창 */
-  .overlay { position:fixed; inset:0; z-index:50; background:rgba(15,35,27,.5); display:flex; align-items:flex-end; justify-content:center; animation:fade .2s; }
-  .sheet { width:100%; max-width:560px; max-height:92vh; overflow-y:auto; background:var(--cream); border-radius:22px 22px 0 0;
-    padding:8px 18px calc(20px + env(safe-area-inset-bottom)); animation:up .25s ease; }
-  .grip { width:42px; height:5px; border-radius:9px; background:#d6cfba; margin:4px auto 10px; }
-  .sheet-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  .sheet-h h3 { font-family:'Noto Serif KR', serif; font-size:19px; margin:0; color:var(--g9); }
-  .xbtn { width:40px; height:40px; border:0; border-radius:50%; background:#ebe5d3; font-size:16px; color:var(--muted); }
-  .editing { font-size:13px; color:var(--red); background:#fbeceb; border:1px solid #f0d8d6; border-radius:10px; padding:8px 12px; margin-bottom:12px; }
+  /* 시트 / 모달 */
+  .overlay { position:fixed; inset:0; z-index:50; background:rgba(20,20,20,.55); display:flex; align-items:flex-end; justify-content:center; animation:fade .2s; }
+  .sheet { width:100%; max-width:560px; max-height:94vh; overflow-y:auto; background:var(--bg); border:3px solid var(--ink); border-bottom:0; border-radius:22px 22px 0 0;
+    padding:8px 16px calc(20px + env(safe-area-inset-bottom)); animation:up .25s ease; }
+  .grip { width:44px; height:6px; border-radius:9px; background:var(--ink); margin:4px auto 10px; opacity:.3; }
+  .sheet-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px; }
+  .sheet-h h3 { font-family:'Black Han Sans'; font-weight:400; font-size:22px; margin:0; }
+  .xbtn { width:40px; height:40px; border:2.5px solid var(--ink); border-radius:50%; background:#fff; font-size:15px; font-weight:900; flex:0 0 auto; }
+  .editing { font-size:13px; font-weight:700; background:var(--p); border:2.5px solid var(--ink); border-radius:10px; padding:8px 12px; margin-bottom:12px; }
+  .writer { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .writer .av { width:44px; height:44px; border:2.5px solid var(--ink); border-radius:12px; overflow:hidden; background:#fff; }
+  .writer .av svg { width:100%; height:100%; display:block; }
+  .writer b { font-size:16px; }
+  .writer input[type=date] { margin-left:auto; border:2.5px solid var(--ink); border-radius:10px; padding:8px 10px; background:#fff; font-weight:700; }
   .field { margin-bottom:14px; }
-  .field > label { display:block; font-size:13.5px; font-weight:700; color:var(--g6); margin-bottom:6px; }
-  .field input, .field textarea { width:100%; border:1px solid var(--line); background:#fff; border-radius:12px; padding:12px 14px; }
+  .field > label { display:block; font-size:14px; font-weight:900; margin-bottom:6px; }
+  .field input, .field textarea { width:100%; border:2.5px solid var(--ink); background:#fff; border-radius:12px; padding:12px 14px; }
   .field textarea { resize:vertical; min-height:56px; line-height:1.55; }
-  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .item-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:8px; }
   .item-row .num { margin-top:13px; }
   .item-row textarea { flex:1; width:auto; }
-  .item-row .rm { width:36px; height:36px; margin-top:8px; border:0; background:none; color:#b9ae90; font-size:16px; border-radius:50%; }
-  .addline { width:100%; border:1.5px dashed #c9d5c2; background:transparent; color:var(--g6); border-radius:12px; padding:12px; font-weight:700; font-size:14.5px; margin-bottom:16px; }
-  .primary { width:100%; border:0; background:var(--g6); color:#fff; border-radius:14px; padding:16px; font-size:17px; font-weight:700; }
-  .primary:disabled { opacity:.6; }
-  .err { color:var(--red); font-size:14px; margin:-4px 0 12px; }
-  .pickbtn { display:flex; flex-direction:column; align-items:center; gap:4px; width:100%; border:1.5px dashed #c9d5c2; background:#fff; border-radius:14px;
-    padding:20px; color:var(--g6); font-weight:700; margin-bottom:10px; font-size:15px; }
-  .pickbtn small { font-weight:400; color:var(--muted); font-size:12.5px; }
+  .item-row .rm { width:36px; height:36px; margin-top:8px; border:0; background:none; color:#9b927f; font-size:16px; font-weight:900; }
+  .addline { width:100%; border:2.5px dashed var(--ink); background:transparent; border-radius:12px; padding:12px; font-weight:900; font-size:14.5px; margin-bottom:16px; }
+  .err { color:var(--r); font-size:14px; font-weight:700; margin:-4px 0 12px; }
+  .pickbtn { display:flex; flex-direction:column; align-items:center; gap:4px; width:100%; border:3px dashed var(--ink); background:#fff; border-radius:14px; padding:20px; font-weight:900; margin-bottom:10px; font-size:15px; }
+  .pickbtn small { font-weight:500; color:var(--muted); font-size:12.5px; }
   .picks { display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:14px; }
-  .picks div { aspect-ratio:1; border-radius:10px; background:#ddd center/cover no-repeat; position:relative; }
-  .picks button { position:absolute; top:4px; right:4px; width:28px; height:28px; border-radius:50%; border:0; background:rgba(0,0,0,.55); color:#fff; font-size:13px; }
+  .picks div { aspect-ratio:1; border-radius:10px; border:2.5px solid var(--ink); background:#ddd center/cover no-repeat; position:relative; }
+  .picks button { position:absolute; top:4px; right:4px; width:28px; height:28px; border-radius:50%; border:0; background:rgba(0,0,0,.6); color:#fff; font-size:13px; }
 
-  /* 삭제 확인창 */
   .overlay.center { align-items:center; padding:24px; }
-  .dialog { background:#fff; border-radius:20px; padding:24px 20px 16px; width:100%; max-width:340px; text-align:center; animation:pop .18s ease; }
-  .dialog .ic { font-size:32px; }
-  .dialog h4 { margin:8px 0 6px; font-size:18px; }
+  .dialog { background:#fff; border:3px solid var(--ink); box-shadow:6px 6px 0 var(--ink); border-radius:20px; padding:22px 18px 16px; width:100%; max-width:340px; text-align:center; animation:pop .18s ease; }
+  .dialog .ic { font-size:34px; }
+  .dialog h4 { margin:6px 0 6px; font-size:19px; }
   .dialog p { margin:0 0 18px; color:var(--muted); font-size:14.5px; line-height:1.6; word-break:keep-all; }
-  .dialog .btns { display:flex; gap:8px; }
-  .dialog .btns button { flex:1; border:0; border-radius:12px; padding:14px; font-size:16px; font-weight:700; }
-  .btn-cancel { background:var(--cream); }
-  .btn-danger { background:var(--red); color:#fff; }
+  .dialog .btns { display:flex; gap:10px; }
+  .dialog .btns .btn { flex:1; }
+  .btn.danger { background:var(--r); color:#fff; }
+
+  /* 캐릭터 만들기 */
+  .gate { min-height:100vh; background:var(--ink); color:#fff; padding:28px 18px calc(30px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; overflow-x:hidden; max-width:560px; margin:0 auto; }
+  .gate h1 { font-family:'Black Han Sans'; font-weight:400; font-size:40px; color:var(--y); margin:6px 0 2px; line-height:1.15; }
+  .gate .sub { color:#cfc8b8; font-size:15px; line-height:1.6; margin:0 0 18px; }
+  .gate-cards { display:flex; justify-content:center; gap:0; margin:4px 0 22px; }
+  .gate-cards .tcard { width:122px; flex:0 0 auto; }
+  .gate-cards .tc-stats em { min-width:17px; font-size:10.5px; }
+  .gate-cards .tc-top b { font-size:16px; }
+  .gate-cards .tcard:nth-child(1) { transform:rotate(-8deg) translateX(18px); }
+  .gate-cards .tcard:nth-child(2) { transform:translateY(-10px); z-index:2; }
+  .gate-cards .tcard:nth-child(3) { transform:rotate(8deg) translateX(-18px); }
+  .gate label { font-weight:900; font-size:15px; display:block; margin-bottom:8px; }
+  .gate input { width:100%; border:3px solid var(--y); border-radius:14px; padding:14px; font-size:18px; font-weight:700; background:#fff; margin-bottom:12px; }
+  .gate .skip { background:none; border:0; color:#a8a191; text-decoration:underline; margin-top:14px; font-size:14px; }
+  .gate .verse-mini { margin-top:auto; padding-top:26px; text-align:center; color:#8f897b; font-family:'Noto Serif KR', serif; font-size:13px; line-height:1.7; }
+
+  .editor-prev { display:flex; justify-content:center; margin:0 0 14px; }
+  .editor-prev .tcard { width:210px; }
+  .tabs { display:flex; gap:6px; overflow-x:auto; margin:0 -16px 10px; padding:2px 16px 6px; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tabs button { flex:0 0 auto; border:2.5px solid var(--ink); background:#fff; border-radius:99px; padding:7px 14px; font-weight:900; font-size:14px; }
+  .tabs button.on { background:var(--ink); color:var(--y); }
+  .opts { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; }
+  .opt { border:2.5px solid var(--ink); border-radius:12px; background:#fff; padding:4px 4px 5px; text-align:center; font-size:11.5px; font-weight:700; }
+  .opt .av { aspect-ratio:1; border-radius:8px; overflow:hidden; border:2px solid var(--ink); margin-bottom:3px; background:#fff; }
+  .opt .av svg { width:100%; height:100%; display:block; }
+  .opt.on { background:var(--y); box-shadow:2px 2px 0 var(--ink); }
+  .swatches { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px; }
+  .swatches button { width:38px; height:38px; border-radius:50%; border:3px solid var(--ink); }
+  .swatches button.on { outline:3px solid var(--ink); outline-offset:2px; }
+  .sw-label { font-size:13.5px; font-weight:900; margin-top:12px; }
+  .mbtis { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+  .mbtis button { border:2.5px solid var(--ink); border-radius:10px; background:#fff; padding:9px 0; font-weight:900; font-size:14px; }
+  .mbtis button.on { background:var(--pu); color:#fff; }
+  .editor-actions { display:flex; gap:10px; margin-top:18px; position:sticky; bottom:0; background:var(--bg); padding:10px 0 4px; }
+  .editor-actions .btn:first-child { flex:0 0 auto; }
+  .editor-actions .btn:last-child { flex:1; }
 
   /* 사진 */
-  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; margin:0 -10px; }
-  .grid button { border:0; padding:0; aspect-ratio:1; background:#e9e4d4 center/cover no-repeat; border-radius:6px; position:relative; overflow:hidden; }
-  .grid button span { position:absolute; left:0; right:0; bottom:0; background:linear-gradient(transparent, rgba(0,0,0,.6)); color:#fff; font-size:11.5px; padding:16px 6px 5px; text-align:left; }
-  .more { display:block; margin:18px auto; border:1px solid var(--line); background:#fff; border-radius:99px; padding:12px 24px; color:var(--g6); font-weight:700; }
-  .lightbox { position:fixed; inset:0; z-index:60; background:#0b130f; display:flex; flex-direction:column; animation:fade .2s; }
-  .lb-top { display:flex; justify-content:space-between; align-items:center; padding:calc(8px + env(safe-area-inset-top)) 10px 8px; color:#fff; }
-  .lb-top .xbtn { background:rgba(255,255,255,.12); color:#fff; }
-  .lb-btn { border:1px solid rgba(255,255,255,.3); background:none; color:#fff; border-radius:99px; padding:9px 16px; margin-left:6px; font-size:14px; }
-  .lb-btn.del { color:#ffb4ae; border-color:rgba(255,180,174,.4); }
+  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; }
+  .grid button { border:2.5px solid var(--ink); padding:0; aspect-ratio:1; background:#e9e4d4 center/cover no-repeat; border-radius:10px; position:relative; overflow:hidden; }
+  .grid button span { position:absolute; left:0; right:0; bottom:0; background:linear-gradient(transparent, rgba(0,0,0,.65)); color:#fff; font-size:11.5px; font-weight:700; padding:16px 6px 5px; text-align:left; }
+  .more { display:block; margin:18px auto; }
+  .lightbox { position:fixed; inset:0; z-index:60; background:#111; display:flex; flex-direction:column; animation:fade .2s; }
+  .lb-top { display:flex; justify-content:space-between; align-items:center; padding:calc(8px + env(safe-area-inset-top)) 10px 8px; color:#fff; gap:6px; }
+  .lb-btn { border:2px solid #fff; background:none; color:#fff; border-radius:99px; padding:8px 15px; margin-left:6px; font-size:14px; font-weight:700; }
+  .lb-btn.del { color:#ffb4ae; border-color:#ffb4ae; }
   .lb-img { flex:1; display:flex; align-items:center; justify-content:center; min-height:0; }
   .lb-img img { max-width:100%; max-height:100%; object-fit:contain; }
-  .lb-info { color:#e8ece5; padding:14px 18px calc(18px + env(safe-area-inset-bottom)); font-size:15.5px; line-height:1.6; white-space:pre-wrap; }
-  .lb-info small { color:#9fb09c; display:block; margin-bottom:4px; font-size:13px; }
-
-  /* 오늘의 말씀 */
-  .verse { background:linear-gradient(160deg, #1f4434, #173327); color:#eef3ea; border-radius:18px; padding:16px; margin-bottom:14px; }
-  .verse-h { display:flex; flex-direction:column; gap:2px; margin-bottom:8px; }
-  .verse-h b { font-family:'Noto Serif KR', serif; font-size:17px; }
-  .verse-h small { font-size:12.5px; color:#a9c3a6; }
-  .tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
-  .tags span { font-size:12px; background:rgba(255,255,255,.12); border-radius:99px; padding:3px 10px; color:#d9e8d4; }
-  .verse blockquote { margin:10px 0 0; padding:12px 14px; background:rgba(255,255,255,.07); border-left:3px solid #d9a441; border-radius:10px; }
-  .verse blockquote p { margin:0; font-family:'Noto Serif KR', serif; font-size:15.5px; line-height:1.8; word-break:keep-all; }
-  .verse cite { display:block; text-align:right; font-style:normal; font-size:12.5px; color:#e9c766; margin-top:6px; }
-  .verse.small { background:#fff; color:var(--ink); border:1px solid #f0e2bf; padding:12px; margin:4px 0 8px; }
-  .verse.small .verse-h b { font-size:15px; color:#7a5a1c; }
-  .verse.small .verse-h small { color:var(--muted); }
-  .verse.small .tags span { background:#f8ead0; color:#9a6b1f; }
-  .verse.small blockquote { background:#fffaf0; }
-  .verse.small blockquote p { font-size:15px; }
-  .verse.small cite { color:#9a6b1f; }
-  .verse-btn { width:100%; border:0; border-top:1px dashed #f0e2bf; background:none; color:#9a6b1f; font-weight:700; font-size:14px; padding:12px 0 6px; text-align:left; }
-  .credit { text-align:center; font-size:11.5px; color:#a3aa9f; margin:18px 0 0; }
+  .lb-info { color:#eee; padding:14px 18px calc(18px + env(safe-area-inset-bottom)); font-size:15.5px; line-height:1.6; white-space:pre-wrap; }
+  .lb-info small { color:#aaa; display:block; margin-bottom:4px; font-size:13px; }
 
   .toast { position:fixed; z-index:70; left:50%; bottom:calc(var(--nav) + 86px + env(safe-area-inset-bottom)); transform:translateX(-50%);
-    background:var(--g9); color:#fff; padding:12px 20px; border-radius:99px; font-size:14.5px; animation:fade .2s; white-space:nowrap; box-shadow:0 6px 16px rgba(0,0,0,.2); }
+    background:var(--ink); color:var(--y); padding:12px 20px; border-radius:99px; font-size:14.5px; font-weight:700; animation:fade .2s; white-space:nowrap; max-width:92vw; overflow:hidden; text-overflow:ellipsis; }
   @keyframes fade { from { opacity:0; } }
   @keyframes up { from { transform:translateY(40px); opacity:.4; } }
   @keyframes pop { from { transform:scale(.94); opacity:0; } }
 </style>
 </head>
 <body>
-<div id="root"><div class="boot">🌿<br />기도나무를 불러오는 중…</div></div>
+<div id="root"><div class="boot">🌳<br />95 기도나무를 불러오는 중…</div></div>
 
 <script type="module">
 /* ======================================================================
-   월간 기도나무 v2
-   - 빌드 없이 바로 실행 (Preact + htm, 약 13KB)
-   - 데이터: Firebase Firestore
-       prayers    : 기도제목 (기존 데이터 그대로 사용)
-       gratitude  : 감사일기
-       photos     : 감사사진 (작은 미리보기)
-       photo_full : 감사사진 (원본 크기, 눌렀을 때만 불러옴)
-   - 주소 뒤에 ?demo 를 붙이면 실제 데이터 대신 이 기기에만 저장되는 체험 모드로 열려요.
+   95 기도나무 v3
+   - 빌드 없이 바로 실행 (Preact + htm)
+   - Firebase Firestore 컬렉션
+       members    : 동기 캐릭터 카드 (이름, 캐릭터 꾸미기, MBTI, 성령의 열매, 출석일)
+       prayers    : 기도제목 (+ answered 응답, prayedBy 중보한 사람)
+       gratitude  : 감사일기 (+ amenBy 아멘한 사람)
+       photos     : 감사사진 미리보기 / photo_full : 원본
+   - 주소 뒤 ?demo  : 이 기기에만 저장되는 체험 모드
+   - 주소 뒤 ?admin : 모든 글 수정/삭제 가능한 관리자 모드
 ====================================================================== */
 import { html, render, useState, useEffect, useMemo, useRef } from "https://unpkg.com/htm@3.1.1/preact/standalone.module.js";
 
@@ -219,107 +359,32 @@ const firebaseConfig = {
   appId: "1:250561450400:web:0fbcb4ad53fd1c2ecb54c5"
 };
 
-const DEMO = new URLSearchParams(location.search).has("demo");
+const Q = new URLSearchParams(location.search);
+const DEMO = Q.has("demo"), ADMIN = Q.has("admin");
+const TOTAL = 50; // 공동체 인원
+const LS = DEMO ? "ptd-" : "pt-";
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
-const AVATAR = ["#3f6b52","#557d5f","#6f8f66","#2f5a44","#8a6d3b","#a1524f","#5b7a8c","#7a5c8c","#4f7c74"];
-const LEAF = ["#2f5a44","#3f6b52","#557d5f","#6f8f66","#7fa383"];
 
 /* ---------- 작은 도구들 ---------- */
 const pad = (n) => String(n).padStart(2, "0");
-const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+const dstr = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayStr = () => dstr(new Date());
 const nowIso = () => new Date().toISOString();
 const ym = (s) => { const [y, m] = String(s).split("-").map(Number); return { y, m: m - 1 }; };
 const newId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 const hashOf = (str) => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0; return h; };
 const sortDesc = (a, b) => (b.date || "").localeCompare(a.date || "") || (b.createdAt || "").localeCompare(a.createdAt || "");
 const fmtDate = (iso) => { const [y, m, d] = iso.split("-").map(Number); const w = "일월화수목금토"[new Date(y, m - 1, d).getDay()]; return `${m}월 ${d}일 (${w})`; };
-const avatarText = (n = "") => (n.length >= 3 ? n.slice(-2) : n) || "?";
-const itemsOf = (kind, e) => (kind === "prayer" ? e.prayers : e.items) || [];
+const memberId = (name) => (name || "").trim().replace(/[\/.#$\[\]\s]+/g, "_") || "_";
+// "1. 기도제목", "2) 기도제목", "① 기도제목" 처럼 앞에 직접 쓴 번호는 화면에서 빼고 보여준다
+const cleanNum = (s) => String(s || "").replace(/^\s*(?:\d{1,2}\s*[.)．、:]|[①-⑳]|[-•·]\s)\s*/, "");
+const lsGet = (k, d = null) => { try { const v = localStorage.getItem(LS + k); return v === null ? d : v; } catch (e) { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(LS + k, v); } catch (e) {} };
 
-/* ---------- 데이터 연결 ---------- */
-async function makeFirebaseApi() {
-  const A = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
-  const F = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js");
-  const db = F.getFirestore(A.initializeApp(firebaseConfig));
-  return {
-    watch(coll, cb, onErr, lim) {
-      const ref = F.collection(db, coll);
-      const q = lim ? F.query(ref, F.orderBy("createdAt", "desc"), F.limit(lim)) : ref;
-      return F.onSnapshot(q, (s) => cb(s.docs.map((d) => d.data())), onErr);
-    },
-    save: (coll, obj) => F.setDoc(F.doc(db, coll, obj.id), obj),
-    remove: (coll, id) => F.deleteDoc(F.doc(db, coll, id)),
-    async get(coll, id) { const s = await F.getDoc(F.doc(db, coll, id)); return s.exists() ? s.data() : null; },
-  };
-}
-
-function makeDemoApi() {
-  const KEY = "pt-demo-v2";
-  let db;
-  try { db = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { db = null; }
-  if (!db) db = seedDemo();
-  const subs = new Set();
-  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { console.warn("demo storage full"); } };
-  persist();
-  const emit = () => { persist(); subs.forEach((s) => s()); };
-  return {
-    watch(coll, cb, onErr, lim) {
-      const fire = () => {
-        let arr = Object.values(db[coll] || {});
-        if (lim) arr = arr.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, lim);
-        cb(arr.map((x) => ({ ...x })));
-      };
-      subs.add(fire); setTimeout(fire, 120);
-      return () => subs.delete(fire);
-    },
-    async save(coll, obj) { (db[coll] = db[coll] || {})[obj.id] = JSON.parse(JSON.stringify(obj)); emit(); },
-    async remove(coll, id) { if (db[coll]) delete db[coll][id]; emit(); },
-    async get(coll, id) { return (db[coll] || {})[id] || null; },
-  };
-}
-
-function seedDemo() {
-  const y = new Date().getFullYear(), cm = new Date().getMonth();
-  const names = ["김은혜", "박소망", "이믿음", "최사랑", "정기쁨", "한평안"];
-  const P = ["가족 모두 건강하게 지낼 수 있도록", "새로 맡은 일에 지혜를 주시도록", "이직 준비가 잘 되도록", "매일 말씀 묵상을 놓치지 않도록",
-    "부모님 수술이 잘 끝나도록", "아이가 새 학교에 잘 적응하도록", "마음의 평안을 지킬 수 있도록", "동기 모임이 계속 이어지도록"];
-  const T = ["오늘 아침 햇살이 따뜻해서 감사", "친구가 안부를 물어줘서 감사", "맛있는 저녁을 가족과 함께 먹어서 감사", "일이 생각보다 빨리 끝나서 감사", "건강검진 결과가 좋아서 감사"];
-  const db = { prayers: {}, gratitude: {}, photos: {}, photo_full: {} };
-  let k = 0;
-  for (let m = Math.max(0, cm - 3); m <= cm; m++) {
-    names.forEach((n, i) => {
-      if ((i + m) % 3 === 0 && m !== cm) return;
-      const id = `demo-p-${k++}`, cnt = 2 + ((i + m) % 3);
-      const prayers = Array.from({ length: cnt }, (_, j) => P[(i * 3 + j + m) % P.length]);
-      const day = (d) => pad(m === cm ? Math.min(d, new Date().getDate()) : d);
-      db.prayers[id] = { id, name: n, date: `${y}-${pad(m + 1)}-${day(3 + i * 3)}`, prayers, answered: prayers.map((_, j) => (i + j + m) % 5 === 0), createdAt: nowIso() };
-      if ((i + m) % 2 === 0) {
-        const gid = `demo-g-${k++}`;
-        db.gratitude[gid] = { id: gid, name: n, date: `${y}-${pad(m + 1)}-${day(5 + i * 3)}`, items: [T[(i + m) % T.length], T[(i + m + 2) % T.length]], createdAt: nowIso() };
-      }
-    });
-  }
-  return db;
-}
-
-let api = null;
-try { api = DEMO ? makeDemoApi() : await makeFirebaseApi(); } catch (e) { console.error(e); }
-
-function useColl(name, lim) {
-  const [st, setSt] = useState({ items: [], status: "loading" });
-  useEffect(() => {
-    if (!api) { setSt({ items: [], status: "error" }); return; }
-    return api.watch(name,
-      (items) => setSt({ items, status: "ready" }),
-      (e) => { console.warn(name, e); setSt({ items: [], status: e && e.code === "permission-denied" ? "denied" : "error" }); },
-      lim);
-  }, [name, lim]);
-  return st;
-}
-
-/* ---------- 오늘의 말씀 (성경 본문: 개역개정) ---------- */
-const BOOK = { 출: "출애굽기", 수: "여호수아", 시: "시편", 잠: "잠언", 전: "전도서", 사: "이사야", 렘: "예레미야", 애: "예레미야애가", 습: "스바냐",
-  마: "마태복음", 요: "요한복음", 행: "사도행전", 롬: "로마서", 빌: "빌립보서", 골: "골로새서", 살전: "데살로니가전서", 히: "히브리서", 약: "야고보서", 벧전: "베드로전서", 요삼: "요한삼서" };
+/* ---------- 성경 말씀 (개역개정) ---------- */
+const BOOK = { 출: "출애굽기", 수: "여호수아", 시: "시편", 잠: "잠언", 전: "전도서", 사: "이사야", 렘: "예레미야", 애: "예레미야애가", 습: "스바냐", 미: "미가",
+  마: "마태복음", 눅: "누가복음", 요: "요한복음", 행: "사도행전", 롬: "로마서", 고전: "고린도전서", 갈: "갈라디아서", 엡: "에베소서", 빌: "빌립보서", 골: "골로새서",
+  살전: "데살로니가전서", 딛: "디도서", 히: "히브리서", 약: "야고보서", 벧전: "베드로전서", 요일: "요한일서", 요삼: "요한삼서", 계: "요한계시록" };
 const refName = (r) => { const [b, cv] = r.split(" "); return `${BOOK[b] || b} ${cv}`; };
 const VERSES = {
   "시 127:3": "보라 자식들은 여호와의 기업이요 태의 열매는 그의 상급이로다",
@@ -337,6 +402,7 @@ const VERSES = {
   "전 4:9": "두 사람이 한 사람보다 나음은 그들이 수고함으로 좋은 상을 얻을 것임이라",
   "잠 17:17": "친구는 사랑이 끊어지지 아니하고 형제는 위급한 때를 위하여 났느니라",
   "히 10:24": "서로 돌아보아 사랑과 선행을 격려하며",
+  "롬 12:10": "형제를 사랑하여 서로 우애하고 존경하기를 서로 먼저 하며",
   "시 19:1": "하늘이 하나님의 영광을 선포하고 궁창이 그의 손으로 하신 일을 나타내는도다",
   "시 118:24": "이 날은 여호와께서 정하신 것이라 이 날에 우리가 즐거워하고 기뻐하리로다",
   "애 3:22-23": "여호와의 인자와 긍휼이 무궁하시므로 우리가 진멸되지 아니함이니이다 이것들이 아침마다 새로우니 주의 성실하심이 크시도소이다",
@@ -357,58 +423,390 @@ const VERSES = {
   "골 3:15": "그리스도의 평강이 너희 마음을 주장하게 하라 너희는 평강을 위하여 한 몸으로 부르심을 받았나니 너희는 또한 감사하는 자가 되라",
   "시 100:4": "감사함으로 그의 문에 들어가며 찬송함으로 그의 궁정에 들어가서 그에게 감사하며 그의 이름을 송축할지어다",
   "습 3:17": "너의 하나님 여호와가 너의 가운데에 계시니 그는 구원을 베푸실 전능자이시라 그가 너로 말미암아 기쁨을 이기지 못하시며 너를 잠잠히 사랑하시며 너로 말미암아 즐거이 부르며 기뻐하시리라 하리라",
+  "갈 5:22-23": "오직 성령의 열매는 사랑과 희락과 화평과 오래 참음과 자비와 양선과 충성과 온유와 절제니 이같은 것을 금지할 법이 없느니라",
+  "고전 13:4": "사랑은 오래 참고 사랑은 온유하며 시기하지 아니하며 사랑은 자랑하지 아니하며 교만하지 아니하며",
+  "요일 4:7": "사랑하는 자들아 우리가 서로 사랑하자 사랑은 하나님께 속한 것이니 사랑하는 자마다 하나님으로부터 나서 하나님을 알고",
+  "빌 4:4": "주 안에서 항상 기뻐하라 내가 다시 말하노니 기뻐하라",
+  "롬 15:13": "소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만하게 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라",
+  "마 5:9": "화평하게 하는 자는 복이 있나니 그들이 하나님의 아들이라 일컬음을 받을 것임이요",
+  "롬 12:18": "할 수 있거든 너희로서는 모든 사람과 더불어 화목하라",
+  "약 5:7": "그러므로 형제들아 주께서 강림하시기까지 길이 참으라 보라 농부가 땅에서 나는 귀한 열매를 바라고 길이 참아 이른 비와 늦은 비를 기다리나니",
+  "롬 12:12": "소망 중에 즐거워하며 환난 중에 참으며 기도에 항상 힘쓰며",
+  "엡 4:32": "서로 친절하게 하며 불쌍히 여기며 서로 용서하기를 하나님이 그리스도 안에서 너희를 용서하심과 같이 하라",
+  "눅 6:36": "너희 아버지의 자비로우심 같이 너희도 자비로운 자가 되라",
+  "갈 6:9": "우리가 선을 행하되 낙심하지 말지니 포기하지 아니하면 때가 이르매 거두리라",
+  "살전 5:15": "서로 대하든지 모든 사람을 대하든지 항상 선을 따르라",
+  "고전 4:2": "그리고 맡은 자들에게 구할 것은 충성이니라",
+  "계 2:10": "네가 죽도록 충성하라 그리하면 내가 생명의 관을 네게 주리라",
+  "마 11:29": "나는 마음이 온유하고 겸손하니 나의 멍에를 메고 내게 배우라 그리하면 너희 마음이 쉼을 얻으리니",
+  "마 5:5": "온유한 자는 복이 있나니 그들이 땅을 기업으로 받을 것임이요",
+  "고전 9:25": "이기기를 다투는 자마다 모든 일에 절제하나니 그들은 썩을 승리자의 관을 얻고자 하되 우리는 썩지 아니할 것을 얻고자 하노라",
+  "딛 2:12": "우리를 양육하시되 경건하지 않은 것과 이 세상 정욕을 다 버리고 신중함과 의로움과 경건함으로 이 세상에 살고",
+  "요 15:5": "나는 포도나무요 너희는 가지라 그가 내 안에, 내가 그 안에 거하면 사람이 열매를 많이 맺나니 나를 떠나서는 너희가 아무 것도 할 수 없음이라",
+  "시 1:3": "그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며 그 잎사귀가 마르지 아니함 같으니 그가 하는 모든 일이 다 형통하리로다",
 };
 const THEMES = [
   { tag: "가족", refs: ["시 127:3", "행 16:31", "수 24:15", "시 133:1"],
-    kw: ["가족", "엄마", "아빠", "어머니", "아버지", "부모", "남편", "아내", "와이프", "신랑", "아이", "아기", "아들", "딸", "자녀", "형제", "언니", "오빠", "누나", "동생", "할머니", "할아버지", "조카", "식구", "시댁", "친정", "우리집"] },
+    kw: ["가족", "엄마", "아빠", "어머니", "아버지", "부모", "남편", "아내", "와이프", "신랑", "아이", "아기", "아들", "딸", "자녀", "형제", "언니", "오빠", "누나", "동생", "할머니", "할아버지", "조카", "식구", "시댁", "친정", "가정", "부부", "결혼"] },
   { tag: "건강", refs: ["요삼 1:2", "렘 30:17", "출 15:26", "사 40:31"],
-    kw: ["건강", "병원", "아프", "아팠", "회복", "수술", "검진", "몸이", "컨디션", "나았", "치료", "감기", "운동", "숙면", "통증", "강건"] },
+    kw: ["건강", "병원", "아프", "아팠", "회복", "수술", "검진", "몸이", "컨디션", "나았", "치료", "치유", "감기", "운동", "숙면", "통증", "강건"] },
   { tag: "일과 배움", refs: ["잠 16:3", "골 3:23", "빌 4:13", "시 90:17"],
-    kw: ["회사", "직장", "업무", "출근", "퇴근", "프로젝트", "시험", "공부", "학교", "면접", "합격", "이직", "취업", "사업", "마감", "회의", "일이", "일을", "일도", "야근", "승진", "수업", "과제", "계약", "성과"] },
-  { tag: "동기와 이웃", refs: ["전 4:9", "잠 17:17", "히 10:24", "시 133:1"],
-    kw: ["친구", "동기", "동료", "모임", "교회", "목사", "목장", "예배", "만남", "만나", "연락", "안부", "이웃", "함께", "같이", "선배", "후배", "팀원", "대화"] },
+    kw: ["회사", "직장", "업무", "출근", "퇴근", "프로젝트", "시험", "공부", "학교", "면접", "합격", "이직", "취업", "사업", "마감", "회의", "야근", "승진", "수업", "과제", "계약", "성과", "비전", "진로"] },
+  { tag: "공동체", refs: ["전 4:9", "잠 17:17", "히 10:24", "롬 12:10"],
+    kw: ["친구", "동기", "동료", "모임", "교회", "목사", "목장", "셀", "순원", "제자반", "예배", "공동체", "청년", "만남", "만나", "연락", "안부", "이웃", "함께", "같이", "섬기", "리더"] },
   { tag: "일상과 자연", refs: ["시 19:1", "시 118:24", "애 3:22-23", "전 3:11"],
     kw: ["날씨", "하늘", "햇살", "햇빛", "바람", "비가", "꽃", "나무", "산책", "바다", "계절", "가을", "봄", "여름", "겨울", "아침", "노을", "단풍", "공기", "하루"] },
   { tag: "채우심", refs: ["빌 4:19", "시 23:1", "마 6:11", "약 1:17"],
-    kw: ["밥", "음식", "식사", "맛있", "커피", "간식", "선물", "월급", "용돈", "보너스", "이사", "채워", "필요", "넉넉", "여행", "저녁", "점심"] },
+    kw: ["밥", "음식", "식사", "맛있", "커피", "간식", "선물", "월급", "용돈", "보너스", "이사", "채워", "필요", "넉넉", "여행", "저녁", "점심", "경제", "재정", "물질"] },
   { tag: "위로와 평안", refs: ["사 41:10", "빌 4:6-7", "롬 8:28", "요 14:27", "마 11:28", "벧전 5:7"],
-    kw: ["힘들", "걱정", "불안", "지치", "지쳤", "피곤", "우울", "슬프", "슬펐", "어려", "고민", "스트레스", "눈물", "외로", "무사", "다행", "평안", "안심", "염려", "두려", "위로", "버텨", "견디", "쉼", "휴식"] },
+    kw: ["힘들", "걱정", "불안", "지치", "지쳐", "피곤", "우울", "슬프", "슬펐", "어려", "고민", "스트레스", "눈물", "외로", "무사", "다행", "평안", "안심", "염려", "두려", "위로", "버텨", "견디", "쉼", "휴식", "흔들", "좌절", "절망", "부담"] },
 ];
 const JOY = { tag: "감사와 기쁨", refs: ["살전 5:16-18", "시 136:1", "시 103:2", "골 3:15", "시 100:4", "습 3:17"] };
+const FRUITS = [
+  { id: "love", name: "사랑", emoji: "🍓", color: "#ff8f8f", desc: "서로 아끼고 먼저 다가가는 마음", refs: ["고전 13:4", "요일 4:7"] },
+  { id: "joy", name: "희락", emoji: "🍊", color: "#ffb36b", desc: "어떤 상황에서도 주 안에서 누리는 기쁨", refs: ["빌 4:4", "롬 15:13"] },
+  { id: "peace", name: "화평", emoji: "🫒", color: "#9be3a6", desc: "하나님과, 그리고 사람과 누리는 평화", refs: ["마 5:9", "롬 12:18"] },
+  { id: "patience", name: "오래 참음", emoji: "🍇", color: "#c9a6f0", desc: "하나님의 때를 기다리며 끝까지 견디는 힘", refs: ["약 5:7", "롬 12:12"] },
+  { id: "kindness", name: "자비", emoji: "🍑", color: "#f7c0d5", desc: "불쌍히 여기고 친절을 베푸는 마음", refs: ["엡 4:32", "눅 6:36"] },
+  { id: "goodness", name: "양선", emoji: "🍏", color: "#c3ec8f", desc: "선한 일을 포기하지 않고 행하는 삶", refs: ["갈 6:9", "살전 5:15"] },
+  { id: "faithful", name: "충성", emoji: "🍋", color: "#ffe680", desc: "맡겨진 자리를 끝까지 지키는 신실함", refs: ["고전 4:2", "계 2:10"] },
+  { id: "gentle", name: "온유", emoji: "🍐", color: "#dff0a0", desc: "부드럽고 겸손하게 품는 마음", refs: ["마 11:29", "마 5:5"] },
+  { id: "self", name: "절제", emoji: "🍒", color: "#f5a3a3", desc: "욕심을 다스리고 중심을 지키는 힘", refs: ["고전 9:25", "딛 2:12"] },
+];
+const FRUIT = Object.fromEntries(FRUITS.map((f) => [f.id, f]));
+const MBTIS = ["ISTJ","ISFJ","INFJ","INTJ","ISTP","ISFP","INFP","INTP","ESTP","ESFP","ENFP","ENTP","ESTJ","ESFJ","ENFJ","ENTJ"];
 
-/* 감사일기 글을 읽고 주제를 찾아 말씀 2구절을 고른다 */
-function pickVerses(texts, seed) {
+function pickVerses(texts, seed, fruitId, n = 2) {
   const t = texts.join(" ");
-  const found = THEMES.map((th) => ({ th, s: th.kw.reduce((n, k) => n + (t.split(k).length - 1), 0) }))
+  const found = THEMES.map((th) => ({ th, s: th.kw.reduce((c, k) => c + (t.split(k).length - 1), 0) }))
     .filter((x) => x.s > 0).sort((a, b) => b.s - a.s).map((x) => x.th);
-  const pool = found.slice(0, 2);
-  while (pool.length < 2) pool.push(JOY);
+  const fr = FRUIT[fruitId];
   const h = hashOf(seed), picked = [];
-  pool.forEach((th, i) => {
-    const refs = th.refs.filter((r) => !picked.some((p) => p.ref === r));
-    const ref = refs[(h >>> (i * 5)) % refs.length];
-    picked.push({ ref, text: VERSES[ref] });
+  const take = (refs, k) => { const r = refs.filter((x) => !picked.some((p) => p.ref === x)); if (r.length) { const ref = r[(h >>> (k * 4)) % r.length]; picked.push({ ref, text: VERSES[ref] }); } };
+  const need = fr ? n - 1 : n;
+  const pools = found.slice(0, need).map((x) => x.refs);
+  while (pools.length < need) pools.push(JOY.refs);
+  pools.forEach((refs, i) => take(refs, i));
+  if (fr) take(fr.refs, 5);
+  const tags = found.slice(0, 2).map((x) => x.tag);
+  if (fr) tags.push(`${fr.emoji} ${fr.name}`);
+  return { tags, verses: picked };
+}
+
+/* ======================================================================
+   캐릭터 (조립식 SVG) - 동물 · 머리 · 눈 · 입 · 얼굴 · 소품 · 옷 · 배경
+====================================================================== */
+const INK = "#1b1b1b";
+const st = (w = 4, c = INK) => `stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+const shade = (hex, p) => { const n = parseInt(hex.slice(1), 16); const f = (v) => Math.max(0, Math.min(255, Math.round(p < 0 ? v * (1 + p) : v + (255 - v) * p))); return "#" + [n >> 16, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, "0")).join(""); };
+const isDark = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 < 120; };
+
+const ANIMALS = [
+  { id: "lamb", name: "어린양", fur: "#f4dcc6", paw: "#fffdf6" }, { id: "lion", name: "사자", fur: "#f7c44b" },
+  { id: "fox", name: "여우", fur: "#f07f2e" }, { id: "bear", name: "곰", fur: "#9a6338" },
+  { id: "rabbit", name: "토끼", fur: "#ffffff" }, { id: "cat", name: "고양이", fur: "#fdf6ec" },
+  { id: "puppy", name: "강아지", fur: "#eab66f" }, { id: "panda", name: "판다", fur: "#ffffff" },
+  { id: "tiger", name: "호랑이", fur: "#f39a2e" }, { id: "koala", name: "코알라", fur: "#a9aebb" },
+  { id: "penguin", name: "펭귄", fur: "#2d3142", paw: "#2d3142" }, { id: "chick", name: "병아리", fur: "#ffd84a" },
+];
+const ANIM = Object.fromEntries(ANIMALS.map((a) => [a.id, a]));
+const HEADS = [["none","없음"],["bangs","앞머리"],["beanie","비니"],["cap","볼캡"],["ribbon","리본"],["flowers","꽃화관"],["headphone","헤드폰"],["straw","밀짚모자"],["halo","천사링"],["crown","왕관"]];
+const EYES = [["dot","동글"],["happy","웃음"],["sparkle","반짝"],["wink","윙크"],["sleepy","졸린"],["big","초롱"]];
+const MOUTHS = [["smile","미소"],["open","활짝"],["cat","냥입"],["o","오!"]];
+const FACES = [["none","없음"],["blush","볼터치"],["glasses","동글안경"],["sunglasses","선글라스"],["freckles","주근깨"],["bandaid","반창고"]];
+const ITEMS = [["none","없음"],["cross","십자가"],["bible","성경책"],["mic","찬양 마이크"],["guitar","기타"],["coffee","커피"],["dove","비둘기"],["bowtie","나비넥타이"],["badge","95 배지"]];
+const OUTFITS = [["knit","니트"],["hoodie","후드티"],["shirt","셔츠"],["praise","찬양팀 티"],["robe","성가대 가운"],["retreat","수련회 티"],["cardigan","카디건"],["overall","멜빵"]];
+const BGS = [["sky","하늘"],["sunset","노을"],["night","밤하늘"],["forest","숲"],["church","교회"],["glass","스테인드"],["camp","수련회"]];
+const COLORS = ["#ef4b4b","#ff8a3d","#ffd23f","#45b36b","#5db7f0","#a66be0","#f7a8c8","#f6f0e1","#2d3142","#8a5a2b"];
+const CARDS = ["#f6f0e1","#ffd23f","#a66be0","#f7a8c8","#9be3c9","#ff8a3d","#5db7f0"];
+const DEF = { animal: "lamb", head: "none", hc: "#ef4b4b", eyes: "dot", mouth: "smile", face: "blush", item: "none", outfit: "knit", color: "#ffd23f", bg: "sky", card: "#f6f0e1" };
+
+function defaultAvatar(name) {
+  const h = hashOf(name || "?"), p = (arr, k) => arr[(h >>> k) % arr.length];
+  return { animal: p(ANIMALS, 0).id, head: p(HEADS, 3)[0], hc: p(COLORS, 5), eyes: p(EYES, 7)[0], mouth: p(MOUTHS, 9)[0], face: p(FACES, 11)[0],
+    item: p(ITEMS, 13)[0], outfit: p(OUTFITS, 15)[0], color: p(COLORS, 17), bg: p(BGS, 19)[0], card: p(CARDS, 21) };
+}
+function randomAvatar() {
+  const r = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  return { animal: r(ANIMALS).id, head: r(HEADS)[0], hc: r(COLORS), eyes: r(EYES)[0], mouth: r(MOUTHS)[0], face: r(FACES)[0],
+    item: r(ITEMS)[0], outfit: r(OUTFITS)[0], color: r(COLORS), bg: r(BGS)[0], card: r(CARDS) };
+}
+
+const star4 = (x, y, s, c = "#fff6d8") => `<path d="M${x} ${y - s} L${x + s * 0.3} ${y - s * 0.3} L${x + s} ${y} L${x + s * 0.3} ${y + s * 0.3} L${x} ${y + s} L${x - s * 0.3} ${y + s * 0.3} L${x - s} ${y} L${x - s * 0.3} ${y - s * 0.3}Z" fill="${c}"/>`;
+function bgSVG(id) {
+  const r = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" ${st(3.5)}/>`;
+  switch (id) {
+    case "sunset": return `<rect width="200" height="240" fill="#ffb36b"/><rect y="150" width="200" height="90" fill="#ff8a5c"/><circle cx="158" cy="56" r="24" fill="#ef4b4b" ${st()}/><path d="M16 64 h36 M26 78 h30" ${st(4, "#fff3d6")}/>`;
+    case "night": return `<rect width="200" height="240" fill="#5b3f8c"/><path d="M48 20 a22 22 0 1 0 18 36 a17 17 0 1 1 -18 -36z" fill="#ffd23f" ${st()}/>${star4(152, 34, 8)}${star4(178, 78, 5)}${star4(128, 70, 4)}${star4(24, 104, 5)}`;
+    case "forest": return `<rect width="200" height="240" fill="#a8e0a6"/><path d="M-6 80 Q26 30 72 44 Q40 86 -6 80Z" fill="#45b36b" ${st()}/><path d="M206 62 Q172 16 126 32 Q160 74 206 62Z" fill="#2f9a57" ${st()}/><path d="M8 72 L54 50 M196 54 L148 36" ${st(3)}/>`;
+    case "church": return `<rect width="200" height="240" fill="#f7a8c8"/><path d="M168 14 v20 M160 22 h16" ${st(4.5)}/><path d="M144 62 L168 36 L192 62Z" fill="#ef4b4b" ${st()}/><rect x="149" y="60" width="38" height="50" fill="#fff" ${st()}/><path d="M161 110 v-15 a7 7 0 0 1 14 0 v15" fill="#ffd23f" ${st(3)}/><circle cx="36" cy="40" r="14" fill="#fff6d8" ${st(3.5)}/>`;
+    case "glass": return `<rect width="200" height="240" fill="#5db7f0"/>${r(-4, -4, 74, 70, "#ffd23f")}${r(70, -4, 62, 52, "#ef4b4b")}${r(132, -4, 72, 70, "#45b36b")}${r(-4, 66, 48, 86, "#a66be0")}${r(156, 66, 48, 86, "#ff8a3d")}${r(70, 48, 62, 26, "#f7a8c8")}`;
+    case "camp": return `<rect width="200" height="240" fill="#2f6f5e"/>${star4(36, 26, 5)}${star4(74, 16, 4)}${star4(156, 22, 6)}<path d="M2 150 L40 82 L78 150Z" fill="#ff8a3d" ${st()}/><path d="M40 150 L40 106 L56 150" fill="#c4473f" ${st(3)}/><circle cx="166" cy="62" r="14" fill="#fff6d8" ${st(3.5)}/>`;
+    default: return `<rect width="200" height="240" fill="#8fd3f4"/><circle cx="38" cy="42" r="18" fill="#ffd23f" ${st()}/><path d="M128 62 a10 10 0 0 1 6 -19 a14 14 0 0 1 26 -5 a11 11 0 0 1 18 10 a9 9 0 0 1 -2 14 z" fill="#fff" ${st(3.5)}/>`;
+  }
+}
+
+function bodySVG(a) {
+  const c = a.color, d = shade(c, -0.25), lt = isDark(c) ? "#fff" : INK;
+  let s = `<path d="M14 246 C18 192 56 158 100 156 C144 158 182 192 186 246 Z" fill="${c}" ${st()}/>`;
+  const crew = `<path d="M76 160 Q100 182 124 160" fill="none" ${st(4)}/>`;
+  switch (a.outfit) {
+    case "hoodie": s += `<path d="M58 166 Q100 144 142 166 Q134 194 100 194 Q66 194 58 166Z" fill="${d}" ${st(3)}/><path d="M90 190 L88 214 M110 190 L112 214" ${st(3)}/><circle cx="88" cy="216" r="3.5" fill="#fff" ${st(2)}/><circle cx="112" cy="216" r="3.5" fill="#fff" ${st(2)}/><path d="M66 246 L76 224 H124 L134 246" fill="none" ${st(3)}/>`; break;
+    case "shirt": { const tie = c === "#ef4b4b" ? "#2d3142" : "#ef4b4b"; s += `<path d="M78 158 L100 208 L122 158Z" fill="#fff" ${st(3)}/><path d="M96 170 L104 170 L108 200 L100 210 L92 200Z" fill="${tie}" ${st(3)}/><path d="M80 158 L101 167 L88 182Z M120 158 L99 167 L112 182Z" fill="#fff" ${st(3)}/>`; break; }
+    case "praise": s += crew + `<path d="M122 222 V196 L140 191 V216" fill="none" ${st(4, lt)}/><circle cx="118" cy="222" r="5.5" fill="${lt}"/><circle cx="136" cy="216" r="5.5" fill="${lt}"/>`; break;
+    case "robe": s += `<path d="M76 162 L86 246 H100 L93 164Z" fill="#ffd23f" ${st(3)}/><path d="M124 162 L114 246 H100 L107 164Z" fill="#ffd23f" ${st(3)}/><path d="M89 220 v14 M84 226 h10 M111 220 v14 M106 226 h10" ${st(2.5)}/><path d="M80 158 Q100 172 120 158" fill="#fff" ${st(3)}/>`; break;
+    case "retreat": s += crew + `<rect x="85" y="194" width="30" height="30" rx="5" fill="#fff" ${st(3)}/><path d="M100 199 v20 M92 206 h16" ${st(4)}/><path d="M34 236 L44 214 M166 236 L156 214" ${st(3, lt)}/>`; break;
+    case "cardigan": s += `<path d="M82 158 L100 214 L118 158Z" fill="#fff" ${st(3)}/><path d="M100 214 V246" ${st(3)}/><circle cx="108" cy="222" r="3.5" fill="${lt}"/><circle cx="108" cy="236" r="3.5" fill="${lt}"/><path d="M40 246 Q44 212 62 196" fill="none" ${st(3, d)}/><path d="M160 246 Q156 212 138 196" fill="none" ${st(3, d)}/>`; break;
+    case "overall": s += `<path d="M76 206 L68 170 M124 206 L132 170" ${st(10)}/><path d="M76 206 L68 170 M124 206 L132 170" ${st(5, "#4a78c2")}/><path d="M66 246 V204 H134 V246Z" fill="#4a78c2" ${st(3)}/><circle cx="76" cy="210" r="4" fill="#ffd23f" ${st(2)}/><circle cx="124" cy="210" r="4" fill="#ffd23f" ${st(2)}/><path d="M86 220 h28 v14 h-28z" fill="none" ${st(2.5)}/>`; break;
+    default: s += `<path d="M70 159 Q100 196 130 159 Q100 180 70 159Z" fill="${d}" ${st(3)}/>` + [40, 54, 68, 82, 96, 110, 124, 138, 152].map((x) => `<path d="M${x} 230 v12" ${st(2.5, d)}/>`).join("");
+  }
+  return s;
+}
+
+function animalSVG(id) {
+  const A = ANIM[id] || ANIM.lamb, f = A.fur;
+  const headEl = (fill) => `<ellipse cx="100" cy="112" rx="52" ry="47" fill="${fill}" ${st()}/>`;
+  const mirror = (svg) => `<g transform="translate(200 0) scale(-1 1)">${svg}</g>`;
+  let back = "", head = headEl(f), over = "", nose = `<path d="M93 125 Q100 120 107 125 Q104 133 100 133 Q96 133 93 125Z" fill="${INK}"/>`, beak = false, eyeC = INK;
+  switch (id) {
+    case "lamb": {
+      back = `<ellipse cx="47" cy="110" rx="20" ry="9" transform="rotate(-25 47 110)" fill="${f}" ${st()}/>` + mirror(`<ellipse cx="47" cy="110" rx="20" ry="9" transform="rotate(-25 47 110)" fill="${f}" ${st()}/>`);
+      const w = [[66, 76, 15], [83, 64, 16], [100, 60, 16], [117, 64, 16], [134, 76, 15], [56, 92, 11], [144, 92, 11]];
+      over = w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fffdf6" ${st()}/>`).join("") + w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r - 2.3}" fill="#fffdf6"/>`).join("");
+      nose = `<path d="M94 126 Q100 122 106 126 Q103 132 100 132 Q97 132 94 126Z" fill="#c4677a"/>`;
+      break; }
+    case "lion": {
+      const pts = Array.from({ length: 14 }, (_, i) => { const t = (i / 14) * Math.PI * 2; return [100 + Math.cos(t) * 58, 112 + Math.sin(t) * 54]; });
+      back = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="20" fill="#e8892b" ${st()}/>`).join("") + `<ellipse cx="100" cy="112" rx="60" ry="56" fill="#e8892b"/>`
+        + pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="17.7" fill="#e8892b"/>`).join("")
+        + `<circle cx="64" cy="74" r="12" fill="${f}" ${st()}/><circle cx="136" cy="74" r="12" fill="${f}" ${st()}/>`;
+      head += `<ellipse cx="100" cy="134" rx="22" ry="14" fill="#fde7ac" ${st(3)}/>`;
+      break; }
+    case "fox":
+      back = `<path d="M56 92 L58 34 L96 70Z" fill="${f}" ${st()}/><path d="M64 82 L65 50 L86 70Z" fill="#fff4e3"/>` + mirror(`<path d="M56 92 L58 34 L96 70Z" fill="${f}" ${st()}/><path d="M64 82 L65 50 L86 70Z" fill="#fff4e3"/>`);
+      head += `<path d="M49 112 Q58 156 100 158 Q142 156 151 112 Q130 140 100 136 Q70 140 49 112Z" fill="#fff4e3" ${st(3)}/>`;
+      break;
+    case "bear":
+      back = `<circle cx="60" cy="74" r="17" fill="${f}" ${st()}/><circle cx="60" cy="74" r="8" fill="#d9a37a"/><circle cx="140" cy="74" r="17" fill="${f}" ${st()}/><circle cx="140" cy="74" r="8" fill="#d9a37a"/>`;
+      head += `<ellipse cx="100" cy="134" rx="22" ry="16" fill="#d9a37a" ${st(3)}/>`;
+      break;
+    case "rabbit":
+      back = `<ellipse cx="78" cy="42" rx="13" ry="35" transform="rotate(-8 78 42)" fill="${f}" ${st()}/><ellipse cx="78" cy="44" rx="6" ry="24" transform="rotate(-8 78 44)" fill="#f7a8c8"/>`
+        + mirror(`<ellipse cx="78" cy="42" rx="13" ry="35" transform="rotate(-8 78 42)" fill="${f}" ${st()}/><ellipse cx="78" cy="44" rx="6" ry="24" transform="rotate(-8 78 44)" fill="#f7a8c8"/>`);
+      nose = `<path d="M94 125 Q100 121 106 125 Q103 131 100 131 Q97 131 94 125Z" fill="#f08aa8" ${st(2)}/>`;
+      break;
+    case "cat":
+      back = `<path d="M54 90 L60 42 L92 68Z" fill="#ff8a3d" ${st()}/><path d="M146 90 L140 42 L108 68Z" fill="${f}" ${st()}/><path d="M138 54 L134 74 L118 68Z" fill="#f7a8c8"/>`;
+      head += `<path d="M52 104 Q56 72 88 66 Q84 92 58 112Z" fill="#ff8a3d"/><path d="M150 118 Q150 140 134 150 Q126 132 140 116Z" fill="#2d3142"/>` + headEl("none");
+      over = `<path d="M40 126 h20 M42 136 h18 M160 126 h-20 M158 136 h-18" ${st(2.5)}/>`;
+      nose = `<path d="M95 125 Q100 121 105 125 Q102 130 100 130 Q98 130 95 125Z" fill="#f08aa8" ${st(2)}/>`;
+      break;
+    case "puppy":
+      head += `<ellipse cx="120" cy="108" rx="15" ry="13" fill="#d79b55"/><ellipse cx="100" cy="134" rx="24" ry="16" fill="#fff3df" ${st(3)}/>`;
+      over = `<ellipse cx="52" cy="106" rx="15" ry="31" transform="rotate(18 52 106)" fill="#a8692f" ${st()}/>` + mirror(`<ellipse cx="52" cy="106" rx="15" ry="31" transform="rotate(18 52 106)" fill="#a8692f" ${st()}/>`);
+      break;
+    case "panda":
+      back = `<circle cx="60" cy="72" r="16" fill="${INK}"/><circle cx="140" cy="72" r="16" fill="${INK}"/>`;
+      head += `<ellipse cx="80" cy="113" rx="14" ry="17" transform="rotate(25 80 113)" fill="${INK}"/><ellipse cx="120" cy="113" rx="14" ry="17" transform="rotate(-25 120 113)" fill="${INK}"/>`;
+      eyeC = "#fff";
+      break;
+    case "tiger":
+      back = `<circle cx="62" cy="74" r="15" fill="${f}" ${st()}/><circle cx="62" cy="74" r="7" fill="#fff4e3"/><circle cx="138" cy="74" r="15" fill="${f}" ${st()}/><circle cx="138" cy="74" r="7" fill="#fff4e3"/>`;
+      head += `<path d="M100 66 v14 M87 69 l4 11 M113 69 l-4 11 M49 106 h14 M50 118 h12 M151 106 h-14 M150 118 h-12" ${st(4)}/><ellipse cx="100" cy="134" rx="22" ry="15" fill="#fff4e3" ${st(3)}/>`;
+      break;
+    case "koala":
+      back = `<circle cx="52" cy="86" r="25" fill="${f}" ${st()}/><circle cx="52" cy="88" r="13" fill="#f2e6ee"/><circle cx="148" cy="86" r="25" fill="${f}" ${st()}/><circle cx="148" cy="88" r="13" fill="#f2e6ee"/>`;
+      nose = `<rect x="91" y="114" width="18" height="24" rx="9" fill="#2d3142" ${st(2.5)}/>`;
+      break;
+    case "penguin":
+      head += `<path d="M100 82 Q120 70 136 92 Q150 120 130 146 Q112 160 100 152 Q88 160 70 146 Q50 120 64 92 Q80 70 100 82Z" fill="#fff" ${st(3)}/>`;
+      nose = `<path d="M89 126 L111 126 L100 141Z" fill="#ff8a3d" ${st(3)}/>`; beak = true;
+      break;
+    case "chick":
+      over = `<path d="M92 66 Q90 50 98 56 Q100 42 106 54 Q114 46 110 66" fill="${f}" ${st(3.5)}/>`;
+      nose = `<path d="M89 126 L111 126 L100 141Z" fill="#ff8a3d" ${st(3)}/>`; beak = true;
+      break;
+  }
+  return { back, head, over, nose, beak, eyeC };
+}
+
+function eyesSVG(type, c) {
+  const both = (fn) => fn(80) + fn(120);
+  switch (type) {
+    case "happy": return both((x) => `<path d="M${x - 8} 115 Q${x} 104 ${x + 8} 115" fill="none" ${st(4, c)}/>`);
+    case "sparkle": return both((x) => `<circle cx="${x}" cy="112" r="7.5" fill="${c}"/><circle cx="${x + 2.5}" cy="109" r="2.6" fill="${c === INK ? "#fff" : INK}"/>`);
+    case "wink": return `<circle cx="80" cy="112" r="6.5" fill="${c}"/><path d="M112 114 Q120 106 128 114" fill="none" ${st(4, c)}/>`;
+    case "sleepy": return both((x) => `<path d="M${x - 8} 111 Q${x} 118 ${x + 8} 111" fill="none" ${st(4, c)}/>`);
+    case "big": return both((x) => `<circle cx="${x}" cy="111" r="10" fill="#fff" ${st(3)}/><circle cx="${x + 1}" cy="112" r="5.5" fill="${INK}"/><circle cx="${x + 3}" cy="109" r="1.8" fill="#fff"/>`);
+    default: return both((x) => `<circle cx="${x}" cy="112" r="6.5" fill="${c}"/>`);
+  }
+}
+function mouthSVG(type) {
+  switch (type) {
+    case "open": return `<path d="M89 139 Q100 157 111 139 Z" fill="#c4473f" ${st(3)}/>`;
+    case "cat": return `<path d="M88 139 Q94 146 100 139 Q106 146 112 139" fill="none" ${st(3.5)}/>`;
+    case "o": return `<ellipse cx="100" cy="143" rx="5" ry="6" fill="#c4473f" ${st(3)}/>`;
+    default: return `<path d="M90 139 Q100 149 110 139" fill="none" ${st(3.5)}/>`;
+  }
+}
+function faceSVG(type) {
+  switch (type) {
+    case "blush": return `<ellipse cx="66" cy="130" rx="10" ry="6" fill="#f78fa7" opacity=".8"/><ellipse cx="134" cy="130" rx="10" ry="6" fill="#f78fa7" opacity=".8"/>`;
+    case "glasses": return `<circle cx="80" cy="112" r="15" fill="#fff" fill-opacity=".25" ${st(4)}/><circle cx="120" cy="112" r="15" fill="#fff" fill-opacity=".25" ${st(4)}/><path d="M95 110 Q100 105 105 110 M65 108 L50 103 M135 108 L150 103" fill="none" ${st(4)}/>`;
+    case "sunglasses": return `<rect x="62" y="101" width="34" height="21" rx="9" fill="${INK}"/><rect x="104" y="101" width="34" height="21" rx="9" fill="${INK}"/><path d="M96 108 h8 M62 106 L50 102 M138 106 L150 102" ${st(4)}/><path d="M70 107 l8 -2 M112 107 l8 -2" ${st(2.5, "#fff")}/>`;
+    case "freckles": return [[66, 124], [73, 129], [62, 131], [134, 124], [127, 129], [138, 131]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#9a6338"/>`).join("");
+    case "bandaid": return `<g transform="rotate(-20 136 130)"><rect x="124" y="125" width="26" height="10" rx="5" fill="#f6d1a9" ${st(2.5)}/><circle cx="133" cy="130" r="1.2" fill="${INK}"/><circle cx="141" cy="130" r="1.2" fill="${INK}"/></g>`;
+    default: return "";
+  }
+}
+function hatSVG(type, hc) {
+  const d = shade(hc, -0.25);
+  switch (type) {
+    case "bangs": return `<path d="M58 88 Q66 62 100 60 Q134 62 142 88 Q130 78 120 90 Q112 76 100 90 Q88 76 80 90 Q70 78 58 88Z" fill="${hc}" ${st(3.5)}/>`;
+    case "beanie": return `<path d="M47 96 Q47 50 100 48 Q153 50 153 96Z" fill="${hc}" ${st()}/><rect x="43" y="86" width="114" height="17" rx="8" fill="${d}" ${st(3.5)}/><circle cx="100" cy="44" r="10" fill="#fff" ${st(3)}/>`;
+    case "cap": return `<path d="M51 92 Q53 50 100 50 Q147 50 149 92Z" fill="${hc}" ${st()}/><path d="M96 90 Q140 80 174 96 Q152 104 96 98Z" fill="${d}" ${st(3.5)}/><circle cx="100" cy="50" r="4" fill="${INK}"/>`;
+    case "ribbon": return `<path d="M136 66 L114 52 L117 82Z" fill="${hc}" ${st(3)}/><path d="M136 66 L158 52 L155 82Z" fill="${hc}" ${st(3)}/><circle cx="136" cy="67" r="7" fill="${d}" ${st(3)}/>`;
+    case "flowers": return [[58, 88], [72, 72], [90, 63], [110, 63], [128, 72], [142, 88]].map(([x, y], i) => {
+      const pc = [hc, "#fff", "#f7a8c8", "#ffd23f", "#fff", hc][i];
+      return [0, 72, 144, 216, 288].map((a) => `<circle cx="${(x + Math.cos((a * Math.PI) / 180) * 6).toFixed(1)}" cy="${(y + Math.sin((a * Math.PI) / 180) * 6).toFixed(1)}" r="5" fill="${pc}" ${st(2)}/>`).join("") + `<circle cx="${x}" cy="${y}" r="3.6" fill="#ffd23f" ${st(2)}/>`;
+    }).join("");
+    case "headphone": return `<path d="M50 114 Q50 50 100 50 Q150 50 150 114" fill="none" ${st(11)}/><path d="M50 114 Q50 50 100 50 Q150 50 150 114" fill="none" ${st(5.5, hc)}/><rect x="38" y="96" width="22" height="36" rx="9" fill="${hc}" ${st(3.5)}/><rect x="140" y="96" width="22" height="36" rx="9" fill="${hc}" ${st(3.5)}/>`;
+    case "straw": return `<ellipse cx="100" cy="74" rx="76" ry="16" fill="#f2cf73" ${st()}/><path d="M63 74 Q65 34 100 34 Q135 34 137 74Z" fill="#f2cf73" ${st()}/><path d="M64 62 Q100 70 136 62 L136 72 Q100 80 64 72Z" fill="${hc}" ${st(3)}/>`;
+    case "halo": return `<ellipse cx="100" cy="42" rx="34" ry="9" fill="none" ${st(10)}/><ellipse cx="100" cy="42" rx="34" ry="9" fill="none" ${st(5, "#ffd23f")}/>`;
+    case "crown": return `<path d="M66 72 L70 40 L86 58 L100 32 L114 58 L130 40 L134 72Z" fill="#ffd23f" ${st()}/><circle cx="100" cy="62" r="5" fill="${hc}" ${st(2.5)}/><circle cx="80" cy="64" r="3.5" fill="#5db7f0" ${st(2)}/><circle cx="120" cy="64" r="3.5" fill="#5db7f0" ${st(2)}/>`;
+    default: return "";
+  }
+}
+function itemSVG(type, a) {
+  const paw = ANIM[a.animal]?.paw || ANIM[a.animal]?.fur || "#fff";
+  const pawEl = (x, y) => `<circle cx="${x}" cy="${y}" r="9" fill="${paw}" ${st(3)}/>`;
+  switch (type) {
+    case "cross": return `<path d="M80 158 Q100 192 120 158" fill="none" ${st(2.5, "#8a6d1d")}/><path d="M100 184 v24 M91 193 h18" ${st(8)}/><path d="M100 184 v24 M91 193 h18" ${st(4, "#ffd23f")}/>`;
+    case "bible": return `<g transform="rotate(-12 60 214)"><rect x="32" y="190" width="52" height="42" rx="4" fill="#7b3f2a" ${st()}/><path d="M38 228 h42" ${st(2, "#f6f0e1")}/><path d="M58 198 v20 M50 205 h16" ${st(3.5, "#ffd23f")}/></g>${pawEl(82, 222)}`;
+    case "mic": return `<path d="M146 232 L158 196" ${st(11)}/><path d="M146 232 L158 196" ${st(6, "#666")}/><circle cx="160" cy="186" r="13" fill="#c9ccd3" ${st(3.5)}/><path d="M152 182 h16 M151 189 h18" ${st(2)}/>${pawEl(150, 222)}`;
+    case "guitar": return `<path d="M88 210 L156 150" ${st(11)}/><path d="M88 210 L156 150" ${st(6, "#8a5a2b")}/><rect x="150" y="138" width="16" height="20" rx="3" transform="rotate(48 158 148)" fill="#8a5a2b" ${st(3)}/><ellipse cx="70" cy="222" rx="32" ry="25" fill="#d9893b" ${st()}/><circle cx="74" cy="219" r="8" fill="${INK}"/>${pawEl(112, 196)}`;
+    case "coffee": return `<rect x="132" y="194" width="32" height="38" rx="5" fill="#fff" ${st(3.5)}/><rect x="132" y="206" width="32" height="14" fill="#c08a5a" ${st(3)}/><path d="M140 186 q-4 -8 2 -14 M152 186 q-4 -8 2 -14" fill="none" ${st(3)}/>${pawEl(128, 222)}`;
+    case "dove": return `<path d="M178 160 l12 -4" ${st(3, "#45b36b")}/><ellipse cx="186" cy="157" rx="4" ry="2.5" fill="#45b36b"/><ellipse cx="160" cy="174" rx="18" ry="11" fill="#fff" ${st(3)}/><circle cx="176" cy="164" r="8" fill="#fff" ${st(3)}/><path d="M183 164 l6 2 l-6 2z" fill="#ff8a3d"/><circle cx="178" cy="162" r="1.6" fill="${INK}"/><path d="M150 172 Q160 162 168 174" fill="none" ${st(2.5)}/>`;
+    case "bowtie": { const bc = a.color === "#ef4b4b" ? "#ffd23f" : "#ef4b4b"; return `<path d="M100 164 L82 154 L82 176Z" fill="${bc}" ${st(3)}/><path d="M100 164 L118 154 L118 176Z" fill="${bc}" ${st(3)}/><circle cx="100" cy="165" r="5.5" fill="${shade(bc, -0.3)}" ${st(2.5)}/>`; }
+    case "badge": return `<circle cx="136" cy="206" r="15" fill="#ffd23f" ${st(3)}/><text x="136" y="211" text-anchor="middle" font-family="Black Han Sans, sans-serif" font-size="14" fill="${INK}">95</text>`;
+    default: return "";
+  }
+}
+
+const svgCache = new Map();
+function avatarSVG(a0, crop) {
+  const a = { ...DEF, ...(a0 || {}) };
+  const key = JSON.stringify(a) + crop;
+  if (svgCache.has(key)) return svgCache.get(key);
+  const vb = crop === "face" ? "34 36 132 132" : "0 0 200 240";
+  const an = animalSVG(a.animal);
+  const svg = `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${bgSVG(a.bg)}${bodySVG(a)}${an.back}${an.head}${an.over}${eyesSVG(a.eyes, an.eyeC)}${an.nose}${an.beak ? "" : mouthSVG(a.mouth)}${faceSVG(a.face)}${hatSVG(a.head, a.hc)}${itemSVG(a.item, a)}</svg>`;
+  svgCache.set(key, svg);
+  return svg;
+}
+function Av({ a, crop, cls = "av" }) {
+  return html`<div class=${cls} dangerouslySetInnerHTML=${{ __html: avatarSVG(a, crop) }}></div>`;
+}
+
+/* ---------- 데이터 연결 ---------- */
+async function makeFirebaseApi() {
+  const A = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
+  const F = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js");
+  const db = F.getFirestore(A.initializeApp(firebaseConfig));
+  return {
+    watch(coll, cb, onErr, lim) {
+      const ref = F.collection(db, coll);
+      const q = lim ? F.query(ref, F.orderBy("createdAt", "desc"), F.limit(lim)) : ref;
+      return F.onSnapshot(q, (s) => cb(s.docs.map((d) => d.data())), onErr);
+    },
+    save: (coll, obj) => F.setDoc(F.doc(db, coll, obj.id), obj),
+    remove: (coll, id) => F.deleteDoc(F.doc(db, coll, id)),
+    arr: (coll, id, field, value, add) => F.updateDoc(F.doc(db, coll, id), { [field]: add ? F.arrayUnion(value) : F.arrayRemove(value) }),
+    async get(coll, id) { const s = await F.getDoc(F.doc(db, coll, id)); return s.exists() ? s.data() : null; },
+  };
+}
+
+function makeDemoApi() {
+  const KEY = "pt-demo-v3";
+  let db;
+  try { db = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { db = null; }
+  if (!db) db = seedDemo();
+  const subs = new Set();
+  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { console.warn("demo storage full"); } };
+  persist();
+  const emit = () => { persist(); subs.forEach((s) => s()); };
+  return {
+    watch(coll, cb, onErr, lim) {
+      const fire = () => {
+        let arr = Object.values(db[coll] || {});
+        if (lim) arr = arr.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, lim);
+        cb(arr.map((x) => JSON.parse(JSON.stringify(x))));
+      };
+      subs.add(fire); setTimeout(fire, 100);
+      return () => subs.delete(fire);
+    },
+    async save(coll, obj) { (db[coll] = db[coll] || {})[obj.id] = JSON.parse(JSON.stringify(obj)); emit(); },
+    async remove(coll, id) { if (db[coll]) delete db[coll][id]; emit(); },
+    async arr(coll, id, field, value, add) {
+      const d = (db[coll] || {})[id]; if (!d) throw new Error("not-found");
+      const cur = new Set(d[field] || []); add ? cur.add(value) : cur.delete(value); d[field] = [...cur]; emit();
+    },
+    async get(coll, id) { return (db[coll] || {})[id] || null; },
+  };
+}
+
+function seedDemo() {
+  const now = new Date(), y = now.getFullYear(), cm = now.getMonth();
+  const names = ["김은혜", "박소망", "이믿음", "최사랑", "정기쁨", "한평안", "윤온유", "장충성", "오자비", "서양선", "강희락", "조화평", "신참음", "임절제"];
+  const P = ["가족 모두 건강하게 지낼 수 있도록", "새로 맡은 일에 지혜를 주시도록", "이직 준비가 잘 되도록", "매일 말씀 묵상을 놓치지 않도록",
+    "부모님 수술이 잘 끝나도록", "청년부 수련회를 은혜 가운데 준비하도록", "마음의 평안을 지킬 수 있도록", "우리 공동체가 서로 사랑하도록", "결혼 준비가 하나님 뜻 안에서 진행되도록"];
+  const T = ["오늘 아침 햇살이 따뜻해서 감사", "친구가 안부를 물어줘서 감사", "맛있는 저녁을 가족과 함께 먹어서 감사", "일이 생각보다 빨리 끝나서 감사", "건강검진 결과가 좋아서 감사", "주일 예배에서 큰 위로를 받아서 감사"];
+  const db = { members: {}, prayers: {}, gratitude: {}, photos: {}, photo_full: {} };
+  names.forEach((n, i) => {
+    if (i >= 11) return; // 일부는 아직 입장 전
+    const days = []; for (let k = 0; k < (i * 3) % 9; k++) { const d = new Date(now); d.setDate(d.getDate() - k - (i % 2)); days.push(dstr(d)); }
+    db.members[memberId(n)] = { id: memberId(n), name: n, avatar: { ...defaultAvatar(n) }, mbti: MBTIS[(i * 5) % 16], fruit: FRUITS[i % 9].id, no: i + 1, days, joinedAt: nowIso(), createdAt: nowIso() };
   });
-  return { tags: found.slice(0, 3).map((x) => x.tag), verses: picked };
+  let k = 0;
+  for (let m = Math.max(0, cm - 2); m <= cm; m++) {
+    names.forEach((n, i) => {
+      if ((i + m) % 3 === 0 && m !== cm) return;
+      const day = (d) => pad(m === cm ? Math.max(1, Math.min(d, now.getDate() - (i % 3))) : d);
+      const id = `demo-p-${k++}`, cnt = 2 + ((i + m) % 3);
+      const prayers = Array.from({ length: cnt }, (_, j) => `${j + 1}. ${P[(i * 3 + j + m) % P.length]}`);
+      db.prayers[id] = { id, name: n, date: `${y}-${pad(m + 1)}-${day(2 + i * 2)}`, prayers, answered: prayers.map((_, j) => (i + j + m) % 6 === 0),
+        prayedBy: names.filter((x, q) => (q + i + m) % 4 === 0 && x !== n).slice(0, 5), createdAt: nowIso() };
+      if ((i + m) % 2 === 0) {
+        const gid = `demo-g-${k++}`;
+        db.gratitude[gid] = { id: gid, name: n, date: `${y}-${pad(m + 1)}-${day(3 + i * 2)}`, items: [T[(i + m) % T.length], T[(i + m + 2) % T.length]], amenBy: [], createdAt: nowIso() };
+      }
+    });
+  }
+  return db;
 }
 
-function VerseBox({ texts, seed, title, sub, small }) {
-  const r = useMemo(() => pickVerses(texts, seed), [texts.join("|"), seed]);
-  return html`<section class=${"verse" + (small ? " small" : "")}>
-    <div class="verse-h"><b>📖 ${title}</b>${sub && html`<small>${sub}</small>`}</div>
-    ${r.tags.length > 0 && html`<div class="tags">${r.tags.map((t) => html`<span>#${t}</span>`)}</div>`}
-    ${r.verses.map((v) => html`<blockquote><p>${v.text}</p><cite>${refName(v.ref)} · 개역개정</cite></blockquote>`)}
-  </section>`;
+let api = null;
+try { api = DEMO ? makeDemoApi() : await makeFirebaseApi(); } catch (e) { console.error(e); }
+
+function useColl(name, lim) {
+  const [s, setS] = useState({ items: [], status: "loading" });
+  useEffect(() => {
+    if (!api) { setS({ items: [], status: "error" }); return; }
+    return api.watch(name,
+      (items) => setS({ items, status: "ready" }),
+      (e) => { console.warn(name, e); setS({ items: [], status: e && e.code === "permission-denied" ? "denied" : "error" }); },
+      lim);
+  }, [name, lim]);
+  return s;
 }
 
-/* ---------- 사진 줄이기 (휴대폰 사진 → 작은 JPG) ---------- */
+/* ---------- 사진 줄이기 ---------- */
 function loadImage(file) {
   return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("이미지를 읽을 수 없어요"));
-    img.src = url;
+    img.src = URL.createObjectURL(file);
   });
 }
 function shrink(img, max, q) {
@@ -425,61 +823,137 @@ async function processPhoto(file) {
   let full;
   for (const [m, q] of [[1600, 0.82], [1280, 0.78], [1080, 0.72], [900, 0.65], [720, 0.6]]) {
     full = shrink(img, m, q);
-    if (full.data.length < 850000) break; // Firestore 문서 1MB 제한 안쪽으로
+    if (full.data.length < 850000) break;
   }
-  const thumb = shrink(img, 420, 0.72);
-  return { full, thumb };
+  return { full, thumb: shrink(img, 420, 0.72) };
 }
 
-/* ---------- 아이콘 ---------- */
-const svgIc = (d) => html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
-const IC = {
-  tree: svgIc(html`<path d="M12 21v-6" /><path d="M12 15c-4.2 0-7-2.6-7-6.2A5 5 0 0 1 8.4 4.2a4.4 4.4 0 0 1 7.2 0A5 5 0 0 1 19 8.8C19 12.4 16.2 15 12 15z" /><path d="M12 15l-2.5-2.5M12 13l2.5-2" />`),
-  prayer: svgIc(html`<path d="M6 19c0-8 5.5-14 14-14 0 8.5-6 14-14 14z" /><path d="M6 19l8-8" /><path d="M4 21l2-2" />`),
-  thanks: svgIc(html`<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" />`),
-  photo: svgIc(html`<rect x="3" y="4.5" width="18" height="15" rx="3" /><circle cx="9" cy="10" r="1.8" /><path d="M21 16l-5-5-9 8.5" />`),
-};
+/* ---------- 통계 (카드 능력치) ---------- */
+function streakOf(days) {
+  const has = (d) => days.has(dstr(d));
+  const d = new Date();
+  if (!has(d)) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (has(d) && n < 999) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+function useStats(P, G, M) {
+  return useMemo(() => {
+    const S = {};
+    const get = (n) => (S[n] = S[n] || { topics: 0, thanks: 0, answered: 0, inter: 0, days: new Set() });
+    P.forEach((e) => {
+      if (!e.name) return;
+      const s = get(e.name); s.topics += (e.prayers || []).length; s.answered += (e.answered || []).filter(Boolean).length;
+      if (e.date) s.days.add(e.date);
+      (e.prayedBy || []).forEach((n) => get(n).inter++);
+    });
+    G.forEach((e) => { if (!e.name) return; const s = get(e.name); s.thanks++; if (e.date) s.days.add(e.date); (e.amenBy || []).forEach((n) => get(n).inter++); });
+    M.forEach((m) => { const s = get(m.name); (m.days || []).forEach((d) => s.days.add(d)); });
+    Object.values(S).forEach((s) => {
+      s.streak = streakOf(s.days);
+      const score = s.topics + s.thanks * 2 + s.inter + s.days.size;
+      s.stars = score >= 60 ? 4 : score >= 30 ? 3 : score >= 10 ? 2 : 1;
+    });
+    return S;
+  }, [P, G, M]);
+}
+const EMPTY_STAT = { topics: 0, thanks: 0, answered: 0, inter: 0, streak: 0, stars: 1, days: new Set() };
 
-/* ---------- 앱 ---------- */
+/* ---------- 트레이딩 카드 ---------- */
+function TCard({ name, member, stat, big, ghost, mine, onClick, avatarOverride, mbti, fruit }) {
+  const a = avatarOverride || member?.avatar || defaultAvatar(name);
+  const s = stat || EMPTY_STAT;
+  const fr = FRUIT[fruit !== undefined ? fruit : member?.fruit];
+  const mb = mbti !== undefined ? mbti : member?.mbti;
+  const no = member?.no ? `NO.${String(member.no).padStart(3, "0")}` : "NO.???";
+  const Tag = onClick ? "button" : "div";
+  return html`<${Tag} class=${"tcard" + (big ? " big" : "") + (ghost ? " ghost" : "") + (mine ? " mine" : "")} style=${{ "--cc": a.card || "#f6f0e1" }} onClick=${onClick}>
+    <div class="tc-top"><b>${name}</b><span class="tc-stars">${"★".repeat(s.stars)}<span style="opacity:.25">${"★".repeat(4 - s.stars)}</span></span></div>
+    <div class="tc-pic">
+      <${Av} a=${a} />
+      ${mb && html`<span class="tc-mbti">${mb}</span>`}
+      <span class="tc-anim">${ANIM[a.animal]?.name || ""}</span>
+      ${fr && html`<span class="tc-fruit" title=${fr.name}>${fr.emoji}</span>`}
+      ${ghost && html`<div class="ghost-tag"><span>입장 전</span></div>`}
+    </div>
+    <div class="tc-stats">
+      <span title="기도제목">🙏<em>${s.topics}</em></span>
+      <span title="감사일기">🌼<em>${s.thanks}</em></span>
+      <span title="중보·아멘">💌<em>${s.inter}</em></span>
+      <span title="연속 출석">🔥<em>${s.streak}</em></span>
+    </div>
+    <div class="tc-foot"><span>95 PRAYER TREE</span><b>${no}</b></div>
+  </${Tag}>`;
+}
+
+/* ======================================================================
+   앱
+====================================================================== */
 const TABS = [
-  { id: "tree", label: "기도나무", icon: IC.tree },
-  { id: "prayer", label: "기도제목", icon: IC.prayer },
-  { id: "thanks", label: "감사일기", icon: IC.thanks },
-  { id: "photo", label: "감사사진", icon: IC.photo },
+  { id: "home", label: "홈", icon: "🌳" },
+  { id: "prayer", label: "기도", icon: "🙏" },
+  { id: "thanks", label: "감사", icon: "🌼" },
+  { id: "photo", label: "사진", icon: "📷" },
+  { id: "people", label: "동기", icon: "🃏" },
 ];
 
 function App() {
   const now = new Date();
-  const [tab, setTab] = useState(() => { const t = localStorage.getItem("pt-tab"); return TABS.some((x) => x.id === t) ? t : "tree"; });
+  const [tab, setTab] = useState(() => { const t = lsGet("tab"); return TABS.some((x) => x.id === t) ? t : "home"; });
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
   const [scope, setScope] = useState("month");
   const [who, setWho] = useState("");
   const [photoLimit, setPhotoLimit] = useState(30);
+  const M = useColl("members");
   const P = useColl("prayers");
   const G = useColl("gratitude");
   const PH = useColl("photos", photoLimit);
-  const [sheet, setSheet] = useState(null);       // { type, entry }
-  const [confirm, setConfirm] = useState(null);   // { title, body, onOk }
+  const [meId, setMeId] = useState(() => lsGet("me"));
+  const [gate, setGate] = useState(null);         // null | "welcome" | {name, member}
+  const [browse, setBrowse] = useState(() => lsGet("browse") === "1");
+  const [sheet, setSheet] = useState(null);
+  const [confirm, setConfirm] = useState(null);
   const [lightId, setLightId] = useState(null);
+  const [cardOf, setCardOf] = useState(null);
   const [toast, setToast] = useState("");
   const [freshId, setFreshId] = useState(null);
+  const [tick, setTick] = useState(0);
   const toastTimer = useRef(null);
 
-  const say = (msg) => { setToast(msg); clearTimeout(toastTimer.current); toastTimer.current = setTimeout(() => setToast(""), 2300); };
-  const go = (t) => { setTab(t); localStorage.setItem("pt-tab", t); window.scrollTo(0, 0); };
+  const say = (msg) => { setToast(msg); clearTimeout(toastTimer.current); toastTimer.current = setTimeout(() => setToast(""), 2600); };
+  const go = (t) => { setTab(t); lsSet("tab", t); window.scrollTo(0, 0); };
 
-  useEffect(() => { document.body.style.overflow = sheet || confirm || lightId ? "hidden" : ""; }, [sheet, confirm, lightId]);
-
+  const members = M.items;
+  const byName = useMemo(() => Object.fromEntries(members.map((m) => [m.name, m])), [members]);
+  const me = meId ? members.find((m) => m.id === meId) || null : null;
+  const stats = useStats(P.items, G.items, members);
+  const avOf = (n) => byName[n]?.avatar || defaultAvatar(n);
   const names = useMemo(() => {
-    const s = new Set();
+    const s = new Set(members.map((m) => m.name));
     [...P.items, ...G.items, ...PH.items].forEach((e) => e.name && s.add(e.name));
     return [...s].sort((a, b) => a.localeCompare(b, "ko"));
-  }, [P.items, G.items, PH.items]);
+  }, [members, P.items, G.items, PH.items]);
+  const canEdit = (e) => ADMIN || (me && e.name === me.name);
+
+  const needGate = M.status === "ready" && !me && !browse && !gate;
+  useEffect(() => { document.body.style.overflow = sheet || confirm || lightId || cardOf ? "hidden" : ""; }, [sheet, confirm, lightId, cardOf]);
+
+  function requireMe(fn) { if (me) return fn(); setGate("welcome"); say("먼저 내 캐릭터로 입장해 주세요"); }
+
+  async function saveMember(name, data, existing) {
+    const t = nowIso();
+    const id = memberId(name);
+    const no = existing?.no || members.reduce((mx, m) => Math.max(mx, m.no || 0), 0) + 1;
+    const obj = { ...(existing || {}), id, name, ...data, no, joinedAt: existing?.joinedAt || t, createdAt: existing?.createdAt || t, updatedAt: t,
+      days: [...new Set([...(existing?.days || []), todayStr()])] };
+    await api.save("members", obj);
+    lsSet("me", id); setMeId(id); setGate(null); setBrowse(false); lsSet("browse", "0");
+    say(existing ? "내 카드를 업데이트했어요 ✨" : `환영해요! NO.${String(no).padStart(3, "0")} ${name}님의 카드가 생겼어요 🎉`);
+  }
 
   const COLL = { prayer: "prayers", thanks: "gratitude" };
   const LABEL = { prayer: "기도제목", thanks: "감사일기", photo: "사진" };
-
   function askDelete(kind, e) {
     setConfirm({
       title: "정말 삭제할까요?",
@@ -493,202 +967,403 @@ function App() {
       },
     });
   }
-
   async function toggleAnswered(e, i) {
+    if (!canEdit(e)) return say("응답 표시는 본인만 할 수 있어요");
     const ans = (e.prayers || []).map((_, j) => !!(e.answered || [])[j]);
     ans[i] = !ans[i];
-    try {
-      await api.save("prayers", { ...e, answered: ans, updatedAt: nowIso() });
-      if (ans[i]) say("기도 응답 감사해요! 나무에 열매가 맺혔어요");
-    } catch (err) { console.error(err); say("저장에 실패했어요"); }
+    try { await api.save("prayers", { ...e, answered: ans, updatedAt: nowIso() }); if (ans[i]) say("기도 응답 할렐루야! 🍎 열매가 맺혔어요"); }
+    catch (err) { console.error(err); say("저장에 실패했어요"); }
   }
-
+  async function react(coll, e, field) {
+    requireMe(async () => {
+      const on = !(e[field] || []).includes(me.name);
+      try {
+        await api.arr(coll, e.id, field, me.name, on);
+        if (on) { lsSet("inter-" + todayStr(), "1"); setTick((t) => t + 1); }
+        if (on) say(coll === "prayers" ? `${e.name}님을 위해 중보했어요 🙏` : "아멘! 🙌");
+      } catch (err) { console.error(err); say("반영에 실패했어요"); }
+    });
+  }
+  async function checkIn() {
+    if (!me) return;
+    if ((me.days || []).includes(todayStr())) return;
+    try { await api.arr("members", me.id, "days", todayStr(), true); } catch (e) { console.warn(e); }
+  }
+  async function pickFruit(id) {
+    requireMe(async () => {
+      try { await api.save("members", { ...me, fruit: id, updatedAt: nowIso() }); say(`${FRUIT[id].emoji} ${FRUIT[id].name}의 열매를 구하기로 했어요`); }
+      catch (e) { console.error(e); say("저장에 실패했어요"); }
+    });
+  }
   function afterSave(kind, date, msg, id) {
     if (kind === "thanks") setFreshId(id);
     const d = ym(date);
-    setYear(d.y); setMonth(d.m); setScope("month");
+    setYear(d.y); setMonth(d.m); setScope("month"); setWho("");
     if (kind !== tab) go(kind);
-    setSheet(null); say(msg);
+    setSheet(null); say(msg); checkIn();
   }
+  const openWrite = (type) => requireMe(() => setSheet({ type, entry: null }));
 
-  const fab = { tree: ["prayer", "기도제목 쓰기"], prayer: ["prayer", "기도제목 쓰기"], thanks: ["thanks", "감사일기 쓰기"], photo: ["photo", "사진 올리기"] }[tab];
+  if (M.status === "loading") return html`<div class="boot">🌳<br />95 기도나무를 불러오는 중…</div>`;
+  if (needGate || gate === "welcome") return html`<${Gate} names=${names} members=${members} byName=${byName} stats=${stats}
+      onEnter=${(m) => { lsSet("me", m.id); setMeId(m.id); setGate(null); setBrowse(false); lsSet("browse", "0"); checkIn(); say(`다시 오신 걸 환영해요, ${m.name}님!`); }}
+      onCreate=${(name) => setGate({ name })}
+      onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); }} />`;
+
+  const fab = { home: ["prayer", "＋ 기도제목"], prayer: ["prayer", "＋ 기도제목 쓰기"], thanks: ["thanks", "＋ 감사일기 쓰기"], photo: ["photo", "＋ 사진 올리기"], people: null }[tab];
   const light = lightId ? PH.items.find((p) => p.id === lightId) : null;
-  const listProps = { year, month, setMonth, scope, setScope, who, setWho, names, freshId,
-    onEdit: (kind, e) => setSheet({ type: kind, entry: e }), onDelete: askDelete, onToggle: toggleAnswered };
+  const listProps = { year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit,
+    onEdit: (kind, e) => setSheet({ type: kind, entry: e }), onDelete: askDelete, onToggle: toggleAnswered, onReact: react };
 
   return html`
     <div class="app">
       ${DEMO && html`<div class="demo-badge">체험 모드 · 이 기기에만 저장되고 동기들에게는 보이지 않아요</div>`}
+      ${ADMIN && html`<div class="admin-badge">관리자 모드 · 모든 글을 수정/삭제할 수 있어요</div>`}
       <header class="topbar">
-        <div class="brand">🌿 월간 기도나무 <small>95년 동기</small></div>
-        ${tab !== "photo" && html`
-          <div class="yearsw">
-            <button aria-label="이전 해" onClick=${() => setYear((y) => y - 1)}>‹</button>
-            <span>${year}년</span>
-            <button aria-label="다음 해" onClick=${() => setYear((y) => y + 1)}>›</button>
-          </div>`}
+        <div class="logo"><b>95 기도나무</b><small>PRAYER<br />TREE</small></div>
+        <div class="top-r">
+          ${(tab === "prayer" || tab === "thanks" || tab === "home") && html`
+            <div class="yearsw">
+              <button aria-label="이전 해" onClick=${() => setYear((y) => y - 1)}>‹</button>
+              <span>${year}</span>
+              <button aria-label="다음 해" onClick=${() => setYear((y) => y + 1)}>›</button>
+            </div>`}
+          ${me
+            ? html`<button class="me-btn" aria-label="내 카드" onClick=${() => setCardOf(me.name)}><${Av} a=${me.avatar} crop="face" /></button>`
+            : html`<button class="enter-btn" onClick=${() => setGate("welcome")}>입장하기</button>`}
+        </div>
       </header>
 
-      ${tab === "tree" && html`<${TreeTab} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
-          onPick=${(m) => { setMonth(m); setScope("month"); go("prayer"); }} />`}
+      ${tab === "home" && html`<${HomeTab} me=${me} members=${members} stats=${stats} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
+          avOf=${avOf} byName=${byName} tick=${tick} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
+          onMonth=${(m) => { setMonth(m); setScope("month"); go("prayer"); }} />`}
       ${tab === "prayer" && html`<${ListTab} kind="prayer" data=${P} ...${listProps} />`}
       ${tab === "thanks" && html`<${ListTab} kind="thanks" data=${G} ...${listProps} />`}
       ${tab === "photo" && html`<${PhotoTab} data=${PH} who=${who} setWho=${setWho} names=${names} limit=${photoLimit}
           onMore=${() => setPhotoLimit((n) => n + 30)} onOpen=${(p) => setLightId(p.id)} />`}
+      ${tab === "people" && html`<${PeopleTab} names=${names} members=${members} byName=${byName} stats=${stats} me=${me} onOpen=${(n) => setCardOf(n)} onEnter=${() => setGate("welcome")} />`}
 
-      <button class="fab" onClick=${() => setSheet({ type: fab[0], entry: null })}>＋ ${fab[1]}</button>
+      ${fab && html`<button class="fab" onClick=${() => openWrite(fab[0])}>${fab[1]}</button>`}
 
       <nav class="nav"><div class="nav-in">
         ${TABS.map((t) => html`
           <button class=${tab === t.id ? "on" : ""} onClick=${() => go(t.id)} aria-current=${tab === t.id ? "page" : undefined}>
-            ${t.icon}<span>${t.label}</span>
+            <span class="ni">${t.icon}</span><span>${t.label}</span>
           </button>`)}
       </div></nav>
 
       ${sheet && (sheet.type === "photo"
-        ? html`<${PhotoForm} entry=${sheet.entry} names=${names} onClose=${() => setSheet(null)}
-              onDone=${(msg) => { setSheet(null); go("photo"); say(msg); }} />`
-        : html`<${EntryForm} kind=${sheet.type} entry=${sheet.entry} names=${names} onClose=${() => setSheet(null)}
+        ? html`<${PhotoForm} entry=${sheet.entry} me=${me} onClose=${() => setSheet(null)} onDone=${(msg) => { setSheet(null); go("photo"); say(msg); checkIn(); }} />`
+        : html`<${EntryForm} kind=${sheet.type} entry=${sheet.entry} me=${me} avOf=${avOf} onClose=${() => setSheet(null)}
               onSaved=${(date, msg, id) => afterSave(sheet.type, date, msg, id)} />`)}
 
-      ${light && html`<${Lightbox} p=${light} onClose=${() => setLightId(null)}
-          onEdit=${() => setSheet({ type: "photo", entry: light })} onDelete=${() => askDelete("photo", light)} />`}
+      ${gate && gate.name && html`<${Editor} name=${gate.name} member=${byName[gate.name]} stat=${stats[gate.name]}
+          onClose=${() => setGate(me ? null : "welcome")} onSave=${(data) => saveMember(gate.name, data, byName[gate.name])} />`}
 
+      ${cardOf && html`<${CardModal} name=${cardOf} member=${byName[cardOf]} stat=${stats[cardOf]} mine=${me && me.name === cardOf}
+          onClose=${() => setCardOf(null)}
+          onEdit=${() => { setCardOf(null); setGate({ name: cardOf }); }}
+          onPrayers=${() => { setCardOf(null); setWho(cardOf); setScope("all"); go("prayer"); }}
+          onLogout=${() => { setCardOf(null); lsSet("me", ""); setMeId(null); setGate("welcome"); }} />`}
+
+      ${light && html`<${Lightbox} p=${light} can=${canEdit(light)} onClose=${() => setLightId(null)}
+          onEdit=${() => setSheet({ type: "photo", entry: light })} onDelete=${() => askDelete("photo", light)} />`}
       ${confirm && html`<${Confirm} c=${confirm} onClose=${() => setConfirm(null)} />`}
       ${toast && html`<div class="toast" role="status">${toast}</div>`}
     </div>`;
 }
 
-/* ---------- 기도나무 탭 ---------- */
-function TreeTab({ P, G, year, who, setWho, names, onPick }) {
+/* ---------- 입장 화면 ---------- */
+function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
+  const [name, setName] = useState("");
+  const [err, setErr] = useState("");
+  const sample = useMemo(() => {
+    const pool = members.length >= 3 ? [...members].sort(() => Math.random() - 0.5).slice(0, 3) : ["은혜", "소망", "사랑"].map((n, i) => ({ name: n, avatar: randomAvatar(), no: i + 1 }));
+    return pool;
+  }, [members.length]);
+  function go() {
+    const n = name.trim();
+    if (!n) return setErr("이름을 입력해 주세요");
+    if (n.length > 10) return setErr("이름은 10자 이내로 적어 주세요");
+    const m = byName[n];
+    if (m) onEnter(m); else onCreate(n);
+  }
+  return html`<div class="gate">
+    ${DEMO && html`<div class="demo-badge" style="margin:-28px -18px 18px;color:#1b1b1b">체험 모드</div>`}
+    <div class="gate-cards">
+      ${sample.map((m) => html`<${TCard} name=${m.name} member=${m} stat=${stats[m.name]} />`)}
+    </div>
+    <h1>95 기도나무에<br />입장하기</h1>
+    <p class="sub">우리 공동체 ${TOTAL}명이 함께 키우는 기도나무예요.<br />내 캐릭터 카드를 만들고 기도제목을 나눠요.</p>
+    <label for="gate-name">내 이름</label>
+    <input id="gate-name" value=${name} onInput=${(e) => { setName(e.target.value); setErr(""); }} onKeyDown=${(e) => e.key === "Enter" && go()}
+      placeholder="이름을 적어주세요" list="gate-names" autocomplete="off" />
+    <datalist id="gate-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
+    ${err && html`<p class="err" style="margin-top:-4px">${err}</p>`}
+    <button class="btn full" onClick=${go}>${byName[name.trim()] ? "내 카드로 입장 →" : "캐릭터 만들고 입장 →"}</button>
+    <button class="skip" onClick=${onBrowse}>입장하지 않고 둘러보기</button>
+    <p class="verse-mini">나는 포도나무요 너희는 가지라<br />그가 내 안에, 내가 그 안에 거하면 사람이 열매를 많이 맺나니<br />요한복음 15:5</p>
+  </div>`;
+}
+
+/* ---------- 캐릭터 꾸미기 ---------- */
+const ED_TABS = [["animal", "동물"], ["head", "머리"], ["eyes", "눈"], ["mouth", "입"], ["face", "얼굴"], ["item", "소품"], ["outfit", "옷"], ["bg", "배경"], ["card", "카드색"], ["me", "MBTI·열매"]];
+function Editor({ name, member, stat, onClose, onSave }) {
+  const [a, setA] = useState(() => ({ ...DEF, ...(member?.avatar || defaultAvatar(name)) }));
+  const [mbti, setMbti] = useState(member?.mbti || "");
+  const [fruit, setFruit] = useState(member?.fruit || "");
+  const [bio, setBio] = useState(member?.bio || "");
+  const [t, setT] = useState("animal");
+  const [busy, setBusy] = useState(false);
+  const set = (k, v) => setA({ ...a, [k]: v });
+  const opts = { animal: ANIMALS.map((x) => [x.id, x.name]), head: HEADS, eyes: EYES, mouth: MOUTHS, face: FACES, item: ITEMS, outfit: OUTFITS, bg: BGS }[t];
+  const cropOf = { eyes: "face", mouth: "face", face: "face", head: "face" }[t];
+  async function save() {
+    setBusy(true);
+    try { await onSave({ avatar: a, mbti, fruit, bio: bio.trim() }); }
+    catch (e) { console.error(e); alert(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : "저장에 실패했어요. 다시 시도해 주세요."); setBusy(false); }
+  }
+  return html`<div class="overlay">
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="grip"></div>
+      <div class="sheet-h"><h3>${member ? "내 카드 꾸미기" : `${name}님의 캐릭터 만들기`}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
+      <div class="editor-prev"><${TCard} name=${name} member=${member} stat=${stat} avatarOverride=${a} mbti=${mbti} fruit=${fruit} /></div>
+      <div class="tabs">${ED_TABS.map(([k, l]) => html`<button class=${t === k ? "on" : ""} onClick=${() => setT(k)}>${l}</button>`)}</div>
+      ${opts && html`<div class="opts">
+        ${opts.map(([id, label]) => html`<button class=${"opt" + (a[t] === id ? " on" : "")} onClick=${() => set(t, id)}>
+          <${Av} a=${{ ...a, [t]: id }} crop=${cropOf} />${label}</button>`)}
+      </div>`}
+      ${t === "head" && html`<div class="sw-label">모자·머리 색</div><div class="swatches">${COLORS.map((c) => html`<button class=${a.hc === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("hc", c)} aria-label="색"></button>`)}</div>`}
+      ${t === "outfit" && html`<div class="sw-label">옷 색</div><div class="swatches">${COLORS.map((c) => html`<button class=${a.color === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("color", c)} aria-label="색"></button>`)}</div>`}
+      ${t === "card" && html`<div class="sw-label">카드 바탕색</div><div class="swatches">${CARDS.map((c) => html`<button class=${a.card === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("card", c)} aria-label="카드색"></button>`)}</div>`}
+      ${t === "me" && html`
+        <div class="sw-label">MBTI</div>
+        <div class="mbtis" style="margin-top:8px">${MBTIS.map((m) => html`<button class=${mbti === m ? "on" : ""} onClick=${() => setMbti(mbti === m ? "" : m)}>${m}</button>`)}</div>
+        <div class="sw-label" style="margin-top:16px">내가 맺고 싶은 성령의 열매</div>
+        <div class="fruits" style="margin-top:8px">${FRUITS.map((f) => html`<button class=${"fruit" + (fruit === f.id ? " on" : "")} style=${{ "--fc": f.color }} onClick=${() => setFruit(fruit === f.id ? "" : f.id)}>
+          <span class="em">${f.emoji}</span><b>${f.name}</b></button>`)}</div>
+        <div class="field" style="margin-top:16px"><label>한 줄 소개 (선택)</label>
+          <input value=${bio} maxlength="40" onInput=${(e) => setBio(e.target.value)} placeholder="예) 찬양팀 기타 치는 ENFP 사자예요" /></div>`}
+      <div class="editor-actions">
+        <button class="btn white" onClick=${() => setA({ ...randomAvatar(), card: a.card })}>🎲 랜덤</button>
+        <button class="btn" onClick=${save} disabled=${busy}>${busy ? "저장 중…" : member ? "저장하기" : "이 캐릭터로 입장하기 →"}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLogout }) {
+  const fr = FRUIT[member?.fruit];
+  return html`<div class="overlay center" onClick=${(e) => e.target === e.currentTarget && onClose()}>
+    <div style="width:100%;max-width:330px;animation:pop .2s ease">
+      <${TCard} big name=${name} member=${member} stat=${stat} ghost=${!member} />
+      <div class="box" style="margin-top:14px;padding:12px 14px;font-size:14px;line-height:1.6">
+        ${member?.bio && html`<div style="font-weight:700;margin-bottom:6px">“${member.bio}”</div>`}
+        ${fr && html`<div>${fr.emoji} <b>${fr.name}</b>의 열매를 구하고 있어요</div>`}
+        <div style="color:var(--muted)">🙏 기도제목 ${stat?.topics || 0} · 🍎 응답 ${stat?.answered || 0} · 💌 중보 ${stat?.inter || 0} · 🔥 ${stat?.streak || 0}일 연속</div>
+        ${!member && html`<div style="color:var(--muted);margin-top:4px">아직 입장 전이에요. 기도나무 링크를 보내서 초대해 보세요!</div>`}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn white" style="flex:1" onClick=${onPrayers}>기도제목 보기</button>
+        ${mine && html`<button class="btn" style="flex:1" onClick=${onEdit}>카드 꾸미기</button>`}
+      </div>
+      ${mine && html`<button class="skip" style="display:block;margin:12px auto 0;background:none;border:0;color:#fff;text-decoration:underline" onClick=${onLogout}>다른 이름으로 입장하기</button>`}
+      <button class="btn ink full" style="margin-top:10px" onClick=${onClose}>닫기</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- 홈 ---------- */
+function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
+  const today = todayStr();
+  const myStat = me ? stats[me.name] || EMPTY_STAT : null;
+  const [revealed, setRevealed] = useState(() => lsGet("verse-" + today) === "1");
+  const [turning, setTurning] = useState(false);
+  const [fruitView, setFruitView] = useState(null);
+  const myTexts = useMemo(() => {
+    if (!me) return [];
+    const since = new Date(); since.setDate(since.getDate() - 14);
+    const g = G.items.filter((e) => e.name === me.name && e.date >= dstr(since)).flatMap((e) => e.items || []);
+    const p = P.items.filter((e) => e.name === me.name).sort(sortDesc)[0];
+    return [...g, ...((p && p.prayers) || []).map(cleanNum)];
+  }, [me && me.name, G.items, P.items]);
+  const daily = useMemo(() => pickVerses(myTexts, today + (me ? me.name : "guest"), me && me.fruit), [myTexts.join("|"), today, me && me.fruit]);
+  const thanksToday = me && G.items.some((e) => e.name === me.name && e.date === today);
+  const interToday = lsGet("inter-" + today) === "1";
+  const done = [revealed, !!thanksToday, interToday].filter(Boolean).length;
+  const entered = members.length;
+  const recent = [...members].sort((a, b) => (b.joinedAt || "").localeCompare(a.joinedAt || "")).slice(0, 8);
+  const fruitCount = useMemo(() => { const c = {}; members.forEach((m) => { if (m.fruit) c[m.fruit] = (c[m.fruit] || 0) + 1; }); return c; }, [members]);
+
   const inYear = (e) => e.date && ym(e.date).y === year;
   const py = P.items.filter(inYear), gy = G.items.filter(inYear);
   const mine = (e) => !who || e.name === who;
   const topics = py.filter(mine).reduce((s, e) => s + (e.prayers || []).length, 0);
   const answered = py.filter(mine).reduce((s, e) => s + (e.answered || []).filter(Boolean).length, 0);
-  const thanks = gy.filter(mine).length;
-  const allTopics = P.items.reduce((s, e) => s + (e.prayers || []).length, 0);
 
-  return html`
-    <section class="hero">
-      네 짐을 여호와께 맡기라 그가 너를 붙드시고<br />의인의 요동함을 영원히 허락하지 아니하시리로다
-      <cite>시편 55:22</cite>
-    </section>
-    <div class="wrap">
-      <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
-        <option value="">모든 동기의 나무 보기</option>
-        ${names.map((n) => html`<option value=${n}>${n}님 기도만 보기</option>`)}
-      </select>
-      <div class="stats">
-        <div class="stat"><b>${topics}</b><span>🍃 기도제목</span></div>
-        <div class="stat"><b>${answered}</b><span>🍎 응답</span></div>
-        <div class="stat"><b>${thanks}</b><span>🌼 감사일기</span></div>
+  function reveal() {
+    if (revealed || turning) return;
+    setTurning(true);
+    setTimeout(() => { setTurning(false); setRevealed(true); lsSet("verse-" + today, "1"); onCheckIn(); }, 300);
+  }
+  const fv = fruitView ? FRUIT[fruitView] : null;
+
+  return html`<div class="wrap">
+    ${me ? html`
+      <div class="box hello">
+        <${Av} a=${me.avatar} crop="face" />
+        <div><b>${me.name}님, 오늘도 와줘서 반가워요!</b>
+          <p>${me.fruit ? `${FRUIT[me.fruit]?.emoji} ${FRUIT[me.fruit]?.name}의 열매를 구하는 중` : "아래에서 이번 달 맺고 싶은 열매를 골라보세요"}</p>
+          <span class="fire">🔥 ${myStat.streak}일 연속 · ${"★".repeat(myStat.stars)}</span></div>
+      </div>`
+    : html`<div class="box hello" style="background:var(--y)"><div style="flex:1"><b>아직 입장하지 않았어요</b><p>내 캐릭터 카드를 만들면 중보하고, 열매를 고르고, 출석 기록을 쌓을 수 있어요.</p></div>
+        <button class="btn white" onClick=${onEnter}>입장</button></div>`}
+
+    <div class="box progress">
+      <div class="progress-top"><span>🃏 우리 공동체 입장 현황</span><span>${entered} / ${TOTAL}명</span></div>
+      <div class="bar"><i style=${{ width: `${Math.min(100, (entered / TOTAL) * 100)}%` }}></i></div>
+      <div class="faces">${recent.map((m) => html`<${Av} a=${m.avatar} crop="face" />`)}<span>${entered < TOTAL ? `${TOTAL - entered}명 남았어요!` : "모두 입장 완료!"}</span></div>
+    </div>
+
+    <div class="flip" onClick=${reveal} role="button" aria-label="오늘의 말씀 뒤집기">
+      ${!revealed ? html`
+        <div class=${"face front" + (turning ? " turn" : "")}>
+          <span class="corner">TODAY'S WORD</span><span class="stars">★★★★</span>
+          <div class="q">?</div>
+          <h3>오늘의 말씀은?</h3>
+          <p>${me ? `${me.name}님의 기도와 감사를 읽고 골랐어요` : "카드를 눌러서 뒤집어 보세요"}</p>
+          <span class="tap">TAP!</span>
+        </div>` : html`
+        <div class="face back">
+          <div class="vh"><b>📖 오늘의 말씀</b><small>${fmtDate(today)}</small></div>
+          ${daily.tags.length > 0 && html`<div class="tags">${daily.tags.map((t) => html`<span>#${t}</span>`)}</div>`}
+          ${daily.verses.map((v) => html`<div class="vq"><p>${v.text}</p><cite>${refName(v.ref)} · 개역개정</cite></div>`)}
+          <p class="vnote">내일 또 새로운 말씀 카드가 기다려요</p>
+        </div>`}
+    </div>
+
+    <div class="box mission">
+      <h4>✅ 오늘의 미션 <span>${done} / 3</span></h4>
+      <div class=${"mrow" + (revealed ? " done" : "")}><span class="chk">${revealed ? "✓" : ""}</span><span>오늘의 말씀 카드 뒤집기</span>${!revealed && html`<button onClick=${reveal}>뒤집기</button>`}</div>
+      <div class=${"mrow" + (thanksToday ? " done" : "")}><span class="chk">${thanksToday ? "✓" : ""}</span><span>감사 한 줄 남기기</span>${!thanksToday && html`<button onClick=${() => onWrite("thanks")}>쓰기</button>`}</div>
+      <div class=${"mrow" + (interToday ? " done" : "")}><span class="chk">${interToday ? "✓" : ""}</span><span>동기 기도제목에 🙏 중보하기</span>${!interToday && html`<button onClick=${() => onGo("prayer")}>보러가기</button>`}</div>
+      ${done === 3 && html`<div class="allclear">💧 오늘 기도나무에 물을 줬어요! 내일도 만나요</div>`}
+    </div>
+
+    <div class="sec"><h2>🍇 성령의 열매</h2><small>이번 달 내가 맺고 싶은 열매는?</small></div>
+    <div class="fruits">
+      ${FRUITS.map((f) => html`<button class=${"fruit" + (me && me.fruit === f.id ? " on" : "")} style=${{ "--fc": f.color }} onClick=${() => setFruitView(f.id)}>
+        <span class="em">${f.emoji}</span><b>${f.name}</b><small>${fruitCount[f.id] || 0}명</small></button>`)}
+    </div>
+    ${fv && html`<div class="box fdetail" style=${{ "--fc": fv.color }}>
+      <h4><span style="font-size:28px">${fv.emoji}</span>${fv.name}의 열매</h4>
+      <p class="d">${fv.desc}</p>
+      ${fv.refs.map((r) => html`<div class="vq"><p>${VERSES[r]}</p><cite>${refName(r)} · 개역개정</cite></div>`)}
+      <div class="faces" style="margin-top:12px">${members.filter((m) => m.fruit === fv.id).slice(0, 10).map((m) => html`<${Av} a=${m.avatar} crop="face" />`)}
+        <span>${fruitCount[fv.id] ? `${fruitCount[fv.id]}명이 함께 구하고 있어요` : "아직 아무도 고르지 않았어요"}</span></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        ${me && me.fruit === fv.id
+          ? html`<button class="btn white" style="flex:1" disabled>✓ 내가 구하는 열매</button>`
+          : html`<button class="btn" style="flex:1" onClick=${() => onPickFruit(fv.id)}>이 열매 구하기</button>`}
+        <button class="btn white" onClick=${() => setFruitView(null)}>닫기</button>
       </div>
-      <div class="tree-card">
-        ${P.status === "loading"
-          ? html`<div class="empty"><span class="big">🌱</span>나무를 키우는 중…</div>`
-          : html`<${TreeSvg} prayers=${py} thanks=${G.status === "ready" ? gy : []} who=${who} onPick=${onPick} />`}
-        <div class="legend"><span>🍃 기도제목</span><span>🌼 감사일기</span><span>🍎 응답된 기도</span></div>
-        <p class="hint">가지(달 이름)를 누르면 그 달 기도제목으로 이동해요</p>
-      </div>
-      <p class="total-line">지금까지 함께 쌓은 기도제목 <b>${allTopics}개</b> · 감사일기 <b>${G.items.length}개</b></p>
-      ${P.status === "error" && html`<div class="notice">데이터를 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
-    </div>`;
+    </div>`}
+
+    <div class="sec"><h2>🌳 ${year} 기도나무</h2><small>잎 = 기도 · 꽃 = 감사</small></div>
+    <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
+      <option value="">우리 공동체 전체</option>
+      ${names.map((n) => html`<option value=${n}>${n}님만 보기</option>`)}
+    </select>
+    <div class="stats">
+      <div class="box stat"><b>${topics}</b><span>🍃 기도제목</span></div>
+      <div class="box stat"><b>${answered}</b><span>✨ 응답</span></div>
+      <div class="box stat"><b>${gy.filter(mine).length}</b><span>🌼 감사</span></div>
+    </div>
+    <div class="box tree-box">
+      <${TreeSvg} prayers=${py} thanks=${G.status === "ready" ? gy : []} members=${members} who=${who} onPick=${onMonth} onFruit=${(id) => setFruitView(id)} />
+      <div class="legend"><span>🍃 기도제목</span><span>✨ 응답된 기도</span><span>🌼 감사일기</span><span>🍓 동기들의 열매</span></div>
+      <p class="hint">달 이름을 누르면 그 달 기도제목으로, 열매를 누르면 성령의 열매 말씀으로 가요</p>
+    </div>
+    <p class="psalm">그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며<br />그 잎사귀가 마르지 아니함 같으니<cite>시편 1:3</cite></p>
+  </div>`;
 }
 
-function TreeSvg({ prayers, thanks, who, onPick }) {
-  const cx = 200, cy = 205, rx = 152, ry = 142;
+function TreeSvg({ prayers, thanks, members, who, onPick, onFruit }) {
+  const cx = 200, cy = 200, rx = 150, ry = 138;
   const branches = useMemo(() => MONTHS.map((name, i) => {
     const a = ((200 - i * 20) * Math.PI) / 180;
     const T = { x: cx + rx * Math.cos(a), y: cy - ry * Math.sin(a) };
     const side = Math.abs(Math.cos(a)) < 0.2 ? 0 : Math.sign(Math.cos(a));
-    const S = { x: 200 + side * 4, y: Math.min(330, Math.max(196, 196 + ((T.y - 63) / (254 - 63)) * 134)) };
+    const S = { x: 200 + side * 4, y: Math.min(325, Math.max(194, 194 + ((T.y - 62) / (247 - 62)) * 131)) };
     const C = { x: S.x + (T.x - S.x) * 0.3, y: T.y + (S.y - T.y) * 0.18 };
     const len = Math.hypot(T.x - cx, T.y - cy) || 1;
     const L = { x: T.x + ((T.x - cx) / len) * 20, y: T.y + ((T.y - cy) / len) * 18 + 4 };
     return { i, name, S, C, T, L };
   }), []);
-
-  const bez = (b, t) => ({
-    x: (1 - t) * (1 - t) * b.S.x + 2 * (1 - t) * t * b.C.x + t * t * b.T.x,
-    y: (1 - t) * (1 - t) * b.S.y + 2 * (1 - t) * t * b.C.y + t * t * b.T.y,
-  });
-  const spot = (b, seed, n, tMin = 0.45) => {
-    const h = hashOf(seed), t = tMin + ((h % 1000) / 1000) * (1.12 - tMin);
+  const bez = (b, t) => ({ x: (1 - t) * (1 - t) * b.S.x + 2 * (1 - t) * t * b.C.x + t * t * b.T.x, y: (1 - t) * (1 - t) * b.S.y + 2 * (1 - t) * t * b.C.y + t * t * b.T.y });
+  const spot = (b, seed, n, tMin = 0.35) => {
+    const h = hashOf(seed), t = tMin + ((h % 1000) / 1000) * (1.1 - tMin);
     const p = bez(b, Math.min(t, 1)), ext = Math.max(0, t - 1);
-    const ang = ((h >> 5) % 360) * (Math.PI / 180), dist = 4 + (((h >> 11) % 100) / 100) * (14 + Math.sqrt(n) * 3.5);
+    const ang = ((h >> 5) % 360) * (Math.PI / 180), dist = 4 + (((h >> 11) % 100) / 100) * (14 + Math.sqrt(n) * 3);
     return { x: p.x + Math.cos(ang) * dist + (b.T.x - cx) * ext * 0.3, y: p.y + Math.sin(ang) * dist * 0.85 + (b.T.y - cy) * ext * 0.3, h };
   };
-
   const byMonth = (arr) => { const g = Array.from({ length: 12 }, () => []); arr.forEach((e) => g[ym(e.date).m].push(e)); return g; };
   const pm = useMemo(() => byMonth(prayers), [prayers]);
   const gm = useMemo(() => byMonth(thanks), [thanks]);
-  const dim = (e) => (who && e.name !== who ? 0.13 : 1);
+  const dim = (e) => (who && e.name !== who ? 0.12 : 1);
+  const LEAF = ["#2f9a57", "#45b36b", "#6cc77f", "#3a8d50", "#8fd18f"];
+  const fruitsOnTree = useMemo(() => members.filter((m) => m.fruit && FRUIT[m.fruit]).map((m) => {
+    const h = hashOf(m.id + "fruit"), ang = (12 + (h % 156)) * (Math.PI / 180), r = 0.42 + ((h >> 8) % 50) / 100;
+    return { m, x: cx + Math.cos(ang) * rx * 0.95 * r, y: cy + 10 - Math.sin(ang) * ry * 0.95 * r };
+  }), [members]);
 
   return html`
-    <svg viewBox="0 0 400 415" role="img" aria-label="월별 기도나무">
-      <defs>
-        <linearGradient id="bark" x1="0" x2="1"><stop offset="0" stop-color="#4a3626" /><stop offset=".5" stop-color="#6b4f37" /><stop offset="1" stop-color="#3e2c1f" /></linearGradient>
-        <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#cfe0c6" stop-opacity=".7" /><stop offset="1" stop-color="#cfe0c6" stop-opacity="0" /></radialGradient>
-      </defs>
-      <ellipse cx="200" cy="200" rx="195" ry="175" fill="url(#glow)" />
-      <g fill="#9fbf98" opacity=".16">
-        <circle cx="200" cy="150" r="95" /><circle cx="110" cy="205" r="75" /><circle cx="290" cy="205" r="75" />
-        <circle cx="140" cy="120" r="60" /><circle cx="260" cy="120" r="60" /><circle cx="200" cy="250" r="70" />
-      </g>
-      <ellipse cx="200" cy="404" rx="150" ry="9" fill="#dfe6d3" />
-      <path d="M182,406 C188,380 191,355 193,325 L196,192 L204,192 L207,325 C209,355 212,380 218,406 Z" fill="url(#bark)" />
-      <path d="M186,404 C170,406 160,402 150,406 M214,404 C230,406 240,402 252,406" stroke="#5a412d" stroke-width="4" stroke-linecap="round" fill="none" />
+    <svg viewBox="0 0 400 420" role="img" aria-label="월별 기도나무">
+      <ellipse cx="200" cy="190" rx="190" ry="168" fill="#e7f5df" stroke="#1b1b1b" stroke-width="3" />
+      <ellipse cx="200" cy="408" rx="140" ry="9" fill="#c9b892" stroke="#1b1b1b" stroke-width="3" />
+      <path d="M182 408 C188 382 191 356 193 322 L196 188 L204 188 L207 322 C209 356 212 382 218 408 Z" fill="#8a5a2b" stroke="#1b1b1b" stroke-width="4" stroke-linejoin="round" />
+      <path d="M186 406 C170 408 160 404 148 408 M214 406 C230 408 240 404 252 408" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" fill="none" />
       ${branches.map((b) => {
-        const has = pm[b.i].length + gm[b.i].length > 0;
-        return html`<path d=${`M${b.S.x},${b.S.y} Q${b.C.x},${b.C.y} ${b.T.x},${b.T.y}`} fill="none" stroke=${has ? "#5a412d" : "#b3a68e"}
-          stroke-width=${has ? 5 : 2} stroke-linecap="round" stroke-dasharray=${has ? null : "3 5"} />`;
+        const has = pm[b.i].length + gm[b.i].length > 0, d = `M${b.S.x},${b.S.y} Q${b.C.x},${b.C.y} ${b.T.x},${b.T.y}`;
+        return has
+          ? html`<g><path d=${d} fill="none" stroke="#1b1b1b" stroke-width="9" stroke-linecap="round" /><path d=${d} fill="none" stroke="#8a5a2b" stroke-width="4.5" stroke-linecap="round" /></g>`
+          : html`<path d=${d} fill="none" stroke="#b3a68e" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 6" />`;
       })}
       ${branches.map((b) => {
-        const n = pm[b.i].reduce((s, e) => s + (e.prayers || []).length, 0);
+        const n = pm[b.i].reduce((s, e) => s + (e.prayers || []).length, 0), sc0 = n > 60 ? 1.1 : n > 30 ? 1.3 : 1.6;
         return pm[b.i].map((e) => (e.prayers || []).map((_, k) => {
-          const s = spot(b, e.id + "p" + k, n, 0.3);
-          const sc = 1.55 + ((s.h >> 3) % 60) / 100;
+          const s = spot(b, e.id + "p" + k, n), ans = (e.answered || [])[k];
+          const sc = sc0 + ((s.h >> 3) % 50) / 100;
           return html`<path d="M0,0 C-5,-4 -5.5,-10 0,-15 C5.5,-10 5,-4 0,0 Z" transform=${`translate(${s.x.toFixed(1)},${s.y.toFixed(1)}) rotate(${s.h % 360}) scale(${sc.toFixed(2)})`}
-            fill=${LEAF[s.h % LEAF.length]} opacity=${0.9 * dim(e)} stroke=${who && e.name === who ? "#fff" : "none"} stroke-width="0.8" />`;
+            fill=${ans ? "#ffd23f" : LEAF[s.h % LEAF.length]} opacity=${dim(e)} stroke="#1b1b1b" stroke-width="0.9" />`;
         }));
       })}
       ${branches.map((b) => gm[b.i].map((e) => {
-        const s = spot(b, e.id + "g", gm[b.i].length + pm[b.i].length, 0.6);
+        const s = spot(b, e.id + "g", gm[b.i].length + pm[b.i].length, 0.5);
         return html`<g transform=${`translate(${s.x.toFixed(1)},${s.y.toFixed(1)})`} opacity=${dim(e)}>
-          ${[0, 72, 144, 216, 288].map((d) => html`<circle cx=${(Math.cos((d * Math.PI) / 180) * 4).toFixed(2)} cy=${(Math.sin((d * Math.PI) / 180) * 4).toFixed(2)} r="3.3" fill="#fff6d8" stroke="#e9c766" stroke-width=".7" />`)}
-          <circle r="2.4" fill="#e0a43a" />
+          ${[0, 72, 144, 216, 288].map((d) => html`<circle cx=${(Math.cos((d * Math.PI) / 180) * 4).toFixed(2)} cy=${(Math.sin((d * Math.PI) / 180) * 4).toFixed(2)} r="3.4" fill="#fff" stroke="#1b1b1b" stroke-width=".9" />`)}
+          <circle r="2.6" fill="#ffd23f" stroke="#1b1b1b" stroke-width=".9" />
         </g>`;
       }))}
-      ${branches.map((b) => pm[b.i].map((e) => (e.answered || []).map((on, k) => {
-        if (!on) return null;
-        const s = spot(b, e.id + "a" + k, pm[b.i].length, 0.55);
-        return html`<g opacity=${dim(e)}><circle cx=${s.x.toFixed(1)} cy=${s.y.toFixed(1)} r="5.2" fill="#c2453f" stroke="#8e2a26" stroke-width=".6" />
-          <circle cx=${(s.x - 1.6).toFixed(1)} cy=${(s.y - 1.7).toFixed(1)} r="1.5" fill="#fff" opacity=".7" /></g>`;
-      })))}
+      ${fruitsOnTree.map(({ m, x, y }) => html`<text x=${x.toFixed(1)} y=${y.toFixed(1)} font-size="17" text-anchor="middle" dominant-baseline="middle"
+          opacity=${who && m.name !== who ? 0.2 : 1} style="cursor:pointer" onClick=${() => onFruit(m.fruit)}>${FRUIT[m.fruit].emoji}</text>`)}
       ${branches.map((b) => {
         const n = (who ? pm[b.i].filter((e) => e.name === who) : pm[b.i]).length;
         return html`<g onClick=${() => onPick(b.i)} style="cursor:pointer">
-          <circle cx=${b.T.x} cy=${b.T.y} r="26" fill="transparent" />
-          <rect x=${b.L.x - (n ? 24 : 15)} y=${b.L.y - 11} width=${n ? 48 : 30} height="19" rx="9.5" fill="#fff" stroke="#e6ddc4" opacity=".95" />
-          <text x=${b.L.x} y=${b.L.y + 3} text-anchor="middle" font-size="11" font-weight="700" fill=${n ? "#2f5a44" : "#a6ad9f"} font-family="Noto Sans KR, sans-serif">
-            ${b.name}${n ? ` ${n}` : ""}
-          </text>
+          <circle cx=${b.T.x} cy=${b.T.y} r="24" fill="transparent" />
+          <rect x=${b.L.x - (n ? 25 : 16)} y=${b.L.y - 12} width=${n ? 50 : 32} height="21" rx="10.5" fill=${n ? "#ffd23f" : "#fff"} stroke="#1b1b1b" stroke-width=${n ? 2.5 : 1.5} />
+          <text x=${b.L.x} y=${b.L.y + 3.5} text-anchor="middle" font-size="11.5" font-weight="900" fill=${n ? "#1b1b1b" : "#a39b8a"} font-family="Noto Sans KR, sans-serif">${b.name}${n ? ` ${n}` : ""}</text>
         </g>`;
       })}
     </svg>`;
 }
 
-/* ---------- 기도제목 / 감사일기 목록 탭 ---------- */
-function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setWho, names, freshId, onEdit, onDelete, onToggle }) {
+/* ---------- 기도 / 감사 목록 ---------- */
+function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit, onEdit, onDelete, onToggle, onReact }) {
   const isP = kind === "prayer";
   const unit = isP ? "기도제목" : "감사";
   const base = useMemo(() => data.items.filter((e) => e.date && (!who || e.name === who)), [data.items, who]);
-  const counts = useMemo(() => {
-    const c = Array(12).fill(0);
-    base.forEach((e) => { const d = ym(e.date); if (d.y === year) c[d.m]++; });
-    return c;
-  }, [base, year]);
+  const counts = useMemo(() => { const c = Array(12).fill(0); base.forEach((e) => { const d = ym(e.date); if (d.y === year) c[d.m]++; }); return c; }, [base, year]);
   const list = useMemo(() => base.filter((e) => {
     const d = ym(e.date);
     return scope === "all" ? true : scope === "year" ? d.y === year : d.y === year && d.m === month;
@@ -708,140 +1383,114 @@ function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setW
     if (on) box.scrollTo({ left: on.offsetLeft - box.clientWidth / 2 + on.clientWidth / 2, behavior: "smooth" });
   }, [month, scope, kind]);
   const people = new Set(list.map((e) => e.name)).size;
-  const total = list.reduce((s, e) => s + itemsOf(kind, e).length, 0);
+  const total = list.reduce((s, e) => s + ((isP ? e.prayers : e.items) || []).length, 0);
 
-  if (data.status === "denied") return html`<div class="wrap"><div class="notice">
-    ${isP ? "기도제목" : "감사일기"} 저장 공간이 아직 열려 있지 않아요.<br />관리자가 Firebase 보안 규칙에 <b>${isP ? "prayers" : "gratitude"}</b> 항목을 추가하면 바로 쓸 수 있어요.</div></div>`;
-
-  // 오늘의 말씀: 오늘 감사일기(없으면 가장 최근 날짜의 감사일기)를 읽고 고른다
-  const today = todayStr();
-  const latest = base.length ? base.slice().sort(sortDesc)[0].date : null;
-  const vDate = base.some((e) => e.date === today) ? today : latest;
-  const vTexts = base.filter((e) => e.date === vDate).flatMap((e) => e.items || []);
-  const vSub = !vDate ? "감사일기를 쓰면 맞춤 말씀을 골라드려요"
-    : vDate === today ? `오늘 감사일기 ${base.filter((e) => e.date === today).length}개를 읽고 골랐어요`
-    : `최근 감사일기(${fmtDate(vDate)})를 읽고 골랐어요`;
-
-  const card = (e) => html`<${EntryCard} key=${e.id} kind=${kind} e=${e} fresh=${e.id === freshId} onEdit=${() => onEdit(kind, e)} onDelete=${() => onDelete(kind, e)} onToggle=${(i) => onToggle(e, i)} />`;
+  if (data.status === "denied") return html`<div class="wrap"><div class="notice">${isP ? "기도제목" : "감사일기"} 저장 공간이 아직 열려 있지 않아요. 관리자에게 알려주세요.</div></div>`;
+  const card = (e) => html`<${EntryCard} key=${e.id} kind=${kind} e=${e} me=${me} member=${byName[e.name]} a=${avOf(e.name)} avOf=${avOf} fresh=${e.id === freshId} can=${canEdit(e)}
+    onEdit=${() => onEdit(kind, e)} onDelete=${() => onDelete(kind, e)} onToggle=${(i) => onToggle(e, i)} onReact=${() => onReact(isP ? "prayers" : "gratitude", e, isP ? "prayedBy" : "amenBy")} />`;
 
   return html`<div class="wrap">
-    ${!isP && data.status === "ready" && html`<${VerseBox} title="오늘의 말씀" sub=${vSub} texts=${vTexts} seed=${today + (who || "all")} />`}
     <div class="seg" role="tablist">
-      ${[["month", "월별"], ["year", `${year}년 누적`], ["all", "전체 누적"]].map(([v, l]) => html`
-        <button class=${scope === v ? "on" : ""} onClick=${() => setScope(v)}>${l}</button>`)}
+      ${[["month", "월별"], ["year", `${year}년 누적`], ["all", "전체 누적"]].map(([v, l]) => html`<button class=${scope === v ? "on" : ""} onClick=${() => setScope(v)}>${l}</button>`)}
     </div>
     ${scope === "month" && html`<div class="chips" ref=${chipsRef}>
-      ${MONTHS.map((m, i) => html`<button class=${"chip" + (i === month ? " on" : counts[i] ? "" : " zero")} onClick=${() => setMonth(i)}>
-        ${m}${counts[i] > 0 && html`<i>${counts[i]}</i>`}</button>`)}
+      ${MONTHS.map((m, i) => html`<button class=${"chip" + (i === month ? " on" : counts[i] ? "" : " zero")} onClick=${() => setMonth(i)}>${m}${counts[i] > 0 && html`<i>${counts[i]}</i>`}</button>`)}
     </div>`}
     <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
-      <option value="">모든 동기</option>
-      ${names.map((n) => html`<option value=${n}>${n}</option>`)}
+      <option value="">우리 공동체 전체</option>
+      ${me && html`<option value=${me.name}>나 (${me.name})</option>`}
+      ${names.filter((n) => !me || n !== me.name).map((n) => html`<option value=${n}>${n}</option>`)}
     </select>
     ${data.status === "loading" && html`<div class="empty"><span class="big">🌱</span>불러오는 중…</div>`}
     ${data.status === "error" && html`<div class="notice">데이터를 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
     ${data.status === "ready" && (list.length === 0
       ? html`<div class="empty"><span class="big">${isP ? "🍃" : "🌼"}</span>
           ${who ? `${who}님의 ` : ""}${scope === "month" ? `${year}년 ${MONTHS[month]}에는` : "아직"} ${isP ? "심어진 기도제목이" : "적힌 감사일기가"} 없어요.<br />
-          아래 <b>＋ ${isP ? "기도제목" : "감사일기"} 쓰기</b>를 눌러 시작해 보세요.</div>`
+          아래 <b>＋ ${isP ? "기도제목" : "감사일기"} 쓰기</b>로 첫 잎을 심어 보세요.</div>`
       : html`
         <p class="summary">${people}명 · ${unit} <b>${total}개</b>${isP ? html` · 응답 <b>${list.reduce((s, e) => s + (e.answered || []).filter(Boolean).length, 0)}개</b>` : ""}</p>
-        ${scope === "month" ? list.map(card) : groups.map((g) => html`
-          <h3 class="month-h">${g.label} <small>· ${g.items.length}건</small></h3>
-          ${g.items.map(card)}`)}`)}
+        ${scope === "month" ? list.map(card) : groups.map((g) => html`<h3 class="month-h">${g.label} <small>· ${g.items.length}건</small></h3>${g.items.map(card)}`)}`)}
   </div>`;
 }
 
-function EntryCard({ kind, e, fresh, onEdit, onDelete, onToggle }) {
+function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete, onToggle, onReact }) {
   const isP = kind === "prayer";
+  const items = ((isP ? e.prayers : e.items) || []).map(cleanNum);
+  const field = isP ? "prayedBy" : "amenBy";
+  const who = e[field] || [];
+  const on = me && who.includes(me.name);
   const [open, setOpen] = useState(!!fresh);
-  const cardRef = useRef(null);
-  useEffect(() => {
-    if (!fresh) return;
-    setOpen(true);
-    setTimeout(() => cardRef.current && cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" }), 150);
-  }, [fresh]);
-  const items = itemsOf(kind, e);
-  return html`<article ref=${cardRef} class=${"card" + (isP ? "" : " thanks")}>
+  const ref = useRef(null);
+  useEffect(() => { if (!fresh) return; setOpen(true); setTimeout(() => ref.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" }), 150); }, [fresh]);
+  const vr = useMemo(() => (!isP && open ? pickVerses(items, e.id, null) : null), [open]);
+  return html`<article ref=${ref} class=${"card" + (isP ? "" : " thanks")}>
     <div class="card-h">
-      <div class="avatar" style=${{ background: AVATAR[hashOf(e.name || "") % AVATAR.length] }}>${avatarText(e.name)}</div>
-      <div class="who"><b>${e.name}</b><span>${fmtDate(e.date)}</span></div>
-      <button class="mini" onClick=${onEdit}>수정</button>
-      <button class="mini del" onClick=${onDelete}>삭제</button>
+      <${Av} a=${a} crop="face" />
+      <div class="who"><b>${e.name}${member?.mbti && html`<i>${member.mbti}</i>`}${member?.fruit && FRUIT[member.fruit] ? FRUIT[member.fruit].emoji : ""}</b><span>${fmtDate(e.date)}</span></div>
+      ${can && html`<button class="mini" onClick=${onEdit}>수정</button><button class="mini del" onClick=${onDelete}>삭제</button>`}
     </div>
     <ul class="plist">
       ${items.map((t, i) => {
         const done = isP && (e.answered || [])[i];
         return html`<li class=${done ? "done" : ""}>
-          <span class="num">${isP ? i + 1 : "♡"}</span>
-          <span class="txt">${t}</span>
-          ${isP && html`<button class=${"ans" + (done ? " on" : "")} onClick=${() => onToggle(i)} aria-pressed=${!!done}>
-            ${done ? "🍎 응답됨" : "응답?"}</button>`}
+          <span class="num">${isP ? i + 1 : "♡"}</span><span class="txt">${t}</span>
+          ${isP && (can
+            ? html`<button class=${"ans" + (done ? " on" : "")} onClick=${() => onToggle(i)} aria-pressed=${!!done}>${done ? "✨ 응답" : "응답?"}</button>`
+            : done && html`<span class="ans on">✨ 응답</span>`)}
         </li>`;
       })}
     </ul>
+    <div class="react">
+      <button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${isP ? (on ? "🙏 중보했어요" : "🙏 중보할게요") : on ? "🙌 아멘!" : "🙌 아멘"} ${who.length || ""}</button>
+      ${who.length > 0 && html`<div class="faces">${who.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} crop="face" />`)}${who.length > 5 && html`<span>+${who.length - 5}</span>`}</div>`}
+    </div>
     ${!isP && html`
       <button class="verse-btn" onClick=${() => setOpen(!open)} aria-expanded=${open}>📖 이 감사에 어울리는 말씀 ${open ? "접기 ▴" : "보기 ▾"}</button>
-      ${open && html`<${VerseBox} small title="말씀 선물" sub=${`${e.name}님의 감사일기를 읽고 골랐어요`} texts=${items} seed=${e.id} />`}`}
+      ${open && vr && html`<div class="vbox">
+        ${vr.tags.length > 0 && html`<div class="tags">${vr.tags.map((t) => html`<span>#${t}</span>`)}</div>`}
+        ${vr.verses.map((v) => html`<div class="vq"><p>${v.text}</p><cite>${refName(v.ref)} · 개역개정</cite></div>`)}
+      </div>`}`}
   </article>`;
 }
 
-/* ---------- 기도제목 / 감사일기 쓰기 ---------- */
-function EntryForm({ kind, entry, names, onClose, onSaved }) {
+/* ---------- 쓰기 ---------- */
+function EntryForm({ kind, entry, me, avOf, onClose, onSaved }) {
   const isP = kind === "prayer";
+  const name = entry ? entry.name : me.name;
   const [date, setDate] = useState(entry ? entry.date : todayStr());
-  const [name, setName] = useState(entry ? entry.name : localStorage.getItem("pt-name") || "");
-  const [items, setItems] = useState(entry ? [...itemsOf(kind, entry)] : ["", "", ""]);
+  const [items, setItems] = useState(entry ? ((isP ? entry.prayers : entry.items) || []).map(cleanNum) : ["", "", ""]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
-
   const setAt = (i, v) => setItems(items.map((x, j) => (j === i ? v : x)));
-
   async function submit() {
-    const clean = items.map((t) => t.trim()).filter(Boolean);
-    if (!name.trim()) return setErr("이름을 입력해 주세요.");
+    const clean = items.map((t) => cleanNum(t).trim()).filter(Boolean);
     if (!clean.length) return setErr(`${isP ? "기도제목" : "감사한 일"}을 하나 이상 적어 주세요.`);
     if (!date) return setErr("날짜를 골라 주세요.");
     setBusy(true); setErr("");
     const t = nowIso();
-    const common = { id: entry ? entry.id : newId(), date, name: name.trim(), createdAt: (entry && entry.createdAt) || t, updatedAt: t };
+    const common = { ...(entry || {}), id: entry ? entry.id : newId(), date, name, createdAt: (entry && entry.createdAt) || t, updatedAt: t };
     let obj;
     if (isP) {
-      const old = entry ? entry.prayers || [] : [], oldAns = entry ? entry.answered || [] : [];
-      obj = { ...common, prayers: clean, answered: clean.map((p) => { const k = old.indexOf(p); return k >= 0 ? !!oldAns[k] : false; }) };
-    } else {
-      obj = { ...common, items: clean };
-    }
+      const old = entry ? (entry.prayers || []).map(cleanNum) : [], oldAns = entry ? entry.answered || [] : [];
+      obj = { ...common, prayers: clean, answered: clean.map((p) => { const k = old.indexOf(p); return k >= 0 ? !!oldAns[k] : false; }), prayedBy: entry?.prayedBy || [] };
+    } else obj = { ...common, items: clean, amenBy: entry?.amenBy || [] };
     try {
       await api.save(isP ? "prayers" : "gratitude", obj);
-      localStorage.setItem("pt-name", obj.name);
-      onSaved(date, entry ? "수정했어요" : isP ? "기도나무에 잎이 돋았어요 🍃" : "감사일기를 남겼어요. 말씀을 확인해 보세요 🌼", obj.id);
+      onSaved(date, entry ? "수정했어요" : isP ? "기도나무에 잎이 돋았어요 🍃" : "감사일기를 남겼어요. 말씀 선물을 확인해 보세요 🌼", obj.id);
     } catch (e) {
       console.error(e);
-      setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 Firebase 규칙 확인을 부탁해 주세요." : "저장에 실패했어요. 인터넷 연결을 확인해 주세요.");
+      setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : "저장에 실패했어요. 인터넷 연결을 확인해 주세요.");
       setBusy(false);
     }
   }
-
   return html`<div class="overlay">
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
-      <div class="sheet-h">
-        <h3>${entry ? `${isP ? "기도제목" : "감사일기"} 수정` : isP ? "기도제목 쓰기" : "오늘의 감사일기"}</h3>
-        <button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button>
-      </div>
+      <div class="sheet-h"><h3>${entry ? `${isP ? "기도제목" : "감사일기"} 수정` : isP ? "🙏 기도제목 쓰기" : "🌼 오늘의 감사일기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
       ${entry && html`<div class="editing">✎ ${entry.name}님의 ${isP ? "기도제목을" : "감사일기를"} 수정하는 중이에요</div>`}
-      <div class="row2">
-        <div class="field"><label>이름</label>
-          <input value=${name} onInput=${(e) => setName(e.target.value)} placeholder="이름" list="pt-names" autocomplete="off" />
-          <datalist id="pt-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
-        </div>
-        <div class="field"><label>날짜</label>
-          <input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} />
-        </div>
-      </div>
+      <div class="writer"><${Av} a=${avOf(name)} crop="face" /><b>${name}</b><input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} aria-label="날짜" /></div>
       <div class="field">
-        <label>${isP ? "기도제목" : "감사한 일"}</label>
+        <label>${isP ? "기도제목 (번호는 자동으로 붙어요)" : "오늘 감사한 일"}</label>
         ${items.map((v, i) => html`<div class="item-row">
           <span class="num">${isP ? i + 1 : "♡"}</span>
           <textarea rows="2" value=${v} onInput=${(e) => setAt(i, e.target.value)}
@@ -849,143 +1498,120 @@ function EntryForm({ kind, entry, names, onClose, onSaved }) {
           ${items.length > 1 && html`<button class="rm" onClick=${() => setItems(items.filter((_, j) => j !== i))} aria-label="이 줄 지우기">✕</button>`}
         </div>`)}
       </div>
-      <button class="addline" onClick=${() => setItems([...items, ""])}>＋ ${isP ? "기도제목" : "감사한 일"} 한 줄 더</button>
+      <button class="addline" onClick=${() => setItems([...items, ""])}>＋ 한 줄 더</button>
       ${err && html`<p class="err">${err}</p>`}
-      <button class="primary" onClick=${submit} disabled=${busy}>
-        ${busy ? "저장 중…" : entry ? "수정 완료" : isP ? "기도나무에 새기기" : "감사일기 남기기"}
-      </button>
+      <button class="btn full" onClick=${submit} disabled=${busy}>${busy ? "저장 중…" : entry ? "수정 완료" : isP ? "기도나무에 새기기 🍃" : "감사일기 남기기 🌼"}</button>
     </div>
   </div>`;
 }
 
-/* ---------- 감사사진 탭 ---------- */
+/* ---------- 사진 ---------- */
 function PhotoTab({ data, who, setWho, names, limit, onMore, onOpen }) {
   const list = useMemo(() => data.items.filter((p) => !who || p.name === who).sort(sortDesc), [data.items, who]);
   const groups = useMemo(() => {
     const out = [];
-    list.forEach((p) => {
-      const d = ym(p.date), key = `${d.y}-${d.m}`;
-      if (!out.length || out[out.length - 1].key !== key) out.push({ key, label: `${d.y}년 ${MONTHS[d.m]}`, items: [] });
-      out[out.length - 1].items.push(p);
-    });
+    list.forEach((p) => { const d = ym(p.date), key = `${d.y}-${d.m}`; if (!out.length || out[out.length - 1].key !== key) out.push({ key, label: `${d.y}년 ${MONTHS[d.m]}`, items: [] }); out[out.length - 1].items.push(p); });
     return out;
   }, [list]);
-
-  if (data.status === "denied") return html`<div class="wrap"><div class="notice">
-    감사사진 저장 공간이 아직 열려 있지 않아요.<br />관리자가 Firebase 보안 규칙에 <b>photos</b>, <b>photo_full</b> 항목을 추가하면 바로 쓸 수 있어요.</div></div>`;
-
+  if (data.status === "denied") return html`<div class="wrap"><div class="notice">감사사진 저장 공간이 아직 열려 있지 않아요. 관리자에게 알려주세요.</div></div>`;
   return html`<div class="wrap">
     <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
-      <option value="">모든 동기의 사진</option>
+      <option value="">우리 공동체 사진 전체</option>
       ${names.map((n) => html`<option value=${n}>${n}</option>`)}
     </select>
     ${data.status === "loading" && html`<div class="empty"><span class="big">📷</span>불러오는 중…</div>`}
     ${data.status === "error" && html`<div class="notice">사진을 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
     ${data.status === "ready" && (list.length === 0
       ? html`<div class="empty"><span class="big">📷</span>아직 올라온 감사사진이 없어요.<br />감사했던 순간을 사진으로 남겨 보세요.</div>`
-      : html`
-        ${groups.map((g) => html`
-          <h3 class="month-h">${g.label} <small>· ${g.items.length}장</small></h3>
-          <div class="grid">
-            ${g.items.map((p) => html`<button style=${{ backgroundImage: `url(${p.thumb})` }} onClick=${() => onOpen(p)} aria-label=${`${p.name} 사진 ${p.caption || ""}`}>
-              <span>${p.name}</span></button>`)}
-          </div>`)}
-        ${data.items.length >= limit && html`<button class="more" onClick=${onMore}>사진 더 보기</button>`}`)}
+      : html`${groups.map((g) => html`<h3 class="month-h">${g.label} <small>· ${g.items.length}장</small></h3>
+          <div class="grid">${g.items.map((p) => html`<button style=${{ backgroundImage: `url(${p.thumb})` }} onClick=${() => onOpen(p)} aria-label=${`${p.name} 사진 ${p.caption || ""}`}><span>${p.name}</span></button>`)}</div>`)}
+        ${data.items.length >= limit && html`<button class="btn white more" onClick=${onMore}>사진 더 보기</button>`}`)}
   </div>`;
 }
 
-function PhotoForm({ entry, names, onClose, onDone }) {
+function PhotoForm({ entry, me, onClose, onDone }) {
   const [date, setDate] = useState(entry ? entry.date : todayStr());
-  const [name, setName] = useState(entry ? entry.name : localStorage.getItem("pt-name") || "");
   const [caption, setCaption] = useState(entry ? entry.caption || "" : "");
   const [picks, setPicks] = useState([]);
   const [busy, setBusy] = useState("");
   const [err, setErr] = useState("");
   const fileRef = useRef(null);
-
+  const name = entry ? entry.name : me.name;
   function onFiles(ev) {
     const files = [...ev.target.files].filter((f) => f.type.startsWith("image/") || /\.(heic|heif)$/i.test(f.name));
     const next = [...picks, ...files.map((f) => ({ file: f, url: URL.createObjectURL(f) }))];
     if (next.length > 10) setErr("한 번에 10장까지 올릴 수 있어요.");
-    setPicks(next.slice(0, 10));
-    ev.target.value = "";
+    setPicks(next.slice(0, 10)); ev.target.value = "";
   }
-
   async function submit() {
-    if (!name.trim()) return setErr("이름을 입력해 주세요.");
     if (!entry && !picks.length) return setErr("사진을 한 장 이상 골라 주세요.");
     setErr("");
-    localStorage.setItem("pt-name", name.trim());
     try {
-      if (entry) {
-        setBusy("저장 중…");
-        await api.save("photos", { ...entry, date, name: name.trim(), caption: caption.trim(), updatedAt: nowIso() });
-        return onDone("사진 정보를 수정했어요");
-      }
+      if (entry) { setBusy("저장 중…"); await api.save("photos", { ...entry, date, caption: caption.trim(), updatedAt: nowIso() }); return onDone("사진 정보를 수정했어요"); }
       for (let i = 0; i < picks.length; i++) {
         setBusy(`사진 올리는 중… ${i + 1} / ${picks.length}`);
         const { full, thumb } = await processPhoto(picks[i].file);
         const id = newId(), t = nowIso();
         await api.save("photo_full", { id, data: full.data });
-        await api.save("photos", { id, date, name: name.trim(), caption: caption.trim(), thumb: thumb.data, w: full.w, h: full.h, createdAt: t, updatedAt: t });
+        await api.save("photos", { id, date, name, caption: caption.trim(), thumb: thumb.data, w: full.w, h: full.h, createdAt: t, updatedAt: t });
       }
       onDone(`감사사진 ${picks.length}장을 올렸어요 📷`);
     } catch (e) {
       console.error(e);
-      setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 Firebase 규칙 확인을 부탁해 주세요."
-        : /이미지/.test(e && e.message) ? "이 사진 형식은 읽을 수 없어요. 다른 사진으로 시도해 주세요." : "업로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : /이미지/.test(e && e.message) ? "이 사진 형식은 읽을 수 없어요. 다른 사진으로 시도해 주세요." : "업로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
       setBusy("");
     }
   }
-
   return html`<div class="overlay">
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
-      <div class="sheet-h">
-        <h3>${entry ? "사진 정보 수정" : "감사사진 올리기"}</h3>
-        <button class="xbtn" onClick=${onClose} aria-label="닫기" disabled=${!!busy}>✕</button>
-      </div>
-      ${entry
-        ? html`<div class="picks"><div style=${{ backgroundImage: `url(${entry.thumb})` }}></div></div>`
-        : html`
-          <input ref=${fileRef} type="file" accept="image/*" multiple hidden onChange=${onFiles} />
-          <button class="pickbtn" onClick=${() => fileRef.current && fileRef.current.click()}>
-            <span style="font-size:26px">📷</span>사진 고르기 / 찍기<small>한 번에 최대 10장 · 자동으로 용량을 줄여서 올려요</small>
-          </button>
-          ${picks.length > 0 && html`<div class="picks">
-            ${picks.map((p, i) => html`<div style=${{ backgroundImage: `url(${p.url})` }}>
-              <button onClick=${() => setPicks(picks.filter((_, j) => j !== i))} aria-label="이 사진 빼기">✕</button></div>`)}
-          </div>`}`}
-      <div class="row2">
-        <div class="field"><label>이름</label>
-          <input value=${name} onInput=${(e) => setName(e.target.value)} placeholder="이름" list="pt-names2" autocomplete="off" />
-          <datalist id="pt-names2">${names.map((n) => html`<option value=${n} />`)}</datalist>
-        </div>
-        <div class="field"><label>날짜</label><input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} /></div>
-      </div>
-      <div class="field"><label>어떤 감사였나요? (선택)</label>
-        <textarea rows="3" value=${caption} onInput=${(e) => setCaption(e.target.value)} placeholder="사진에 담긴 감사한 순간을 적어주세요"></textarea>
-      </div>
+      <div class="sheet-h"><h3>${entry ? "사진 정보 수정" : "📷 감사사진 올리기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기" disabled=${!!busy}>✕</button></div>
+      ${entry ? html`<div class="picks"><div style=${{ backgroundImage: `url(${entry.thumb})` }}></div></div>`
+        : html`<input ref=${fileRef} type="file" accept="image/*" multiple hidden onChange=${onFiles} />
+          <button class="pickbtn" onClick=${() => fileRef.current && fileRef.current.click()}><span style="font-size:28px">📷</span>사진 고르기 / 찍기<small>한 번에 최대 10장 · 자동으로 용량을 줄여서 올려요</small></button>
+          ${picks.length > 0 && html`<div class="picks">${picks.map((p, i) => html`<div style=${{ backgroundImage: `url(${p.url})` }}><button onClick=${() => setPicks(picks.filter((_, j) => j !== i))} aria-label="이 사진 빼기">✕</button></div>`)}</div>`}`}
+      <div class="field"><label>날짜</label><input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} /></div>
+      <div class="field"><label>어떤 감사였나요? (선택)</label><textarea rows="3" value=${caption} onInput=${(e) => setCaption(e.target.value)} placeholder="사진에 담긴 감사한 순간을 적어주세요"></textarea></div>
       ${err && html`<p class="err">${err}</p>`}
-      <button class="primary" onClick=${submit} disabled=${!!busy}>${busy || (entry ? "수정 완료" : `사진 ${picks.length ? picks.length + "장 " : ""}올리기`)}</button>
+      <button class="btn full" onClick=${submit} disabled=${!!busy}>${busy || (entry ? "수정 완료" : `사진 ${picks.length ? picks.length + "장 " : ""}올리기`)}</button>
     </div>
   </div>`;
 }
 
-function Lightbox({ p, onClose, onEdit, onDelete }) {
+function Lightbox({ p, can, onClose, onEdit, onDelete }) {
   const [full, setFull] = useState(null);
-  useEffect(() => {
-    let alive = true; setFull(null);
-    api.get("photo_full", p.id).then((d) => { if (alive && d) setFull(d.data); }).catch(() => {});
-    return () => { alive = false; };
-  }, [p.id]);
+  useEffect(() => { let alive = true; setFull(null); api.get("photo_full", p.id).then((d) => { if (alive && d) setFull(d.data); }).catch(() => {}); return () => { alive = false; }; }, [p.id]);
   return html`<div class="lightbox" role="dialog" aria-modal="true">
     <div class="lb-top">
       <button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button>
-      <div><button class="lb-btn" onClick=${onEdit}>수정</button><button class="lb-btn del" onClick=${onDelete}>삭제</button></div>
+      ${can && html`<div><button class="lb-btn" onClick=${onEdit}>수정</button><button class="lb-btn del" onClick=${onDelete}>삭제</button></div>`}
     </div>
     <div class="lb-img"><img src=${full || p.thumb} alt=${p.caption || "감사 사진"} /></div>
     <div class="lb-info"><small>${p.name} · ${fmtDate(p.date)}</small>${p.caption}</div>
+  </div>`;
+}
+
+/* ---------- 동기 카드 도감 ---------- */
+function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter }) {
+  const [q, setQ] = useState("");
+  const [sort, setSort] = useState("no");
+  const list = useMemo(() => {
+    let arr = names.filter((n) => !q || n.includes(q.trim()));
+    const sc = (n) => { const s = stats[n] || EMPTY_STAT; return s.topics + s.thanks * 2 + s.inter + s.days.size; };
+    arr.sort((a, b) => {
+      const ma = byName[a], mb = byName[b];
+      if (sort === "active") return sc(b) - sc(a);
+      if (!!ma !== !!mb) return ma ? -1 : 1;
+      return (ma?.no || 999) - (mb?.no || 999) || a.localeCompare(b, "ko");
+    });
+    return arr;
+  }, [names, q, sort, members, stats]);
+  return html`<div class="wrap">
+    <div class="sec" style="margin-top:4px"><h2>🃏 우리 공동체 카드</h2><small>${members.length} / ${TOTAL}명 입장</small></div>
+    ${!me && html`<div class="box hello" style="background:var(--y);margin-bottom:12px"><div style="flex:1"><b>내 카드도 만들어 볼까요?</b><p>캐릭터를 꾸미고 우리 공동체에 입장해요.</p></div><button class="btn white" onClick=${onEnter}>입장</button></div>`}
+    <input class="select" style="background-image:none" value=${q} onInput=${(e) => setQ(e.target.value)} placeholder="🔍 이름으로 찾기" />
+    <div class="seg"><button class=${sort === "no" ? "on" : ""} onClick=${() => setSort("no")}>입장 번호순</button><button class=${sort === "active" ? "on" : ""} onClick=${() => setSort("active")}>활동 많은 순</button></div>
+    <div class="cards">${list.map((n) => html`<${TCard} name=${n} member=${byName[n]} stat=${stats[n]} ghost=${!byName[n]} mine=${me && me.name === n} onClick=${() => onOpen(n)} />`)}</div>
   </div>`;
 }
 
@@ -994,13 +1620,10 @@ function Confirm({ c, onClose }) {
   const [busy, setBusy] = useState(false);
   return html`<div class="overlay center" onClick=${(e) => { if (e.target === e.currentTarget && !busy) onClose(); }}>
     <div class="dialog" role="alertdialog" aria-modal="true">
-      <div class="ic">🍂</div>
-      <h4>${c.title}</h4>
-      <p>${c.body}</p>
+      <div class="ic">🍂</div><h4>${c.title}</h4><p>${c.body}</p>
       <div class="btns">
-        <button class="btn-cancel" onClick=${onClose} disabled=${busy}>취소</button>
-        <button class="btn-danger" disabled=${busy} onClick=${async () => { setBusy(true); try { await c.onOk(); } finally { onClose(); } }}>
-          ${busy ? "삭제 중…" : "삭제"}</button>
+        <button class="btn white" onClick=${onClose} disabled=${busy}>취소</button>
+        <button class="btn danger" disabled=${busy} onClick=${async () => { setBusy(true); try { await c.onOk(); } finally { onClose(); } }}>${busy ? "삭제 중…" : "삭제"}</button>
       </div>
     </div>
   </div>`;
