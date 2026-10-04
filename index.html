@@ -143,35 +143,39 @@
   .psalm cite { display:block; font-style:normal; font-size:12px; color:var(--muted); font-family:'Noto Sans KR'; }
 
   /* 트레이딩 카드 */
-  .tcard { --cc:#f6f0e1; color:var(--ink); font-family:'Noto Sans KR', sans-serif; background:var(--cc); border:3px solid var(--ink); border-radius:12px; padding:7px 7px 6px; box-shadow:4px 4px 0 var(--ink); position:relative; text-align:left; width:100%; }
-  button.tcard { padding:7px 7px 6px; }
-  .tc-top { display:flex; justify-content:space-between; align-items:center; gap:4px; padding:0 2px 5px; }
-  .tc-top b { font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:19px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .tc-stars { font-size:13px; letter-spacing:-2px; white-space:nowrap; }
-  .tc-pic { position:relative; border:3px solid var(--ink); border-radius:6px; overflow:hidden; aspect-ratio:5/6; background:#fff; }
+  .tcard { --cc:#ffd23f; color:#3a3634; font-family:'Noto Sans KR', sans-serif; background:#3a3634; border:0; border-radius:18px; padding:5px; box-shadow:3px 5px 0 rgba(0,0,0,.22); position:relative; text-align:left; width:100%; }
+  .tc-in { background:var(--cc); border-radius:14px; padding:6px 6px 5px; }
+  .tc-head { display:flex; align-items:center; gap:4px; background:#fff; border:2.5px solid #3a3634; border-radius:99px; padding:2px 6px 2px 3px; }
+  .tc-badge { background:#3a3634; color:#fff; font-size:9.5px; font-weight:900; border-radius:99px; padding:1px 6px; white-space:nowrap; }
+  .tc-head b { flex:1; min-width:0; font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:16px; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tc-lv { font-family:'Black Han Sans', sans-serif; font-size:15px; white-space:nowrap; line-height:1; }
+  .tc-lv small { font-family:'Noto Sans KR'; font-size:8px; font-weight:900; margin-right:1px; }
+  .tc-pic { position:relative; margin-top:5px; border:2.5px solid #3a3634; border-radius:11px; overflow:hidden; aspect-ratio:5/6; background:#fff; }
+  .tc-moves { margin-top:5px; background:rgba(255,255,255,.8); border-radius:9px; padding:3px 8px; }
+  .tc-moves div { display:flex; justify-content:space-between; align-items:baseline; gap:4px; font-size:11px; font-weight:700; line-height:1.5; white-space:nowrap; }
+  .tc-moves span { overflow:hidden; text-overflow:ellipsis; }
+  .tc-moves b { font-family:'Black Han Sans', sans-serif; font-weight:400; font-size:15px; }
   .tc-pic .av, .tc-pic svg { width:100%; height:100%; display:block; }
   .tc-fruit { position:absolute; right:5px; bottom:5px; width:32px; height:32px; border-radius:50%; background:var(--ink); display:grid; place-items:center; font-size:17px; border:2px solid #fff; }
   .tc-mbti { position:absolute; left:5px; top:5px; background:#fff; border:2px solid var(--ink); border-radius:6px; font-weight:900; font-size:11px; padding:0 5px; }
   .tc-anim { position:absolute; left:5px; bottom:5px; background:var(--ink); color:#fff; border-radius:6px; font-weight:700; font-size:10.5px; padding:1px 6px; }
-  .tc-stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:3px; margin:6px 0 3px; }
-  .tc-stats span { display:flex; align-items:center; justify-content:center; gap:1px; font-size:11.5px; }
-  .tc-stats em { font-style:normal; background:#fff; border:2px solid var(--ink); border-radius:4px; min-width:21px; text-align:center; font-weight:900; font-size:11.5px; padding:0 2px; line-height:1.35; }
-  .tc-foot { display:flex; justify-content:space-between; align-items:baseline; gap:4px; font-size:8.5px; font-weight:900; letter-spacing:.2px; padding:0 2px; white-space:nowrap; }
+  .tc-foot { display:flex; justify-content:space-between; align-items:center; gap:4px; margin-top:5px; background:#fff; border:2px solid #3a3634; border-radius:99px; padding:1px 8px; font-size:9.5px; font-weight:900; white-space:nowrap; }
   .tc-foot span { overflow:hidden; text-overflow:ellipsis; }
-  .tc-foot b { font-family:'Black Han Sans'; font-weight:400; font-size:13px; }
-  .tcard.big { padding:10px 10px 8px; }
-  .tcard.big .tc-top b { font-size:27px; } .tcard.big .tc-stars { font-size:19px; }
-  .tcard.big .tc-stats span { font-size:15px; } .tcard.big .tc-stats em { font-size:15px; min-width:30px; }
-  .tcard.big .tc-foot { font-size:11px; } .tcard.big .tc-foot b { font-size:17px; }
+  .tc-foot b { font-family:'Black Han Sans'; font-weight:400; font-size:12px; }
+  .tc-stars { letter-spacing:-1.5px; }
+  .tcard.big { padding:7px; border-radius:22px; }
+  .tcard.big .tc-in { padding:9px 9px 8px; border-radius:17px; }
+  .tcard.big .tc-head b { font-size:24px; } .tcard.big .tc-badge { font-size:12px; padding:2px 9px; } .tcard.big .tc-lv { font-size:21px; }
+  .tcard.big .tc-moves div { font-size:14px; } .tcard.big .tc-moves b { font-size:20px; }
+  .tcard.big .tc-foot { font-size:12px; } .tcard.big .tc-foot b { font-size:16px; }
   .tcard.big .tc-fruit { width:44px; height:44px; font-size:24px; } .tcard.big .tc-mbti { font-size:14px; } .tcard.big .tc-anim { font-size:13px; }
   .tcard.ghost .tc-pic { filter:grayscale(.85) contrast(.9); opacity:.75; }
+  .tcard.ghost { background:#8a8580; }
   .tcard.mine { outline:3px dashed var(--r); outline-offset:3px; }
   .ghost-tag { position:absolute; inset:auto 0 40% 0; text-align:center; }
   .ghost-tag span { background:var(--ink); color:#fff; font-size:11px; font-weight:900; padding:3px 8px; border-radius:6px; }
   .cards { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 12px; }
-  .cards .tc-stats em { min-width:0; padding:0 3px; }
   .tcard { min-width:0; }
-  .tc-stats span { min-width:0; }
 
   /* 목록 */
   .seg { display:flex; background:#fff; border:3px solid var(--ink); border-radius:14px; padding:4px; gap:4px; margin-bottom:10px; }
@@ -280,8 +284,25 @@
   .gate .sub { color:#cfc8b8; font-size:15px; line-height:1.6; margin:0 0 18px; }
   .gate-cards { display:flex; justify-content:center; gap:0; margin:4px 0 22px; }
   .gate-cards .tcard { width:122px; flex:0 0 auto; }
-  .gate-cards .tc-stats em { min-width:17px; font-size:10.5px; }
-  .gate-cards .tc-top b { font-size:16px; }
+  .gate-cards .tc-badge { display:none; } .gate-cards .tcard { width:128px; }
+  .gate-cards .tc-head b { font-size:14px; } .gate-cards .tc-moves div { font-size:10px; } .gate-cards .tc-foot { font-size:8.5px; }
+  .ncheck { background:#2a2826; border:2px solid #4a4744; border-radius:14px; padding:11px 13px; font-size:14px; line-height:1.55; margin:-2px 0 12px; color:#eee; }
+  .ncheck b { color:var(--y); }
+  .ncheck .sim { display:flex; gap:6px; flex-wrap:wrap; margin-top:7px; }
+  .ncheck .sim button { border:2px solid var(--y); background:none; color:var(--y); border-radius:99px; padding:3px 11px; font-weight:700; font-size:13.5px; }
+  .gate .check-link { background:none; border:0; color:var(--y); font-weight:900; text-decoration:underline; font-size:14.5px; margin-top:10px; }
+  .nrow { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:2px dashed #e4dccb; }
+  .nrow:first-child { border-top:0; }
+  .nrow .av { width:46px; height:46px; border:2.5px solid var(--ink); border-radius:12px; overflow:hidden; flex:0 0 auto; }
+  .nrow .av svg { width:100%; height:100%; display:block; }
+  .nrow .nm { flex:1; min-width:0; }
+  .nrow .nm b { font-size:16px; display:block; }
+  .pill { display:inline-block; font-size:12px; font-weight:900; border-radius:99px; padding:2px 9px; border:2px solid var(--ink); margin-top:2px; }
+  .pill.ok { background:var(--g); color:#fff; } .pill.data { background:var(--y); } .pill.new { background:#fff; }
+  .gfilter { display:flex; gap:6px; margin:0 0 10px; align-items:center; font-size:13.5px; font-weight:900; }
+  .gfilter button { border:2.5px solid var(--ink); background:#fff; border-radius:99px; padding:5px 12px; font-weight:900; font-size:13.5px; }
+  .gfilter button.on { background:var(--p); }
+  .opt .gm { font-size:10px; margin-left:1px; }
   .gate-cards .tcard:nth-child(1) { transform:rotate(-8deg) translateX(18px); }
   .gate-cards .tcard:nth-child(2) { transform:translateY(-10px); z-index:2; }
   .gate-cards .tcard:nth-child(3) { transform:rotate(8deg) translateX(-18px); }
@@ -494,201 +515,271 @@ function pickVerses(texts, seed, fruitId, n = 2) {
 }
 
 /* ======================================================================
-   캐릭터 (조립식 SVG) - 동물 · 머리 · 눈 · 입 · 얼굴 · 소품 · 옷 · 배경
+   캐릭터 (조립식 SVG) v4 - 2등신 말랑 캐릭터
+   동물 · 헤어 · 모자/장식 · 눈 · 입 · 얼굴 · 소품 · 옷 · 배경
+   (옵션 세 번째 값: "m" 남자 스타일, "f" 여자 스타일)
 ====================================================================== */
-const INK = "#1b1b1b";
+const INK = "#3a3634";
 const st = (w = 4, c = INK) => `stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
 const shade = (hex, p) => { const n = parseInt(hex.slice(1), 16); const f = (v) => Math.max(0, Math.min(255, Math.round(p < 0 ? v * (1 + p) : v + (255 - v) * p))); return "#" + [n >> 16, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, "0")).join(""); };
 const isDark = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 < 120; };
 
 const ANIMALS = [
-  { id: "lamb", name: "어린양", fur: "#f4dcc6", paw: "#fffdf6" }, { id: "lion", name: "사자", fur: "#f7c44b" },
-  { id: "fox", name: "여우", fur: "#f07f2e" }, { id: "bear", name: "곰", fur: "#9a6338" },
-  { id: "rabbit", name: "토끼", fur: "#ffffff" }, { id: "cat", name: "고양이", fur: "#fdf6ec" },
-  { id: "puppy", name: "강아지", fur: "#eab66f" }, { id: "panda", name: "판다", fur: "#ffffff" },
-  { id: "tiger", name: "호랑이", fur: "#f39a2e" }, { id: "koala", name: "코알라", fur: "#a9aebb" },
-  { id: "penguin", name: "펭귄", fur: "#2d3142", paw: "#2d3142" }, { id: "chick", name: "병아리", fur: "#ffd84a" },
+  { id: "lamb", name: "어린양", fur: "#fff3e6" }, { id: "lion", name: "사자", fur: "#ffd774" },
+  { id: "fox", name: "여우", fur: "#ffa25c" }, { id: "bear", name: "곰", fur: "#d39a6a" },
+  { id: "rabbit", name: "토끼", fur: "#ffffff" }, { id: "cat", name: "고양이", fur: "#fff8ef" },
+  { id: "puppy", name: "강아지", fur: "#f6d3a2" }, { id: "panda", name: "판다", fur: "#ffffff" },
+  { id: "tiger", name: "호랑이", fur: "#ffb85a" }, { id: "koala", name: "코알라", fur: "#cdd2de" },
+  { id: "penguin", name: "펭귄", fur: "#55607e" }, { id: "chick", name: "병아리", fur: "#ffe36e" },
+  { id: "hamster", name: "햄스터", fur: "#ffdcae" }, { id: "dino", name: "공룡", fur: "#a6e08e" },
 ];
 const ANIM = Object.fromEntries(ANIMALS.map((a) => [a.id, a]));
-const HEADS = [["none","없음"],["bangs","앞머리"],["beanie","비니"],["cap","볼캡"],["ribbon","리본"],["flowers","꽃화관"],["headphone","헤드폰"],["straw","밀짚모자"],["halo","천사링"],["crown","왕관"]];
-const EYES = [["dot","동글"],["happy","웃음"],["sparkle","반짝"],["wink","윙크"],["sleepy","졸린"],["big","초롱"]];
-const MOUTHS = [["smile","미소"],["open","활짝"],["cat","냥입"],["o","오!"]];
-const FACES = [["none","없음"],["blush","볼터치"],["glasses","동글안경"],["sunglasses","선글라스"],["freckles","주근깨"],["bandaid","반창고"]];
-const ITEMS = [["none","없음"],["cross","십자가"],["bible","성경책"],["mic","찬양 마이크"],["guitar","기타"],["coffee","커피"],["dove","비둘기"],["bowtie","나비넥타이"],["badge","95 배지"]];
-const OUTFITS = [["knit","니트"],["hoodie","후드티"],["shirt","셔츠"],["praise","찬양팀 티"],["robe","성가대 가운"],["retreat","수련회 티"],["cardigan","카디건"],["overall","멜빵"]];
-const BGS = [["sky","하늘"],["sunset","노을"],["night","밤하늘"],["forest","숲"],["church","교회"],["glass","스테인드"],["camp","수련회"]];
-const COLORS = ["#ef4b4b","#ff8a3d","#ffd23f","#45b36b","#5db7f0","#a66be0","#f7a8c8","#f6f0e1","#2d3142","#8a5a2b"];
-const CARDS = ["#f6f0e1","#ffd23f","#a66be0","#f7a8c8","#9be3c9","#ff8a3d","#5db7f0"];
-const DEF = { animal: "lamb", head: "none", hc: "#ef4b4b", eyes: "dot", mouth: "smile", face: "blush", item: "none", outfit: "knit", color: "#ffd23f", bg: "sky", card: "#f6f0e1" };
+const HAIRS = [["none", "없음"], ["short", "짧은머리", "m"], ["side", "가르마", "m"], ["mushroom", "바가지"], ["bob", "단발", "f"], ["long", "긴머리", "f"], ["twin", "양갈래", "f"], ["pony", "포니테일", "f"], ["bun", "똥머리", "f"]];
+const HEADS = [["none", "없음"], ["beanie", "비니"], ["cap", "볼캡", "m"], ["ribbon", "리본", "f"], ["hairpin", "하트핀", "f"], ["headband", "머리띠", "f"], ["flowers", "꽃화관", "f"], ["headphone", "헤드폰"], ["straw", "밀짚모자"], ["halo", "천사링"], ["crown", "왕관"]];
+const EYES = [["dot", "동글"], ["happy", "웃음"], ["sparkle", "반짝"], ["wink", "윙크"], ["sleepy", "졸린"], ["big", "초롱"], ["lashes", "속눈썹", "f"], ["brow", "진한눈썹", "m"]];
+const MOUTHS = [["cat", "냥입"], ["smile", "미소"], ["open", "활짝"], ["o", "오!"], ["tongue", "메롱"]];
+const FACES = [["none", "없음"], ["blush", "왕볼터치"], ["heart", "하트볼", "f"], ["glasses", "동글안경"], ["sunglasses", "선글라스"], ["freckles", "주근깨"], ["bandaid", "반창고"], ["mustache", "콧수염", "m"], ["earrings", "귀걸이", "f"]];
+const ITEMS = [["none", "없음"], ["cross", "십자가"], ["bible", "성경책"], ["mic", "찬양 마이크"], ["guitar", "기타"], ["coffee", "커피"], ["dove", "비둘기"], ["bowtie", "나비넥타이"], ["necktie", "넥타이", "m"], ["backpack", "책가방", "m"], ["pearl", "진주목걸이", "f"], ["bag", "핸드백", "f"], ["bouquet", "꽃다발", "f"], ["badge", "95 배지"]];
+const OUTFITS = [["knit", "니트"], ["hoodie", "후드티"], ["shirt", "셔츠"], ["suit", "정장", "m"], ["dress", "원피스", "f"], ["praise", "찬양팀 티"], ["robe", "성가대 가운"], ["retreat", "수련회 티"], ["cardigan", "카디건"], ["overall", "멜빵"]];
+const BGS = [["sun", "햇살"], ["sky", "하늘"], ["sunset", "노을"], ["night", "밤하늘"], ["forest", "숲"], ["church", "교회"], ["glass", "스테인드"], ["camp", "수련회"]];
+const COLORS = ["#ff7b7b", "#ffa25c", "#ffd23f", "#7ccf86", "#7cc8f5", "#b49af0", "#ffb3cf", "#fffaf0", "#55607e", "#a8754a"];
+const HAIRC = ["#3a3634", "#6b4430", "#a8754a", "#e3b25a", "#f6dcb0", "#ff9dbf", "#8fb6ff", "#ffffff"];
+const CARDS = ["#ffd23f", "#c9a6f0", "#7cc8f5", "#8fdc8a", "#ff9a52", "#ffc2d8", "#d2a77e", "#9ee8d6"];
+const DEF = { animal: "lamb", hair: "none", hcol: "#6b4430", head: "none", hc: "#ff7b7b", eyes: "dot", mouth: "cat", face: "none", item: "none", outfit: "knit", color: "#ffd23f", bg: "sun", card: "#ffd23f", gender: "" };
+const GENDER_PRESET = { m: { hair: "short", eyes: "dot" }, f: { hair: "bob", eyes: "lashes" } };
 
 function defaultAvatar(name) {
   const h = hashOf(name || "?"), p = (arr, k) => arr[(h >>> k) % arr.length];
-  return { animal: p(ANIMALS, 0).id, head: p(HEADS, 3)[0], hc: p(COLORS, 5), eyes: p(EYES, 7)[0], mouth: p(MOUTHS, 9)[0], face: p(FACES, 11)[0],
-    item: p(ITEMS, 13)[0], outfit: p(OUTFITS, 15)[0], color: p(COLORS, 17), bg: p(BGS, 19)[0], card: p(CARDS, 21) };
+  return { animal: p(ANIMALS, 0).id, hair: "none", hcol: p(HAIRC, 2), head: p(HEADS, 3)[0], hc: p(COLORS, 5), eyes: p(EYES.slice(0, 6), 7)[0], mouth: p(MOUTHS, 9)[0],
+    face: "none", item: p(ITEMS, 13)[0], outfit: p(OUTFITS, 15)[0], color: p(COLORS, 17), bg: p(BGS, 19)[0], card: p(CARDS, 21), gender: "" };
 }
-function randomAvatar() {
-  const r = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  return { animal: r(ANIMALS).id, head: r(HEADS)[0], hc: r(COLORS), eyes: r(EYES)[0], mouth: r(MOUTHS)[0], face: r(FACES)[0],
-    item: r(ITEMS)[0], outfit: r(OUTFITS)[0], color: r(COLORS), bg: r(BGS)[0], card: r(CARDS) };
+function randomAvatar(g) {
+  const r = (arr) => { const ok = arr.filter((o) => !Array.isArray(o) || !o[2] || !g || o[2] === g); return ok[Math.floor(Math.random() * ok.length)]; };
+  return { animal: r(ANIMALS).id, hair: g ? r(HAIRS.filter((x) => x[0] !== "none"))[0] : r(HAIRS)[0], hcol: r(HAIRC), head: r(HEADS)[0], hc: r(COLORS), eyes: r(EYES)[0], mouth: r(MOUTHS)[0],
+    face: r(FACES)[0], item: r(ITEMS)[0], outfit: r(OUTFITS)[0], color: r(COLORS), bg: r(BGS)[0], card: r(CARDS), gender: g || "" };
 }
 
 const star4 = (x, y, s, c = "#fff6d8") => `<path d="M${x} ${y - s} L${x + s * 0.3} ${y - s * 0.3} L${x + s} ${y} L${x + s * 0.3} ${y + s * 0.3} L${x} ${y + s} L${x - s * 0.3} ${y + s * 0.3} L${x - s} ${y} L${x - s * 0.3} ${y - s * 0.3}Z" fill="${c}"/>`;
+const RAYS = { sun: ["#ffe08a", "#fff1c4"], sky: ["#a9dcff", "#d8efff"], sunset: ["#ffbf94", "#ffe2cc"], night: ["#6a59ad", "#8574c4"], forest: ["#bfe7ad", "#e1f5d6"],
+  church: ["#ffc2d8", "#ffe4ee"], camp: ["#86ccae", "#b6e3cf"] };
 function bgSVG(id) {
-  const r = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" ${st(3.5)}/>`;
-  switch (id) {
-    case "sunset": return `<rect width="200" height="240" fill="#ffb36b"/><rect y="150" width="200" height="90" fill="#ff8a5c"/><circle cx="158" cy="56" r="24" fill="#ef4b4b" ${st()}/><path d="M16 64 h36 M26 78 h30" ${st(4, "#fff3d6")}/>`;
-    case "night": return `<rect width="200" height="240" fill="#5b3f8c"/><path d="M48 20 a22 22 0 1 0 18 36 a17 17 0 1 1 -18 -36z" fill="#ffd23f" ${st()}/>${star4(152, 34, 8)}${star4(178, 78, 5)}${star4(128, 70, 4)}${star4(24, 104, 5)}`;
-    case "forest": return `<rect width="200" height="240" fill="#a8e0a6"/><path d="M-6 80 Q26 30 72 44 Q40 86 -6 80Z" fill="#45b36b" ${st()}/><path d="M206 62 Q172 16 126 32 Q160 74 206 62Z" fill="#2f9a57" ${st()}/><path d="M8 72 L54 50 M196 54 L148 36" ${st(3)}/>`;
-    case "church": return `<rect width="200" height="240" fill="#f7a8c8"/><path d="M168 14 v20 M160 22 h16" ${st(4.5)}/><path d="M144 62 L168 36 L192 62Z" fill="#ef4b4b" ${st()}/><rect x="149" y="60" width="38" height="50" fill="#fff" ${st()}/><path d="M161 110 v-15 a7 7 0 0 1 14 0 v15" fill="#ffd23f" ${st(3)}/><circle cx="36" cy="40" r="14" fill="#fff6d8" ${st(3.5)}/>`;
-    case "glass": return `<rect width="200" height="240" fill="#5db7f0"/>${r(-4, -4, 74, 70, "#ffd23f")}${r(70, -4, 62, 52, "#ef4b4b")}${r(132, -4, 72, 70, "#45b36b")}${r(-4, 66, 48, 86, "#a66be0")}${r(156, 66, 48, 86, "#ff8a3d")}${r(70, 48, 62, 26, "#f7a8c8")}`;
-    case "camp": return `<rect width="200" height="240" fill="#2f6f5e"/>${star4(36, 26, 5)}${star4(74, 16, 4)}${star4(156, 22, 6)}<path d="M2 150 L40 82 L78 150Z" fill="#ff8a3d" ${st()}/><path d="M40 150 L40 106 L56 150" fill="#c4473f" ${st(3)}/><circle cx="166" cy="62" r="14" fill="#fff6d8" ${st(3.5)}/>`;
-    default: return `<rect width="200" height="240" fill="#8fd3f4"/><circle cx="38" cy="42" r="18" fill="#ffd23f" ${st()}/><path d="M128 62 a10 10 0 0 1 6 -19 a14 14 0 0 1 26 -5 a11 11 0 0 1 18 10 a9 9 0 0 1 -2 14 z" fill="#fff" ${st(3.5)}/>`;
+  const n = 16, cx = 100, cy = 150, R = 300;
+  const pal = RAYS[id] || RAYS.sun;
+  const glass = ["#ffd86a", "#ff9d9d", "#93d99e", "#9fd3fa", "#c8adf2", "#ffb984", "#ffc2d8", "#9ee8d6"];
+  let s = `<rect width="200" height="240" fill="${id === "glass" ? "#fff6e0" : pal[1]}"/>`;
+  for (let i = 0; i < n; i++) {
+    if (id !== "glass" && i % 2) continue;
+    const a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2;
+    s += `<path d="M${cx} ${cy} L${(cx + Math.cos(a0) * R).toFixed(1)} ${(cy + Math.sin(a0) * R).toFixed(1)} L${(cx + Math.cos(a1) * R).toFixed(1)} ${(cy + Math.sin(a1) * R).toFixed(1)}Z" fill="${id === "glass" ? glass[i % glass.length] : pal[0]}"/>`;
   }
-}
-
-function bodySVG(a) {
-  const c = a.color, d = shade(c, -0.25), lt = isDark(c) ? "#fff" : INK;
-  let s = `<path d="M14 246 C18 192 56 158 100 156 C144 158 182 192 186 246 Z" fill="${c}" ${st()}/>`;
-  const crew = `<path d="M76 160 Q100 182 124 160" fill="none" ${st(4)}/>`;
-  switch (a.outfit) {
-    case "hoodie": s += `<path d="M58 166 Q100 144 142 166 Q134 194 100 194 Q66 194 58 166Z" fill="${d}" ${st(3)}/><path d="M90 190 L88 214 M110 190 L112 214" ${st(3)}/><circle cx="88" cy="216" r="3.5" fill="#fff" ${st(2)}/><circle cx="112" cy="216" r="3.5" fill="#fff" ${st(2)}/><path d="M66 246 L76 224 H124 L134 246" fill="none" ${st(3)}/>`; break;
-    case "shirt": { const tie = c === "#ef4b4b" ? "#2d3142" : "#ef4b4b"; s += `<path d="M78 158 L100 208 L122 158Z" fill="#fff" ${st(3)}/><path d="M96 170 L104 170 L108 200 L100 210 L92 200Z" fill="${tie}" ${st(3)}/><path d="M80 158 L101 167 L88 182Z M120 158 L99 167 L112 182Z" fill="#fff" ${st(3)}/>`; break; }
-    case "praise": s += crew + `<path d="M122 222 V196 L140 191 V216" fill="none" ${st(4, lt)}/><circle cx="118" cy="222" r="5.5" fill="${lt}"/><circle cx="136" cy="216" r="5.5" fill="${lt}"/>`; break;
-    case "robe": s += `<path d="M76 162 L86 246 H100 L93 164Z" fill="#ffd23f" ${st(3)}/><path d="M124 162 L114 246 H100 L107 164Z" fill="#ffd23f" ${st(3)}/><path d="M89 220 v14 M84 226 h10 M111 220 v14 M106 226 h10" ${st(2.5)}/><path d="M80 158 Q100 172 120 158" fill="#fff" ${st(3)}/>`; break;
-    case "retreat": s += crew + `<rect x="85" y="194" width="30" height="30" rx="5" fill="#fff" ${st(3)}/><path d="M100 199 v20 M92 206 h16" ${st(4)}/><path d="M34 236 L44 214 M166 236 L156 214" ${st(3, lt)}/>`; break;
-    case "cardigan": s += `<path d="M82 158 L100 214 L118 158Z" fill="#fff" ${st(3)}/><path d="M100 214 V246" ${st(3)}/><circle cx="108" cy="222" r="3.5" fill="${lt}"/><circle cx="108" cy="236" r="3.5" fill="${lt}"/><path d="M40 246 Q44 212 62 196" fill="none" ${st(3, d)}/><path d="M160 246 Q156 212 138 196" fill="none" ${st(3, d)}/>`; break;
-    case "overall": s += `<path d="M76 206 L68 170 M124 206 L132 170" ${st(10)}/><path d="M76 206 L68 170 M124 206 L132 170" ${st(5, "#4a78c2")}/><path d="M66 246 V204 H134 V246Z" fill="#4a78c2" ${st(3)}/><circle cx="76" cy="210" r="4" fill="#ffd23f" ${st(2)}/><circle cx="124" cy="210" r="4" fill="#ffd23f" ${st(2)}/><path d="M86 220 h28 v14 h-28z" fill="none" ${st(2.5)}/>`; break;
-    default: s += `<path d="M70 159 Q100 196 130 159 Q100 180 70 159Z" fill="${d}" ${st(3)}/>` + [40, 54, 68, 82, 96, 110, 124, 138, 152].map((x) => `<path d="M${x} 230 v12" ${st(2.5, d)}/>`).join("");
-  }
+  s += `<circle cx="${cx}" cy="${cy}" r="62" fill="#fffaf0" opacity="${id === "night" ? 0.18 : 0.5}"/>`;
+  if (id === "night") s += `<path d="M38 18 a17 17 0 1 0 14 28 a13 13 0 1 1 -14 -28z" fill="#ffe36e" ${st(3)}/>${star4(160, 26, 7)}${star4(178, 64, 4)}${star4(22, 80, 4)}`;
+  if (id === "sky") s += `<path d="M138 46 a8 8 0 0 1 5 -15 a11 11 0 0 1 21 -4 a9 9 0 0 1 14 8 a7 7 0 0 1 -2 11z" fill="#fff" ${st(3)}/>`;
+  if (id === "sunset") s += `<circle cx="160" cy="40" r="17" fill="#ff7b7b" ${st(3)}/>`;
+  if (id === "forest") s += `<path d="M-4 40 Q20 6 56 18 Q30 50 -4 40Z" fill="#6cc07f" ${st(3)}/><path d="M204 30 Q178 -2 144 10 Q170 42 204 30Z" fill="#5bb06e" ${st(3)}/>`;
+  if (id === "church") s += `<path d="M168 8 v14 M162 14 h12" ${st(3.5)}/><path d="M152 42 L168 26 L184 42Z" fill="#ff7b7b" ${st(3)}/><rect x="155" y="41" width="26" height="30" fill="#fff" ${st(3)}/><path d="M163 71 v-9 a5 5 0 0 1 10 0 v9" fill="#ffd23f" ${st(2.5)}/>`;
+  if (id === "camp") s += `${star4(30, 22, 5)}${star4(64, 12, 4)}${star4(168, 20, 6)}<path d="M6 92 L30 50 L54 92Z" fill="#ffa25c" ${st(3)}/>`;
+  if (id === "sun") s += `<circle cx="34" cy="34" r="14" fill="#ffd23f" ${st(3)}/>`;
   return s;
 }
 
+/* 몸: 동그란 2등신, 짧은 팔다리 */
+const BODYP = "M64 216 C58 186 70 146 100 143 C130 146 142 186 136 216 Q100 224 64 216Z";
+function bodySVG(a, fur) {
+  const c = a.color, d = shade(c, -0.18), lt = isDark(c) ? "#fff" : INK;
+  const armL = `<path d="M72 162 Q50 172 48 194 Q54 205 64 198 Q67 184 80 176Z" fill="${c}" ${st()}/><circle cx="54" cy="199" r="8.5" fill="${fur}" ${st(3.5)}/>`;
+  let s = armL + `<g transform="translate(200 0) scale(-1 1)">${armL}</g>`;
+  s += `<path d="${BODYP}" fill="${c}" ${st()}/>`;
+  switch (a.outfit) {
+    case "hoodie": s += `<path d="M90 152 L88 176 M110 152 L112 176" ${st(2.5)}/><circle cx="88" cy="178" r="3" fill="#fff" ${st(2)}/><circle cx="112" cy="178" r="3" fill="#fff" ${st(2)}/><path d="M80 192 H120 V204 Q100 210 80 204Z" fill="${d}" ${st(3)}/>`; break;
+    case "shirt": s += `<path d="M84 148 L100 160 L92 170Z M116 148 L100 160 L108 170Z" fill="#fff" ${st(3)}/><path d="M100 160 V214" ${st(2.5)}/>` + [176, 192, 206].map((y) => `<circle cx="105" cy="${y}" r="2.3" fill="${lt}"/>`).join(""); break;
+    case "suit": s += `<path d="M86 146 L100 178 L114 146Z" fill="#fff" ${st(3)}/><path d="M97 152 h6 l3 16 l-6 7 l-6 -7z" fill="#ff6b6b" ${st(2.5)}/><path d="M86 146 L96 184 M114 146 L104 184" fill="none" ${st(3)}/><circle cx="100" cy="196" r="2.6" fill="${lt}"/><circle cx="100" cy="207" r="2.6" fill="${lt}"/>`; break;
+    case "dress": s += `<path d="M68 190 Q100 198 132 190 L146 216 Q100 230 54 216Z" fill="${c}" ${st()}/>` + [60, 72, 84, 96, 108, 120, 132, 142].map((x, i) => `<circle cx="${x}" cy="${217 + (i === 0 || i === 7 ? -2 : 1.5)}" r="5.5" fill="#fff" ${st(2.5)}/>`).join("") + `<path d="M84 148 Q92 160 100 154 Q108 160 116 148" fill="#fff" ${st(3)}/><path d="M100 168 l-9 -5 v10z M100 168 l9 -5 v10z" fill="${d}" ${st(2.5)}/>`; break;
+    case "praise": s += `<path d="M106 196 V176 L120 172 V192" fill="none" ${st(3.5, lt)}/><circle cx="102" cy="196" r="4.5" fill="${lt}"/><circle cx="116" cy="192" r="4.5" fill="${lt}"/><path d="M84 150 Q100 162 116 150" fill="none" ${st(3)}/>`; break;
+    case "robe": s += `<path d="M84 148 L90 216 H100 L95 150Z M116 148 L110 216 H100 L105 150Z" fill="#ffd23f" ${st(3)}/><path d="M92 194 v12 M88 199 h8 M108 194 v12 M104 199 h8" ${st(2.3)}/>`; break;
+    case "retreat": s += `<rect x="88" y="174" width="24" height="24" rx="5" fill="#fff" ${st(3)}/><path d="M100 178 v16 M93 184 h14" ${st(3.5)}/><path d="M84 150 Q100 162 116 150" fill="none" ${st(3)}/>`; break;
+    case "cardigan": s += `<path d="M86 146 L100 190 L114 146Z" fill="#fff" ${st(3)}/><path d="M100 190 V216" ${st(2.5)}/><circle cx="107" cy="198" r="2.8" fill="${lt}"/><circle cx="107" cy="208" r="2.8" fill="${lt}"/>`; break;
+    case "overall": s += `<path d="M80 178 L76 152 M120 178 L124 152" ${st(9)}/><path d="M80 178 L76 152 M120 178 L124 152" ${st(4.5, "#5b8fd6")}/><path d="M70 214 Q68 194 72 178 H128 Q132 194 130 214 Q100 222 70 214Z" fill="#5b8fd6" ${st(3)}/><circle cx="80" cy="184" r="3.5" fill="#ffd23f" ${st(2)}/><circle cx="120" cy="184" r="3.5" fill="#ffd23f" ${st(2)}/><path d="M90 190 h20 v12 h-20z" fill="none" ${st(2.5)}/>`; break;
+    default: s += `<path d="M82 148 Q100 162 118 148" fill="none" ${st(7, d)}/><path d="M82 148 Q100 162 118 148" fill="none" ${st(2.5)}/>` + [76, 86, 96, 106, 116, 126].map((x) => `<path d="M${x} 206 v8" ${st(2.3, d)}/>`).join("");
+  }
+  s += `<ellipse cx="82" cy="218" rx="14" ry="8.5" fill="${fur}" ${st(3.5)}/><ellipse cx="118" cy="218" rx="14" ry="8.5" fill="${fur}" ${st(3.5)}/>`;
+  return s;
+}
+
+/* 머리: 아래가 살짝 넓은 찹쌀떡 모양 */
+const HEADP = "M100 50 C134 50 157 70 158 101 C159 133 137 153 100 153 C63 153 41 133 42 101 C43 70 66 50 100 50Z";
 function animalSVG(id) {
   const A = ANIM[id] || ANIM.lamb, f = A.fur;
-  const headEl = (fill) => `<ellipse cx="100" cy="112" rx="52" ry="47" fill="${fill}" ${st()}/>`;
+  const headEl = (fill) => `<path d="${HEADP}" fill="${fill}" ${st()}/>`;
   const mirror = (svg) => `<g transform="translate(200 0) scale(-1 1)">${svg}</g>`;
-  let back = "", head = headEl(f), over = "", nose = `<path d="M93 125 Q100 120 107 125 Q104 133 100 133 Q96 133 93 125Z" fill="${INK}"/>`, beak = false, eyeC = INK;
+  let back = "", head = headEl(f), over = "", nose = "", beak = false, eyeC = INK, paw = f;
   switch (id) {
     case "lamb": {
-      back = `<ellipse cx="47" cy="110" rx="20" ry="9" transform="rotate(-25 47 110)" fill="${f}" ${st()}/>` + mirror(`<ellipse cx="47" cy="110" rx="20" ry="9" transform="rotate(-25 47 110)" fill="${f}" ${st()}/>`);
-      const w = [[66, 76, 15], [83, 64, 16], [100, 60, 16], [117, 64, 16], [134, 76, 15], [56, 92, 11], [144, 92, 11]];
-      over = w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fffdf6" ${st()}/>`).join("") + w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r - 2.3}" fill="#fffdf6"/>`).join("");
-      nose = `<path d="M94 126 Q100 122 106 126 Q103 132 100 132 Q97 132 94 126Z" fill="#c4677a"/>`;
+      back = mirror(`<ellipse cx="44" cy="104" rx="17" ry="9" transform="rotate(-24 44 104)" fill="#ffd2dc" ${st()}/>`) + `<ellipse cx="44" cy="104" rx="17" ry="9" transform="rotate(-24 44 104)" fill="#ffd2dc" ${st()}/>`;
+      const w = [[66, 64, 13], [80, 54, 14], [100, 50, 15], [120, 54, 14], [134, 64, 13], [90, 62, 11], [110, 62, 11]];
+      over = w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fffdf8" ${st(3.5)}/>`).join("") + w.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r - 2}" fill="#fffdf8"/>`).join("");
       break; }
     case "lion": {
-      const pts = Array.from({ length: 14 }, (_, i) => { const t = (i / 14) * Math.PI * 2; return [100 + Math.cos(t) * 58, 112 + Math.sin(t) * 54]; });
-      back = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="20" fill="#e8892b" ${st()}/>`).join("") + `<ellipse cx="100" cy="112" rx="60" ry="56" fill="#e8892b"/>`
-        + pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="17.7" fill="#e8892b"/>`).join("")
-        + `<circle cx="64" cy="74" r="12" fill="${f}" ${st()}/><circle cx="136" cy="74" r="12" fill="${f}" ${st()}/>`;
-      head += `<ellipse cx="100" cy="134" rx="22" ry="14" fill="#fde7ac" ${st(3)}/>`;
+      const pts = Array.from({ length: 16 }, (_, i) => { const t = (i / 16) * Math.PI * 2; return [100 + Math.cos(t) * 60, 104 + Math.sin(t) * 57]; });
+      back = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="17" fill="#f0a04b" ${st()}/>`).join("") + `<ellipse cx="100" cy="104" rx="61" ry="58" fill="#f0a04b"/>`
+        + pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="#f0a04b"/>`).join("") + `<circle cx="64" cy="62" r="11" fill="${f}" ${st(3.5)}/><circle cx="136" cy="62" r="11" fill="${f}" ${st(3.5)}/>`;
       break; }
-    case "fox":
-      back = `<path d="M56 92 L58 34 L96 70Z" fill="${f}" ${st()}/><path d="M64 82 L65 50 L86 70Z" fill="#fff4e3"/>` + mirror(`<path d="M56 92 L58 34 L96 70Z" fill="${f}" ${st()}/><path d="M64 82 L65 50 L86 70Z" fill="#fff4e3"/>`);
-      head += `<path d="M49 112 Q58 156 100 158 Q142 156 151 112 Q130 140 100 136 Q70 140 49 112Z" fill="#fff4e3" ${st(3)}/>`;
-      break;
-    case "bear":
-      back = `<circle cx="60" cy="74" r="17" fill="${f}" ${st()}/><circle cx="60" cy="74" r="8" fill="#d9a37a"/><circle cx="140" cy="74" r="17" fill="${f}" ${st()}/><circle cx="140" cy="74" r="8" fill="#d9a37a"/>`;
-      head += `<ellipse cx="100" cy="134" rx="22" ry="16" fill="#d9a37a" ${st(3)}/>`;
-      break;
-    case "rabbit":
-      back = `<ellipse cx="78" cy="42" rx="13" ry="35" transform="rotate(-8 78 42)" fill="${f}" ${st()}/><ellipse cx="78" cy="44" rx="6" ry="24" transform="rotate(-8 78 44)" fill="#f7a8c8"/>`
-        + mirror(`<ellipse cx="78" cy="42" rx="13" ry="35" transform="rotate(-8 78 42)" fill="${f}" ${st()}/><ellipse cx="78" cy="44" rx="6" ry="24" transform="rotate(-8 78 44)" fill="#f7a8c8"/>`);
-      nose = `<path d="M94 125 Q100 121 106 125 Q103 131 100 131 Q97 131 94 125Z" fill="#f08aa8" ${st(2)}/>`;
-      break;
-    case "cat":
-      back = `<path d="M54 90 L60 42 L92 68Z" fill="#ff8a3d" ${st()}/><path d="M146 90 L140 42 L108 68Z" fill="${f}" ${st()}/><path d="M138 54 L134 74 L118 68Z" fill="#f7a8c8"/>`;
-      head += `<path d="M52 104 Q56 72 88 66 Q84 92 58 112Z" fill="#ff8a3d"/><path d="M150 118 Q150 140 134 150 Q126 132 140 116Z" fill="#2d3142"/>` + headEl("none");
-      over = `<path d="M40 126 h20 M42 136 h18 M160 126 h-20 M158 136 h-18" ${st(2.5)}/>`;
-      nose = `<path d="M95 125 Q100 121 105 125 Q102 130 100 130 Q98 130 95 125Z" fill="#f08aa8" ${st(2)}/>`;
-      break;
-    case "puppy":
-      head += `<ellipse cx="120" cy="108" rx="15" ry="13" fill="#d79b55"/><ellipse cx="100" cy="134" rx="24" ry="16" fill="#fff3df" ${st(3)}/>`;
-      over = `<ellipse cx="52" cy="106" rx="15" ry="31" transform="rotate(18 52 106)" fill="#a8692f" ${st()}/>` + mirror(`<ellipse cx="52" cy="106" rx="15" ry="31" transform="rotate(18 52 106)" fill="#a8692f" ${st()}/>`);
-      break;
-    case "panda":
-      back = `<circle cx="60" cy="72" r="16" fill="${INK}"/><circle cx="140" cy="72" r="16" fill="${INK}"/>`;
-      head += `<ellipse cx="80" cy="113" rx="14" ry="17" transform="rotate(25 80 113)" fill="${INK}"/><ellipse cx="120" cy="113" rx="14" ry="17" transform="rotate(-25 120 113)" fill="${INK}"/>`;
+    case "fox": {
+      const ear = `<path d="M50 88 Q44 44 60 34 Q82 46 90 62Z" fill="${f}" ${st()}/><path d="M57 76 Q54 52 63 45 Q76 54 81 62Z" fill="#fff1e2"/>`;
+      back = ear + mirror(ear);
+      over = `<path d="M44 112 Q62 140 100 142 Q138 140 156 112 Q152 148 100 152 Q48 148 44 112Z" fill="#fff4e8"/>` + headEl("none");
+      nose = `<ellipse cx="100" cy="117" rx="4" ry="3" fill="${INK}"/>`;
+      break; }
+    case "bear": {
+      const ear = `<circle cx="58" cy="62" r="16" fill="${f}" ${st()}/><circle cx="58" cy="62" r="8" fill="#f2c39c"/>`;
+      back = ear + mirror(ear);
+      nose = `<ellipse cx="100" cy="117" rx="5" ry="3.5" fill="${INK}"/>`;
+      break; }
+    case "rabbit": {
+      const ear = `<ellipse cx="80" cy="34" rx="12" ry="30" transform="rotate(-10 80 34)" fill="${f}" ${st()}/><ellipse cx="80" cy="36" rx="5.5" ry="20" transform="rotate(-10 80 36)" fill="#ffc2d4"/>`;
+      back = ear + mirror(ear);
+      nose = `<path d="M96 116 Q100 113 104 116 Q102 119 100 119 Q98 119 96 116Z" fill="#ff8fb3"/>`;
+      break; }
+    case "cat": {
+      back = `<path d="M50 88 Q44 46 58 38 Q80 50 88 62Z" fill="#ffb36b" ${st()}/><path d="M150 88 Q156 46 142 38 Q120 50 112 62Z" fill="${f}" ${st()}/><path d="M144 76 Q148 54 141 48 Q128 56 124 62Z" fill="#ffc2d4"/>`;
+      head += `<path d="M44 98 Q48 64 82 56 Q78 84 50 106Z" fill="#ffb36b"/>` + headEl("none");
+      over = `<path d="M36 116 h14 M38 126 h12 M164 116 h-14 M162 126 h-12" ${st(2.5)}/>`;
+      nose = `<path d="M97 116 Q100 113 103 116 Q101 119 100 119 Q99 119 97 116Z" fill="#ff8fb3"/>`;
+      break; }
+    case "puppy": {
+      const ear = `<path d="M54 66 Q32 66 30 100 Q32 128 48 126 Q60 112 62 80Z" fill="#c98f5c" ${st()}/>`;
+      over = ear + mirror(ear);
+      nose = `<ellipse cx="100" cy="117" rx="5" ry="3.5" fill="${INK}"/>`;
+      break; }
+    case "panda": {
+      back = `<circle cx="60" cy="62" r="15" fill="${INK}"/><circle cx="140" cy="62" r="15" fill="${INK}"/>`;
+      over = `<ellipse cx="79" cy="110" rx="11" ry="13" transform="rotate(22 79 110)" fill="${INK}"/><ellipse cx="121" cy="110" rx="11" ry="13" transform="rotate(-22 121 110)" fill="${INK}"/>`;
+      nose = `<ellipse cx="100" cy="118" rx="4.5" ry="3" fill="${INK}"/>`;
       eyeC = "#fff";
-      break;
-    case "tiger":
-      back = `<circle cx="62" cy="74" r="15" fill="${f}" ${st()}/><circle cx="62" cy="74" r="7" fill="#fff4e3"/><circle cx="138" cy="74" r="15" fill="${f}" ${st()}/><circle cx="138" cy="74" r="7" fill="#fff4e3"/>`;
-      head += `<path d="M100 66 v14 M87 69 l4 11 M113 69 l-4 11 M49 106 h14 M50 118 h12 M151 106 h-14 M150 118 h-12" ${st(4)}/><ellipse cx="100" cy="134" rx="22" ry="15" fill="#fff4e3" ${st(3)}/>`;
-      break;
-    case "koala":
-      back = `<circle cx="52" cy="86" r="25" fill="${f}" ${st()}/><circle cx="52" cy="88" r="13" fill="#f2e6ee"/><circle cx="148" cy="86" r="25" fill="${f}" ${st()}/><circle cx="148" cy="88" r="13" fill="#f2e6ee"/>`;
-      nose = `<rect x="91" y="114" width="18" height="24" rx="9" fill="#2d3142" ${st(2.5)}/>`;
-      break;
+      break; }
+    case "tiger": {
+      const ear = `<circle cx="60" cy="64" r="14" fill="${f}" ${st()}/><circle cx="60" cy="64" r="7" fill="#fff1e2"/>`;
+      back = ear + mirror(ear);
+      head += `<path d="M100 54 v10 M89 57 l3 8 M111 57 l-3 8 M43 96 h10 M44 107 h9 M157 96 h-10 M156 107 h-9" ${st(3.5)}/>`;
+      nose = `<path d="M96 115 h8 l-4 4z" fill="#ff8fb3" ${st(2)}/>`;
+      break; }
+    case "koala": {
+      const ear = `<circle cx="46" cy="84" r="21" fill="${f}" ${st()}/><circle cx="46" cy="86" r="11" fill="#f8e8ef"/>`;
+      back = ear + mirror(ear);
+      nose = `<rect x="93" y="104" width="14" height="17" rx="7" fill="#5a5f70" ${st(2.5)}/>`;
+      break; }
     case "penguin":
-      head += `<path d="M100 82 Q120 70 136 92 Q150 120 130 146 Q112 160 100 152 Q88 160 70 146 Q50 120 64 92 Q80 70 100 82Z" fill="#fff" ${st(3)}/>`;
-      nose = `<path d="M89 126 L111 126 L100 141Z" fill="#ff8a3d" ${st(3)}/>`; beak = true;
+      over = `<path d="M100 74 Q116 62 132 78 Q150 104 138 130 Q124 148 100 146 Q76 148 62 130 Q50 104 68 78 Q84 62 100 74Z" fill="#fff" ${st(3)}/>`;
+      nose = `<path d="M92 116 L108 116 L100 126Z" fill="#ffa25c" ${st(2.5)}/>`; beak = true; paw = "#ffa25c";
       break;
     case "chick":
-      over = `<path d="M92 66 Q90 50 98 56 Q100 42 106 54 Q114 46 110 66" fill="${f}" ${st(3.5)}/>`;
-      nose = `<path d="M89 126 L111 126 L100 141Z" fill="#ff8a3d" ${st(3)}/>`; beak = true;
+      over = `<path d="M94 52 Q88 36 97 40 Q100 28 106 40 Q114 34 108 52" fill="${f}" ${st(3)}/>`;
+      nose = `<path d="M92 116 L108 116 L100 126Z" fill="#ffa25c" ${st(2.5)}/>`; beak = true; paw = "#ffa25c";
       break;
+    case "hamster": {
+      const ear = `<circle cx="64" cy="60" r="12" fill="${f}" ${st()}/><circle cx="64" cy="61" r="6" fill="#ffc2d4"/>`;
+      back = ear + mirror(ear);
+      over = `<path d="M54 116 Q100 160 146 116 Q144 148 100 152 Q56 148 54 116Z" fill="#fff7ec"/>` + headEl("none") + `<path d="M100 56 v14" ${st(4, "#e9b880")}/>`;
+      nose = `<ellipse cx="100" cy="116" rx="3.5" ry="2.5" fill="#ff8fb3"/>`;
+      break; }
+    case "dino": {
+      back = [[70, 56], [86, 46], [100, 43], [114, 46], [130, 56]].map(([x, y]) => `<path d="M${x - 9} ${y + 6} L${x} ${y - 12} L${x + 9} ${y + 6}Z" fill="#ffd36b" ${st(3.5)}/>`).join("");
+      nose = `<circle cx="95" cy="115" r="1.8" fill="${INK}"/><circle cx="105" cy="115" r="1.8" fill="${INK}"/>`;
+      break; }
   }
-  return { back, head, over, nose, beak, eyeC };
+  return { back, head, over, nose, beak, eyeC, paw };
 }
 
 function eyesSVG(type, c) {
+  const hl = c === INK ? "#fff" : INK;
+  const dot = (x) => `<ellipse cx="${x}" cy="110" rx="5.2" ry="6.6" fill="${c}"/><circle cx="${x + 1.8}" cy="107.4" r="1.9" fill="${hl}"/>`;
   const both = (fn) => fn(80) + fn(120);
   switch (type) {
-    case "happy": return both((x) => `<path d="M${x - 8} 115 Q${x} 104 ${x + 8} 115" fill="none" ${st(4, c)}/>`);
-    case "sparkle": return both((x) => `<circle cx="${x}" cy="112" r="7.5" fill="${c}"/><circle cx="${x + 2.5}" cy="109" r="2.6" fill="${c === INK ? "#fff" : INK}"/>`);
-    case "wink": return `<circle cx="80" cy="112" r="6.5" fill="${c}"/><path d="M112 114 Q120 106 128 114" fill="none" ${st(4, c)}/>`;
-    case "sleepy": return both((x) => `<path d="M${x - 8} 111 Q${x} 118 ${x + 8} 111" fill="none" ${st(4, c)}/>`);
-    case "big": return both((x) => `<circle cx="${x}" cy="111" r="10" fill="#fff" ${st(3)}/><circle cx="${x + 1}" cy="112" r="5.5" fill="${INK}"/><circle cx="${x + 3}" cy="109" r="1.8" fill="#fff"/>`);
-    default: return both((x) => `<circle cx="${x}" cy="112" r="6.5" fill="${c}"/>`);
+    case "happy": return both((x) => `<path d="M${x - 7} 112 Q${x} 103 ${x + 7} 112" fill="none" ${st(3.8, c)}/>`);
+    case "sparkle": return both((x) => `<ellipse cx="${x}" cy="110" rx="7" ry="8.4" fill="${c}"/><circle cx="${x + 2.4}" cy="106.5" r="2.8" fill="${hl}"/><circle cx="${x - 2.2}" cy="113.5" r="1.4" fill="${hl}"/>`);
+    case "wink": return dot(80) + `<path d="M113 111 Q120 104 127 111" fill="none" ${st(3.8, c)}/>`;
+    case "sleepy": return both((x) => `<path d="M${x - 7} 109 Q${x} 115 ${x + 7} 109" fill="none" ${st(3.8, c)}/>`);
+    case "big": return both((x) => `<circle cx="${x}" cy="109" r="9" fill="#fff" ${st(3)}/><circle cx="${x + 1}" cy="110" r="5" fill="${INK}"/><circle cx="${x + 2.6}" cy="107.5" r="1.7" fill="#fff"/>`);
+    case "lashes": return dot(80) + dot(120) + `<path d="M74 105 l-5 -4 M73 110 l-6 -1 M126 105 l5 -4 M127 110 l6 -1" ${st(2.5)}/>`;
+    case "brow": return dot(80) + dot(120) + `<path d="M72 97 L88 95 M112 95 L128 97" ${st(4.5)}/>`;
+    default: return dot(80) + dot(120);
   }
 }
 function mouthSVG(type) {
   switch (type) {
-    case "open": return `<path d="M89 139 Q100 157 111 139 Z" fill="#c4473f" ${st(3)}/>`;
-    case "cat": return `<path d="M88 139 Q94 146 100 139 Q106 146 112 139" fill="none" ${st(3.5)}/>`;
-    case "o": return `<ellipse cx="100" cy="143" rx="5" ry="6" fill="#c4473f" ${st(3)}/>`;
-    default: return `<path d="M90 139 Q100 149 110 139" fill="none" ${st(3.5)}/>`;
+    case "smile": return `<path d="M94 122 Q100 128 106 122" fill="none" ${st(3.2)}/>`;
+    case "open": return `<path d="M93 121 Q100 133 107 121Z" fill="#ff7a8a" ${st(3)}/>`;
+    case "o": return `<ellipse cx="100" cy="125" rx="3.8" ry="4.8" fill="#ff7a8a" ${st(2.8)}/>`;
+    case "tongue": return `<path d="M93 121 Q100 128 107 121" fill="none" ${st(3.2)}/><path d="M100 125 q1 7 6 4 q1 -3 -1 -5" fill="#ff7a8a" ${st(2.3)}/>`;
+    default: return `<path d="M92 121 Q96 126 100 122 Q104 126 108 121" fill="none" ${st(3.2)}/>`;
   }
+}
+function blushSVG(type) {
+  if (type === "heart") return [64, 136].map((x) => `<path d="M${x} 130 C${x - 12} 122 ${x - 8} 112 ${x} 119 C${x + 8} 112 ${x + 12} 122 ${x} 130Z" fill="#ff8fb3" opacity=".85"/>`).join("");
+  const r = type === "blush" ? 1.35 : 1;
+  return [64, 136].map((x) => `<ellipse cx="${x}" cy="124" rx="${(11 * r).toFixed(1)}" ry="${(7.5 * r).toFixed(1)}" fill="#ff9dbd" opacity=".85"/><path d="M${x - 5} 124 l3 -4 M${x} 125 l3 -4" ${st(1.8, "#fff")}/>`).join("");
 }
 function faceSVG(type) {
   switch (type) {
-    case "blush": return `<ellipse cx="66" cy="130" rx="10" ry="6" fill="#f78fa7" opacity=".8"/><ellipse cx="134" cy="130" rx="10" ry="6" fill="#f78fa7" opacity=".8"/>`;
-    case "glasses": return `<circle cx="80" cy="112" r="15" fill="#fff" fill-opacity=".25" ${st(4)}/><circle cx="120" cy="112" r="15" fill="#fff" fill-opacity=".25" ${st(4)}/><path d="M95 110 Q100 105 105 110 M65 108 L50 103 M135 108 L150 103" fill="none" ${st(4)}/>`;
-    case "sunglasses": return `<rect x="62" y="101" width="34" height="21" rx="9" fill="${INK}"/><rect x="104" y="101" width="34" height="21" rx="9" fill="${INK}"/><path d="M96 108 h8 M62 106 L50 102 M138 106 L150 102" ${st(4)}/><path d="M70 107 l8 -2 M112 107 l8 -2" ${st(2.5, "#fff")}/>`;
-    case "freckles": return [[66, 124], [73, 129], [62, 131], [134, 124], [127, 129], [138, 131]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#9a6338"/>`).join("");
-    case "bandaid": return `<g transform="rotate(-20 136 130)"><rect x="124" y="125" width="26" height="10" rx="5" fill="#f6d1a9" ${st(2.5)}/><circle cx="133" cy="130" r="1.2" fill="${INK}"/><circle cx="141" cy="130" r="1.2" fill="${INK}"/></g>`;
+    case "glasses": return `<circle cx="80" cy="110" r="13" fill="#fff" fill-opacity=".2" ${st(3.5)}/><circle cx="120" cy="110" r="13" fill="#fff" fill-opacity=".2" ${st(3.5)}/><path d="M93 108 Q100 103 107 108 M67 106 L52 101 M133 106 L148 101" fill="none" ${st(3.5)}/>`;
+    case "sunglasses": return `<rect x="64" y="100" width="31" height="19" rx="9" fill="${INK}"/><rect x="105" y="100" width="31" height="19" rx="9" fill="${INK}"/><path d="M95 107 h10 M64 104 L52 100 M136 104 L148 100" ${st(3.5)}/><path d="M71 106 l7 -2 M112 106 l7 -2" ${st(2.3, "#fff")}/>`;
+    case "freckles": return [[60, 117], [66, 113], [70, 119], [140, 117], [134, 113], [130, 119]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.9" fill="#b07a4a"/>`).join("");
+    case "bandaid": return `<g transform="rotate(-18 140 132)"><rect x="128" y="127" width="25" height="10" rx="5" fill="#f6d1a9" ${st(2.3)}/><circle cx="137" cy="132" r="1.1" fill="${INK}"/><circle cx="144" cy="132" r="1.1" fill="${INK}"/></g>`;
+    case "mustache": return `<path d="M100 120 Q92 114 84 120 Q88 126 100 122 Q112 126 116 120 Q108 114 100 120Z" fill="${INK}"/>`;
+    case "earrings": return `<circle cx="43" cy="122" r="3" fill="#ffd23f" ${st(2)}/><circle cx="43" cy="131" r="4.5" fill="#fff" ${st(2)}/><circle cx="157" cy="122" r="3" fill="#ffd23f" ${st(2)}/><circle cx="157" cy="131" r="4.5" fill="#fff" ${st(2)}/>`;
     default: return "";
+  }
+}
+function hairSVG(type, col) {
+  const fr = `<path d="M46 98 C48 62 72 46 100 46 C128 46 152 62 154 98 Q142 82 126 86 Q114 72 100 82 Q86 72 74 86 Q58 82 46 98Z" fill="${col}" ${st()}/>`;
+  switch (type) {
+    case "short": return { back: "", front: `<path d="M47 92 C47 60 72 45 100 45 C128 45 153 60 153 92 C140 76 120 72 100 74 C80 72 60 76 47 92Z" fill="${col}" ${st()}/><path d="M94 46 Q96 36 104 38" fill="none" ${st(3.5)}/>` };
+    case "side": return { back: "", front: `<path d="M45 96 C45 60 72 44 100 44 C130 44 155 62 155 94 C138 72 114 68 96 74 C80 80 64 84 45 96Z" fill="${col}" ${st()}/><path d="M118 47 Q110 60 104 72" fill="none" ${st(2.5)}/>` };
+    case "mushroom": return { back: "", front: `<path d="M43 104 C38 60 70 43 100 43 C130 43 162 60 157 104 Q150 90 140 94 Q130 84 120 94 Q110 84 100 94 Q90 84 80 94 Q70 84 60 94 Q50 90 43 104Z" fill="${col}" ${st()}/>` };
+    case "bob": return { back: `<path d="M38 102 C36 60 66 40 100 40 C134 40 164 60 162 102 L164 142 Q152 150 142 140 L58 140 Q48 150 36 142Z" fill="${col}" ${st()}/>`, front: fr };
+    case "long": return { back: `<path d="M38 100 C36 58 66 38 100 38 C134 38 164 58 162 100 L168 198 Q152 208 138 196 L62 196 Q48 208 32 198Z" fill="${col}" ${st()}/>`, front: fr };
+    case "twin": return { back: `<ellipse cx="34" cy="126" rx="15" ry="26" transform="rotate(14 34 126)" fill="${col}" ${st()}/><ellipse cx="166" cy="126" rx="15" ry="26" transform="rotate(-14 166 126)" fill="${col}" ${st()}/><circle cx="44" cy="102" r="6" fill="#ff7b7b" ${st(2.5)}/><circle cx="156" cy="102" r="6" fill="#ff7b7b" ${st(2.5)}/>`, front: fr };
+    case "pony": return { back: `<path d="M140 62 Q186 66 178 128 Q170 146 160 132 Q166 100 146 84Z" fill="${col}" ${st()}/><circle cx="146" cy="68" r="6" fill="#ff7b7b" ${st(2.5)}/>`, front: fr };
+    case "bun": return { back: `<circle cx="100" cy="38" r="17" fill="${col}" ${st()}/>`, front: fr + `<path d="M88 46 Q100 52 112 46" fill="none" ${st(4, "#ff7b7b")}/>` };
+    default: return { back: "", front: "" };
   }
 }
 function hatSVG(type, hc) {
-  const d = shade(hc, -0.25);
+  const d = shade(hc, -0.22);
   switch (type) {
     case "bangs": return `<path d="M58 88 Q66 62 100 60 Q134 62 142 88 Q130 78 120 90 Q112 76 100 90 Q88 76 80 90 Q70 78 58 88Z" fill="${hc}" ${st(3.5)}/>`;
-    case "beanie": return `<path d="M47 96 Q47 50 100 48 Q153 50 153 96Z" fill="${hc}" ${st()}/><rect x="43" y="86" width="114" height="17" rx="8" fill="${d}" ${st(3.5)}/><circle cx="100" cy="44" r="10" fill="#fff" ${st(3)}/>`;
-    case "cap": return `<path d="M51 92 Q53 50 100 50 Q147 50 149 92Z" fill="${hc}" ${st()}/><path d="M96 90 Q140 80 174 96 Q152 104 96 98Z" fill="${d}" ${st(3.5)}/><circle cx="100" cy="50" r="4" fill="${INK}"/>`;
-    case "ribbon": return `<path d="M136 66 L114 52 L117 82Z" fill="${hc}" ${st(3)}/><path d="M136 66 L158 52 L155 82Z" fill="${hc}" ${st(3)}/><circle cx="136" cy="67" r="7" fill="${d}" ${st(3)}/>`;
-    case "flowers": return [[58, 88], [72, 72], [90, 63], [110, 63], [128, 72], [142, 88]].map(([x, y], i) => {
-      const pc = [hc, "#fff", "#f7a8c8", "#ffd23f", "#fff", hc][i];
+    case "beanie": return `<path d="M46 94 Q46 44 100 42 Q154 44 154 94Z" fill="${hc}" ${st()}/><rect x="42" y="84" width="116" height="16" rx="8" fill="${d}" ${st(3.5)}/><circle cx="100" cy="38" r="10" fill="#fff" ${st(3)}/>`;
+    case "cap": return `<path d="M50 90 Q52 46 100 46 Q148 46 150 90Z" fill="${hc}" ${st()}/><path d="M96 88 Q140 78 174 94 Q152 102 96 96Z" fill="${d}" ${st(3.5)}/><circle cx="100" cy="47" r="4" fill="${INK}"/>`;
+    case "ribbon": return `<path d="M134 62 L112 48 L115 78Z" fill="${hc}" ${st(3)}/><path d="M134 62 L156 48 L153 78Z" fill="${hc}" ${st(3)}/><circle cx="134" cy="63" r="7" fill="${d}" ${st(3)}/>`;
+    case "hairpin": return `<path d="M132 74 C120 66 124 54 132 60 C140 54 144 66 132 74Z" fill="${hc}" ${st(3)}/><path d="M60 72 L74 62 M62 78 L76 68" ${st(3.5, "#ffd23f")}/>`;
+    case "headband": return `<path d="M46 92 Q48 52 100 50 Q152 52 154 92" fill="none" ${st(11)}/><path d="M46 92 Q48 52 100 50 Q152 52 154 92" fill="none" ${st(6, hc)}/>`;
+    case "flowers": return [[56, 90], [68, 70], [86, 58], [114, 58], [132, 70], [144, 90]].map(([x, y], i) => {
+      const pc = [hc, "#fff", "#ffb3cf", "#ffd23f", "#fff", hc][i];
       return [0, 72, 144, 216, 288].map((a) => `<circle cx="${(x + Math.cos((a * Math.PI) / 180) * 6).toFixed(1)}" cy="${(y + Math.sin((a * Math.PI) / 180) * 6).toFixed(1)}" r="5" fill="${pc}" ${st(2)}/>`).join("") + `<circle cx="${x}" cy="${y}" r="3.6" fill="#ffd23f" ${st(2)}/>`;
     }).join("");
-    case "headphone": return `<path d="M50 114 Q50 50 100 50 Q150 50 150 114" fill="none" ${st(11)}/><path d="M50 114 Q50 50 100 50 Q150 50 150 114" fill="none" ${st(5.5, hc)}/><rect x="38" y="96" width="22" height="36" rx="9" fill="${hc}" ${st(3.5)}/><rect x="140" y="96" width="22" height="36" rx="9" fill="${hc}" ${st(3.5)}/>`;
-    case "straw": return `<ellipse cx="100" cy="74" rx="76" ry="16" fill="#f2cf73" ${st()}/><path d="M63 74 Q65 34 100 34 Q135 34 137 74Z" fill="#f2cf73" ${st()}/><path d="M64 62 Q100 70 136 62 L136 72 Q100 80 64 72Z" fill="${hc}" ${st(3)}/>`;
-    case "halo": return `<ellipse cx="100" cy="42" rx="34" ry="9" fill="none" ${st(10)}/><ellipse cx="100" cy="42" rx="34" ry="9" fill="none" ${st(5, "#ffd23f")}/>`;
-    case "crown": return `<path d="M66 72 L70 40 L86 58 L100 32 L114 58 L130 40 L134 72Z" fill="#ffd23f" ${st()}/><circle cx="100" cy="62" r="5" fill="${hc}" ${st(2.5)}/><circle cx="80" cy="64" r="3.5" fill="#5db7f0" ${st(2)}/><circle cx="120" cy="64" r="3.5" fill="#5db7f0" ${st(2)}/>`;
+    case "headphone": return `<path d="M44 112 Q44 46 100 46 Q156 46 156 112" fill="none" ${st(11)}/><path d="M44 112 Q44 46 100 46 Q156 46 156 112" fill="none" ${st(5.5, hc)}/><rect x="32" y="96" width="22" height="34" rx="9" fill="${hc}" ${st(3.5)}/><rect x="146" y="96" width="22" height="34" rx="9" fill="${hc}" ${st(3.5)}/>`;
+    case "straw": return `<ellipse cx="100" cy="72" rx="76" ry="15" fill="#f4d47e" ${st()}/><path d="M63 72 Q65 32 100 32 Q135 32 137 72Z" fill="#f4d47e" ${st()}/><path d="M64 60 Q100 68 136 60 L136 70 Q100 78 64 70Z" fill="${hc}" ${st(3)}/>`;
+    case "halo": return `<ellipse cx="100" cy="34" rx="32" ry="8" fill="none" ${st(10)}/><ellipse cx="100" cy="34" rx="32" ry="8" fill="none" ${st(5, "#ffd23f")}/>`;
+    case "crown": return `<path d="M68 68 L72 36 L87 54 L100 30 L113 54 L128 36 L132 68Z" fill="#ffd23f" ${st()}/><circle cx="100" cy="58" r="5" fill="${hc}" ${st(2.5)}/><circle cx="81" cy="60" r="3.5" fill="#7cc8f5" ${st(2)}/><circle cx="119" cy="60" r="3.5" fill="#7cc8f5" ${st(2)}/>`;
     default: return "";
   }
 }
-function itemSVG(type, a) {
-  const paw = ANIM[a.animal]?.paw || ANIM[a.animal]?.fur || "#fff";
-  const pawEl = (x, y) => `<circle cx="${x}" cy="${y}" r="9" fill="${paw}" ${st(3)}/>`;
+function itemSVG(type, a, paw) {
+  const pawAt = (x, y) => `<circle cx="${x}" cy="${y}" r="8.5" fill="${paw}" ${st(3.5)}/>`;
   switch (type) {
-    case "cross": return `<path d="M80 158 Q100 192 120 158" fill="none" ${st(2.5, "#8a6d1d")}/><path d="M100 184 v24 M91 193 h18" ${st(8)}/><path d="M100 184 v24 M91 193 h18" ${st(4, "#ffd23f")}/>`;
-    case "bible": return `<g transform="rotate(-12 60 214)"><rect x="32" y="190" width="52" height="42" rx="4" fill="#7b3f2a" ${st()}/><path d="M38 228 h42" ${st(2, "#f6f0e1")}/><path d="M58 198 v20 M50 205 h16" ${st(3.5, "#ffd23f")}/></g>${pawEl(82, 222)}`;
-    case "mic": return `<path d="M146 232 L158 196" ${st(11)}/><path d="M146 232 L158 196" ${st(6, "#666")}/><circle cx="160" cy="186" r="13" fill="#c9ccd3" ${st(3.5)}/><path d="M152 182 h16 M151 189 h18" ${st(2)}/>${pawEl(150, 222)}`;
-    case "guitar": return `<path d="M88 210 L156 150" ${st(11)}/><path d="M88 210 L156 150" ${st(6, "#8a5a2b")}/><rect x="150" y="138" width="16" height="20" rx="3" transform="rotate(48 158 148)" fill="#8a5a2b" ${st(3)}/><ellipse cx="70" cy="222" rx="32" ry="25" fill="#d9893b" ${st()}/><circle cx="74" cy="219" r="8" fill="${INK}"/>${pawEl(112, 196)}`;
-    case "coffee": return `<rect x="132" y="194" width="32" height="38" rx="5" fill="#fff" ${st(3.5)}/><rect x="132" y="206" width="32" height="14" fill="#c08a5a" ${st(3)}/><path d="M140 186 q-4 -8 2 -14 M152 186 q-4 -8 2 -14" fill="none" ${st(3)}/>${pawEl(128, 222)}`;
-    case "dove": return `<path d="M178 160 l12 -4" ${st(3, "#45b36b")}/><ellipse cx="186" cy="157" rx="4" ry="2.5" fill="#45b36b"/><ellipse cx="160" cy="174" rx="18" ry="11" fill="#fff" ${st(3)}/><circle cx="176" cy="164" r="8" fill="#fff" ${st(3)}/><path d="M183 164 l6 2 l-6 2z" fill="#ff8a3d"/><circle cx="178" cy="162" r="1.6" fill="${INK}"/><path d="M150 172 Q160 162 168 174" fill="none" ${st(2.5)}/>`;
-    case "bowtie": { const bc = a.color === "#ef4b4b" ? "#ffd23f" : "#ef4b4b"; return `<path d="M100 164 L82 154 L82 176Z" fill="${bc}" ${st(3)}/><path d="M100 164 L118 154 L118 176Z" fill="${bc}" ${st(3)}/><circle cx="100" cy="165" r="5.5" fill="${shade(bc, -0.3)}" ${st(2.5)}/>`; }
-    case "badge": return `<circle cx="136" cy="206" r="15" fill="#ffd23f" ${st(3)}/><text x="136" y="211" text-anchor="middle" font-family="Black Han Sans, sans-serif" font-size="14" fill="${INK}">95</text>`;
+    case "cross": return `<path d="M84 150 Q100 170 116 150" fill="none" ${st(2.2, "#b8902a")}/><path d="M100 166 v20 M93 173 h14" ${st(8)}/><path d="M100 166 v20 M93 173 h14" ${st(4, "#ffd23f")}/>`;
+    case "bible": return `<g transform="rotate(-12 44 190)"><rect x="26" y="176" width="34" height="30" rx="4" fill="#8a4a32" ${st()}/><path d="M30 202 h26" ${st(2, "#f6f0e1")}/><path d="M43 182 v14 M37 187 h12" ${st(3.2, "#ffd23f")}/></g>${pawAt(58, 196)}`;
+    case "mic": return `<path d="M150 210 L158 180" ${st(10)}/><path d="M150 210 L158 180" ${st(5.5, "#777")}/><circle cx="160" cy="172" r="10" fill="#d6d9e0" ${st(3.5)}/><path d="M153 169 h14 M152 175 h16" ${st(2)}/>${pawAt(150, 198)}`;
+    case "guitar": return `<path d="M84 206 L156 150" ${st(10)}/><path d="M84 206 L156 150" ${st(5.5, "#8a5a2b")}/><ellipse cx="74" cy="204" rx="24" ry="18" fill="#e4a050" ${st()}/><circle cx="78" cy="202" r="6" fill="${INK}"/>${pawAt(54, 199)}${pawAt(128, 176)}`;
+    case "coffee": return `<rect x="142" y="178" width="22" height="26" rx="4" fill="#fff" ${st(3.5)}/><rect x="142" y="186" width="22" height="10" fill="#c08a5a" ${st(2.5)}/><path d="M148 172 q-3 -6 1 -10 M157 172 q-3 -6 1 -10" fill="none" ${st(2.5)}/>${pawAt(146, 200)}`;
+    case "dove": return `<path d="M168 128 l10 -3" ${st(3, "#45b36b")}/><ellipse cx="174" cy="125" rx="4" ry="2.4" fill="#6cc07f"/><ellipse cx="150" cy="140" rx="16" ry="10" fill="#fff" ${st(3)}/><circle cx="164" cy="131" r="7.5" fill="#fff" ${st(3)}/><path d="M171 131 l6 2 l-6 2z" fill="#ffa25c"/><circle cx="166" cy="129" r="1.5" fill="${INK}"/><path d="M140 138 Q150 128 158 140" fill="none" ${st(2.5)}/>`;
+    case "bowtie": { const bc = a.color === "#ff7b7b" ? "#ffd23f" : "#ff7b7b"; return `<path d="M100 154 L84 145 L84 164Z" fill="${bc}" ${st(3)}/><path d="M100 154 L116 145 L116 164Z" fill="${bc}" ${st(3)}/><circle cx="100" cy="155" r="5" fill="${shade(bc, -0.25)}" ${st(2.5)}/>`; }
+    case "necktie": return `<path d="M96 150 h8 l4 28 l-8 8 l-8 -8z" fill="#5b8fd6" ${st(3)}/><path d="M96 162 l10 -4 M95 172 l12 -5" ${st(2, "#fff")}/>`;
+    case "backpack": return `<path d="M78 150 L74 206 M122 150 L126 206" ${st(9)}/><path d="M78 150 L74 206 M122 150 L126 206" ${st(4.5, "#ff7b7b")}/>`;
+    case "pearl": return [-16, -11, -5.5, 0, 5.5, 11, 16].map((dx) => { const y = 152 + Math.cos((dx / 18) * (Math.PI / 2)) * 12; return `<circle cx="${100 + dx}" cy="${y.toFixed(1)}" r="3.6" fill="#fffdf6" ${st(1.8)}/>`; }).join("");
+    case "bag": return `<path d="M34 196 Q42 176 52 196" fill="none" ${st(3)}/><rect x="26" y="194" width="34" height="24" rx="6" fill="#ff9dbd" ${st(3.5)}/><circle cx="43" cy="204" r="3" fill="#ffd23f" ${st(2)}/>${pawAt(48, 192)}`;
+    case "bouquet": return `<path d="M146 210 L158 180 L172 204Z" fill="#fff" ${st(3)}/>` + [[152, 176, "#ff7b7b"], [164, 170, "#ffd23f"], [172, 182, "#ffb3cf"], [158, 186, "#b49af0"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="7" fill="${c}" ${st(2.5)}/><circle cx="${x}" cy="${y}" r="2.2" fill="#fff"/>`).join("") + pawAt(152, 202);
+    case "badge": return `<circle cx="120" cy="186" r="11" fill="#ffd23f" ${st(3)}/><text x="120" y="190.5" text-anchor="middle" font-family="Black Han Sans, sans-serif" font-size="11" fill="${INK}">95</text>`;
     default: return "";
   }
 }
@@ -696,11 +787,13 @@ function itemSVG(type, a) {
 const svgCache = new Map();
 function avatarSVG(a0, crop) {
   const a = { ...DEF, ...(a0 || {}) };
+  if (a.head === "bangs" && (!a0 || !a0.hair)) { a.hair = "mushroom"; a.hcol = a.hc; a.head = "none"; }
   const key = JSON.stringify(a) + crop;
   if (svgCache.has(key)) return svgCache.get(key);
-  const vb = crop === "face" ? "34 36 132 132" : "0 0 200 240";
+  const vb = crop === "face" ? "30 26 140 140" : "0 0 200 240";
   const an = animalSVG(a.animal);
-  const svg = `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${bgSVG(a.bg)}${bodySVG(a)}${an.back}${an.head}${an.over}${eyesSVG(a.eyes, an.eyeC)}${an.nose}${an.beak ? "" : mouthSVG(a.mouth)}${faceSVG(a.face)}${hatSVG(a.head, a.hc)}${itemSVG(a.item, a)}</svg>`;
+  const hr = hairSVG(a.hair, a.hcol);
+  const svg = `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${bgSVG(a.bg)}<ellipse cx="100" cy="226" rx="52" ry="7" fill="#000" opacity=".12"/>${hr.back}${bodySVG(a, an.paw)}${an.back}${an.head}${an.over}${blushSVG(a.face)}${eyesSVG(a.eyes, an.eyeC)}${an.nose}${an.beak ? "" : mouthSVG(a.mouth)}${faceSVG(a.face)}${hr.front}${hatSVG(a.head, a.hc)}${itemSVG(a.item, a, an.paw)}</svg>`;
   svgCache.set(key, svg);
   return svg;
 }
@@ -852,12 +945,13 @@ function useStats(P, G, M) {
     Object.values(S).forEach((s) => {
       s.streak = streakOf(s.days);
       const score = s.topics + s.thanks * 2 + s.inter + s.days.size;
+      s.score = score; s.lv = 1 + Math.floor(score / 5);
       s.stars = score >= 60 ? 4 : score >= 30 ? 3 : score >= 10 ? 2 : 1;
     });
     return S;
   }, [P, G, M]);
 }
-const EMPTY_STAT = { topics: 0, thanks: 0, answered: 0, inter: 0, streak: 0, stars: 1, days: new Set() };
+const EMPTY_STAT = { topics: 0, thanks: 0, answered: 0, inter: 0, streak: 0, stars: 1, score: 0, lv: 1, days: new Set() };
 
 /* ---------- 트레이딩 카드 ---------- */
 function TCard({ name, member, stat, big, ghost, mine, onClick, avatarOverride, mbti, fruit }) {
@@ -867,22 +961,22 @@ function TCard({ name, member, stat, big, ghost, mine, onClick, avatarOverride, 
   const mb = mbti !== undefined ? mbti : member?.mbti;
   const no = member?.no ? `NO.${String(member.no).padStart(3, "0")}` : "NO.???";
   const Tag = onClick ? "button" : "div";
-  return html`<${Tag} class=${"tcard" + (big ? " big" : "") + (ghost ? " ghost" : "") + (mine ? " mine" : "")} style=${{ "--cc": a.card || "#f6f0e1" }} onClick=${onClick}>
-    <div class="tc-top"><b>${name}</b><span class="tc-stars">${"★".repeat(s.stars)}<span style="opacity:.25">${"★".repeat(4 - s.stars)}</span></span></div>
-    <div class="tc-pic">
-      <${Av} a=${a} />
-      ${mb && html`<span class="tc-mbti">${mb}</span>`}
-      <span class="tc-anim">${ANIM[a.animal]?.name || ""}</span>
-      ${fr && html`<span class="tc-fruit" title=${fr.name}>${fr.emoji}</span>`}
-      ${ghost && html`<div class="ghost-tag"><span>입장 전</span></div>`}
+  const card = a.card === "#f6f0e1" ? "#ffd23f" : a.card || "#ffd23f";
+  return html`<${Tag} class=${"tcard" + (big ? " big" : "") + (ghost ? " ghost" : "") + (mine ? " mine" : "")} style=${{ "--cc": ghost ? "#e6e1d6" : card }} onClick=${onClick}>
+    <div class="tc-in">
+      <div class="tc-head"><span class="tc-badge">${mb || "새싹"}</span><b>${name}</b><span class="tc-lv"><small>LV</small>${s.lv || 1}</span></div>
+      <div class="tc-pic">
+        <${Av} a=${a} />
+        <span class="tc-anim">${ANIM[a.animal]?.name || ""}</span>
+        ${fr && html`<span class="tc-fruit" title=${fr.name}>${fr.emoji}</span>`}
+        ${ghost && html`<div class="ghost-tag"><span>입장 전</span></div>`}
+      </div>
+      <div class="tc-moves">
+        <div><span>🙏 기도제목</span><b>${s.topics}</b></div>
+        <div><span>🌼 감사·중보</span><b>${s.thanks + s.inter}</b></div>
+      </div>
+      <div class="tc-foot"><span class="tc-stars">${"★".repeat(s.stars)}<span style="opacity:.25">${"★".repeat(4 - s.stars)}</span></span><span>🔥${s.streak}일</span><b>${no}</b></div>
     </div>
-    <div class="tc-stats">
-      <span title="기도제목">🙏<em>${s.topics}</em></span>
-      <span title="감사일기">🌼<em>${s.thanks}</em></span>
-      <span title="중보·아멘">💌<em>${s.inter}</em></span>
-      <span title="연속 출석">🔥<em>${s.streak}</em></span>
-    </div>
-    <div class="tc-foot"><span>95 PRAYER TREE</span><b>${no}</b></div>
   </${Tag}>`;
 }
 
@@ -894,7 +988,7 @@ const TABS = [
   { id: "prayer", label: "기도", icon: "🙏" },
   { id: "thanks", label: "감사", icon: "🌼" },
   { id: "photo", label: "사진", icon: "📷" },
-  { id: "people", label: "동기", icon: "🃏" },
+  { id: "people", label: "이름·동기", icon: "🔎" },
 ];
 
 function App() {
@@ -1041,7 +1135,7 @@ function App() {
       ${tab === "thanks" && html`<${ListTab} kind="thanks" data=${G} ...${listProps} />`}
       ${tab === "photo" && html`<${PhotoTab} data=${PH} who=${who} setWho=${setWho} names=${names} limit=${photoLimit}
           onMore=${() => setPhotoLimit((n) => n + 30)} onOpen=${(p) => setLightId(p.id)} />`}
-      ${tab === "people" && html`<${PeopleTab} names=${names} members=${members} byName=${byName} stats=${stats} me=${me} onOpen=${(n) => setCardOf(n)} onEnter=${() => setGate("welcome")} />`}
+      ${tab === "people" && html`<${PeopleTab} names=${names} members=${members} byName=${byName} stats=${stats} me=${me} onOpen=${(n) => setCardOf(n)} onEnter=${() => setGate("welcome")} onEnterName=${(n) => setGate({ name: n })} />`}
 
       ${fab && html`<button class="fab" onClick=${() => openWrite(fab[0])}>${fab[1]}</button>`}
 
@@ -1073,6 +1167,25 @@ function App() {
     </div>`;
 }
 
+/* ---------- 이름 확인 ---------- */
+function similarNames(q, names) {
+  q = (q || "").trim(); if (!q) return [];
+  return names.filter((n) => n !== q && (n.includes(q) || q.includes(n) || (q.length >= 2 && n.length >= 2 && n.slice(-2) === q.slice(-2)))).slice(0, 8);
+}
+function NameCheck({ q, names, byName, stats, dark, onPick }) {
+  const n = (q || "").trim();
+  if (!n) return null;
+  const m = byName[n], s = stats[n], sim = similarNames(n, names);
+  const cnt = s ? `기도제목 ${s.topics}개 · 감사 ${s.thanks}개` : "";
+  return html`<div class=${dark ? "ncheck" : "box"} style=${dark ? null : { padding: "12px 14px", marginBottom: "12px", fontSize: "14.5px", lineHeight: 1.6 }}>
+    ${m ? html`✅ <b>${n}</b>님 카드가 있어요 (NO.${String(m.no || 0).padStart(3, "0")})${cnt && html`<br />${cnt}`}`
+      : names.includes(n) ? html`📝 <b>${n}</b>님 이름으로 쓴 글이 있어요 (${cnt}).<br />아직 캐릭터 카드만 없어요. 만들면 글이 내 카드로 연결돼요!`
+      : html`🌱 <b>${n}</b>님은 아직 없는 이름이에요. 처음 오셨다면 새 카드를 만들면 돼요.`}
+    ${!m && sim.length > 0 && html`<div style="margin-top:6px">혹시 이 이름인가요? (띄어쓰기나 오타를 확인해 주세요)</div>
+      <div class="sim" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${sim.map((x) => html`<button class=${dark ? "" : "chip"} onClick=${() => onPick(x)}>${x}${byName[x] ? " ✅" : ""}</button>`)}</div>`}
+  </div>`;
+}
+
 /* ---------- 입장 화면 ---------- */
 function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
   const [name, setName] = useState("");
@@ -1100,6 +1213,7 @@ function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
       placeholder="이름을 적어주세요" list="gate-names" autocomplete="off" />
     <datalist id="gate-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
     ${err && html`<p class="err" style="margin-top:-4px">${err}</p>`}
+    <${NameCheck} q=${name} names=${names} byName=${byName} stats=${stats} dark=${true} onPick=${(x) => { setName(x); setErr(""); }} />
     <button class="btn full" onClick=${go}>${byName[name.trim()] ? "내 카드로 입장 →" : "캐릭터 만들고 입장 →"}</button>
     <button class="skip" onClick=${onBrowse}>입장하지 않고 둘러보기</button>
     <p class="verse-mini">나는 포도나무요 너희는 가지라<br />그가 내 안에, 내가 그 안에 거하면 사람이 열매를 많이 맺나니<br />요한복음 15:5</p>
@@ -1107,7 +1221,7 @@ function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
 }
 
 /* ---------- 캐릭터 꾸미기 ---------- */
-const ED_TABS = [["animal", "동물"], ["head", "머리"], ["eyes", "눈"], ["mouth", "입"], ["face", "얼굴"], ["item", "소품"], ["outfit", "옷"], ["bg", "배경"], ["card", "카드색"], ["me", "MBTI·열매"]];
+const ED_TABS = [["animal", "동물"], ["hair", "헤어"], ["head", "모자·장식"], ["eyes", "눈"], ["mouth", "입"], ["face", "얼굴·액세"], ["item", "소품"], ["outfit", "옷"], ["bg", "배경"], ["card", "카드색"], ["me", "MBTI·열매"]];
 function Editor({ name, member, stat, onClose, onSave }) {
   const [a, setA] = useState(() => ({ ...DEF, ...(member?.avatar || defaultAvatar(name)) }));
   const [mbti, setMbti] = useState(member?.mbti || "");
@@ -1115,9 +1229,24 @@ function Editor({ name, member, stat, onClose, onSave }) {
   const [bio, setBio] = useState(member?.bio || "");
   const [t, setT] = useState("animal");
   const [busy, setBusy] = useState(false);
+  const [gf, setGf] = useState(() => (member?.avatar?.gender || ""));
   const set = (k, v) => setA({ ...a, [k]: v });
-  const opts = { animal: ANIMALS.map((x) => [x.id, x.name]), head: HEADS, eyes: EYES, mouth: MOUTHS, face: FACES, item: ITEMS, outfit: OUTFITS, bg: BGS }[t];
-  const cropOf = { eyes: "face", mouth: "face", face: "face", head: "face" }[t];
+  const all = { animal: ANIMALS.map((x) => [x.id, x.name]), hair: HAIRS, head: HEADS, eyes: EYES, mouth: MOUTHS, face: FACES, item: ITEMS, outfit: OUTFITS, bg: BGS }[t];
+  const opts = all && all.filter((o) => !gf || !o[2] || o[2] === gf);
+  const cropOf = { eyes: "face", mouth: "face", face: "face", head: "face", hair: "face" }[t];
+  function pickG(g) {
+    setGf(g);
+    const next = { ...a, gender: g };
+    if (g) {
+      // 반대 성별 전용 아이템은 기본값으로 되돌리기
+      const lists = { hair: HAIRS, head: HEADS, eyes: EYES, mouth: MOUTHS, face: FACES, item: ITEMS, outfit: OUTFITS };
+      Object.entries(lists).forEach(([k, list]) => { const cur = list.find((o) => o[0] === next[k]); if (cur && cur[2] && cur[2] !== g) next[k] = list[0][0]; });
+      const p = GENDER_PRESET[g];
+      if (next.hair === "none") next.hair = p.hair;
+      if (g === "f" && next.eyes === "dot") next.eyes = "lashes";
+    }
+    setA(next);
+  }
   async function save() {
     setBusy(true);
     try { await onSave({ avatar: a, mbti, fruit, bio: bio.trim() }); }
@@ -1128,12 +1257,16 @@ function Editor({ name, member, stat, onClose, onSave }) {
       <div class="grip"></div>
       <div class="sheet-h"><h3>${member ? "내 카드 꾸미기" : `${name}님의 캐릭터 만들기`}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
       <div class="editor-prev"><${TCard} name=${name} member=${member} stat=${stat} avatarOverride=${a} mbti=${mbti} fruit=${fruit} /></div>
+      <div class="gfilter"><span>스타일</span>
+        ${[["", "전체"], ["m", "👦 남자"], ["f", "👧 여자"]].map(([g, l]) => html`<button class=${gf === g ? "on" : ""} onClick=${() => pickG(g)}>${l}</button>`)}
+      </div>
       <div class="tabs">${ED_TABS.map(([k, l]) => html`<button class=${t === k ? "on" : ""} onClick=${() => setT(k)}>${l}</button>`)}</div>
       ${opts && html`<div class="opts">
-        ${opts.map(([id, label]) => html`<button class=${"opt" + (a[t] === id ? " on" : "")} onClick=${() => set(t, id)}>
-          <${Av} a=${{ ...a, [t]: id }} crop=${cropOf} />${label}</button>`)}
+        ${opts.map(([id, label, g]) => html`<button class=${"opt" + (a[t] === id ? " on" : "")} onClick=${() => set(t, id)}>
+          <${Av} a=${{ ...a, [t]: id }} crop=${cropOf} />${label}${g && !gf ? html`<span class="gm">${g === "m" ? "👦" : "👧"}</span>` : ""}</button>`)}
       </div>`}
-      ${t === "head" && html`<div class="sw-label">모자·머리 색</div><div class="swatches">${COLORS.map((c) => html`<button class=${a.hc === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("hc", c)} aria-label="색"></button>`)}</div>`}
+      ${t === "hair" && html`<div class="sw-label">머리 색</div><div class="swatches">${HAIRC.map((c) => html`<button class=${a.hcol === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("hcol", c)} aria-label="머리 색"></button>`)}</div>`}
+      ${t === "head" && html`<div class="sw-label">모자·장식 색</div><div class="swatches">${COLORS.map((c) => html`<button class=${a.hc === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("hc", c)} aria-label="색"></button>`)}</div>`}
       ${t === "outfit" && html`<div class="sw-label">옷 색</div><div class="swatches">${COLORS.map((c) => html`<button class=${a.color === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("color", c)} aria-label="색"></button>`)}</div>`}
       ${t === "card" && html`<div class="sw-label">카드 바탕색</div><div class="swatches">${CARDS.map((c) => html`<button class=${a.card === c ? "on" : ""} style=${{ background: c }} onClick=${() => set("card", c)} aria-label="카드색"></button>`)}</div>`}
       ${t === "me" && html`
@@ -1145,7 +1278,7 @@ function Editor({ name, member, stat, onClose, onSave }) {
         <div class="field" style="margin-top:16px"><label>한 줄 소개 (선택)</label>
           <input value=${bio} maxlength="40" onInput=${(e) => setBio(e.target.value)} placeholder="예) 찬양팀 기타 치는 ENFP 사자예요" /></div>`}
       <div class="editor-actions">
-        <button class="btn white" onClick=${() => setA({ ...randomAvatar(), card: a.card })}>🎲 랜덤</button>
+        <button class="btn white" onClick=${() => setA({ ...randomAvatar(gf), card: a.card })}>🎲 랜덤</button>
         <button class="btn" onClick=${save} disabled=${busy}>${busy ? "저장 중…" : member ? "저장하기" : "이 캐릭터로 입장하기 →"}</button>
       </div>
     </div>
@@ -1592,9 +1725,12 @@ function Lightbox({ p, can, onClose, onEdit, onDelete }) {
 }
 
 /* ---------- 동기 카드 도감 ---------- */
-function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter }) {
+function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter, onEnterName }) {
+  const [view, setView] = useState("check");
   const [q, setQ] = useState("");
+  const [cq, setCq] = useState("");
   const [sort, setSort] = useState("no");
+  const noCard = names.filter((n) => !byName[n]);
   const list = useMemo(() => {
     let arr = names.filter((n) => !q || n.includes(q.trim()));
     const sc = (n) => { const s = stats[n] || EMPTY_STAT; return s.topics + s.thanks * 2 + s.inter + s.days.size; };
@@ -1606,7 +1742,34 @@ function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter }) {
     });
     return arr;
   }, [names, q, sort, members, stats]);
+  const seg = html`<div class="seg"><button class=${view === "check" ? "on" : ""} onClick=${() => setView("check")}>🔎 내 이름 확인</button><button class=${view === "cards" ? "on" : ""} onClick=${() => setView("cards")}>🃏 카드 도감</button></div>`;
+  if (view === "check") {
+    const n = cq.trim();
+    const rows = n ? [...new Set([...(names.includes(n) ? [n] : []), ...similarNames(n, names)])] : [];
+    return html`<div class="wrap">
+      ${seg}
+      <div class="sec" style="margin-top:6px"><h2>🔎 내 이름이 있을까?</h2><small>${members.length} / ${TOTAL}명 입장</small></div>
+      <input class="select" style="background-image:none;font-size:17px" value=${cq} onInput=${(e) => setCq(e.target.value)} placeholder="내 이름을 적어보세요" />
+      <${NameCheck} q=${cq} names=${names} byName=${byName} stats=${stats} onPick=${setCq} />
+      ${rows.length > 0 && html`<div class="box" style="padding:4px 14px;margin-bottom:12px">
+        ${rows.map((x) => { const m = byName[x], s = stats[x] || EMPTY_STAT; return html`<div class="nrow">
+          <${Av} a=${m?.avatar || defaultAvatar(x)} crop="face" />
+          <div class="nm"><b>${x}${me && me.name === x ? " (나)" : ""}</b>
+            ${m ? html`<span class="pill ok">✅ 카드 있음 · NO.${String(m.no || 0).padStart(3, "0")}</span>` : html`<span class="pill data">📝 글 ${s.topics + s.thanks}개 · 카드 없음</span>`}</div>
+          <button class="mini" onClick=${() => onOpen(x)}>카드 보기</button></div>`; })}
+      </div>`}
+      ${n && !byName[n] && !me && html`<button class="btn full" onClick=${() => onEnterName(n)}>"${n}" 이름으로 캐릭터 만들기 →</button>`}
+      ${!n && html`<div class="box" style="padding:14px">
+        <b style="font-size:15px">📋 아직 카드가 없는 이름 ${noCard.length}명</b>
+        <p style="margin:4px 0 10px;color:var(--muted);font-size:13.5px">기도제목은 있지만 아직 입장하지 않은 동기예요. 내 이름이 있는지 눌러서 확인해 보세요.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">${noCard.length ? noCard.map((x) => html`<button class="chip" onClick=${() => setCq(x)}>${x}</button>`) : html`<span style="color:var(--muted)">모두 입장했어요! 🎉</span>`}</div>
+        <b style="font-size:15px;display:block;margin-top:16px">✅ 카드가 있는 동기 ${members.length}명</b>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${members.map((m) => html`<button class="chip on" onClick=${() => setCq(m.name)}>${m.name}</button>`)}</div>
+      </div>`}
+    </div>`;
+  }
   return html`<div class="wrap">
+    ${seg}
     <div class="sec" style="margin-top:4px"><h2>🃏 우리 공동체 카드</h2><small>${members.length} / ${TOTAL}명 입장</small></div>
     ${!me && html`<div class="box hello" style="background:var(--y);margin-bottom:12px"><div style="flex:1"><b>내 카드도 만들어 볼까요?</b><p>캐릭터를 꾸미고 우리 공동체에 입장해요.</p></div><button class="btn white" onClick=${onEnter}>입장</button></div>`}
     <input class="select" style="background-image:none" value=${q} onInput=${(e) => setQ(e.target.value)} placeholder="🔍 이름으로 찾기" />
