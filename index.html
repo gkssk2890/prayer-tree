@@ -347,6 +347,46 @@
   .lb-info { color:#eee; padding:14px 18px calc(18px + env(safe-area-inset-bottom)); font-size:15.5px; line-height:1.6; white-space:pre-wrap; }
   .lb-info small { color:#aaa; display:block; margin-bottom:4px; font-size:13px; }
 
+  /* 리액션 */
+  .rbar { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .rchip { border:2px solid var(--ink); background:#fff; border-radius:99px; padding:4px 10px; font-size:14px; font-weight:900; }
+  .rchip.on { background:#ffe3ee; border-color:#d9467f; color:#b3215f; }
+  .radd { border:2px dashed var(--ink); background:#fff; border-radius:99px; padding:4px 10px; font-size:14px; font-weight:900; }
+  .rpick { display:flex; gap:0; flex-wrap:nowrap; background:#fff; border:2.5px solid var(--ink); border-radius:16px; box-shadow:3px 3px 0 var(--ink); padding:6px; margin-top:8px; animation:pop .15s ease; }
+  .rpick button { border:0; background:none; display:flex; flex-direction:column; align-items:center; font-size:26px; line-height:1.15; padding:5px 0; border-radius:12px; flex:1 1 0; min-width:0; }
+  .rpick button small { font-size:10.5px; font-weight:700; color:var(--muted); }
+  .rpick button.on { background:#ffe3ee; }
+  .rsum { display:flex; align-items:center; gap:8px; margin-top:8px; font-size:12.5px; color:var(--muted); }
+  .rsum .faces { margin-top:0; } .rsum .faces .av { width:24px; height:24px; }
+  .vr-key { font-size:15px; font-weight:900; color:var(--y); margin-bottom:6px; word-break:keep-all; }
+  .vr-key span { color:#b9c7d8; font-weight:500; font-size:13px; }
+  .vmore { display:block; margin:8px auto 0; border:2px solid #fff; background:none; color:#fff; border-radius:99px; padding:5px 14px; font-weight:700; font-size:13px; }
+  /* 일상 */
+  .post { padding:12px 12px 10px; }
+  .pics-wrap { position:relative; margin:8px -2px 4px; }
+  .pics { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; border:2.5px solid var(--ink); border-radius:14px; scrollbar-width:none; }
+  .pics::-webkit-scrollbar { display:none; }
+  .pics button { flex:0 0 100%; aspect-ratio:1; border:0; padding:0; scroll-snap-align:center; background:#eee center/cover no-repeat; }
+  .pic-count { position:absolute; top:8px; right:8px; background:rgba(0,0,0,.6); color:#fff; font-size:12px; font-weight:700; border-radius:99px; padding:2px 9px; }
+  .dots { display:flex; justify-content:center; gap:5px; margin-top:6px; }
+  .dots i { width:7px; height:7px; border-radius:50%; background:#cfc6b2; }
+  .dots i.on { background:var(--ink); }
+  .cap { margin:8px 2px 4px; font-size:15.5px; line-height:1.65; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .lb-img { position:relative; }
+  .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:0; background:rgba(255,255,255,.18); color:#fff; font-size:26px; z-index:2; }
+  .strip { display:flex; gap:8px; overflow-x:auto; margin:0 -16px; padding:2px 16px 8px; scrollbar-width:none; }
+  .strip::-webkit-scrollbar { display:none; }
+  .strip button { flex:0 0 auto; width:96px; height:96px; border:2.5px solid var(--ink); border-radius:14px; background:#fff center/cover no-repeat; position:relative; padding:0; overflow:hidden; text-align:left; }
+  .strip button span { position:absolute; left:0; right:0; bottom:0; background:linear-gradient(transparent, rgba(0,0,0,.6)); color:#fff; font-size:11px; font-weight:700; padding:12px 6px 4px; }
+  .strip button p { margin:0; padding:8px; font-size:12px; line-height:1.4; color:var(--ink); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  /* 알림 */
+  .bell { position:relative; width:40px; height:40px; border-radius:12px; border:0; background:#2f2f2f; font-size:19px; }
+  .bell i { position:absolute; top:-5px; right:-5px; min-width:20px; height:20px; border-radius:99px; background:var(--r); color:#fff; font-style:normal; font-size:11.5px; font-weight:900; display:grid; place-items:center; padding:0 5px; border:2px solid var(--ink); }
+  .nlist .nrow { align-items:flex-start; }
+  .nnew { background:var(--r); color:#fff; font-size:10px; font-weight:900; border-radius:99px; padding:1px 6px; margin-left:4px; vertical-align:2px; }
+  .nbanner { display:flex; align-items:center; gap:10px; padding:11px 13px; background:var(--y); margin-bottom:12px; }
+  .nbanner b { flex:1; font-size:14.5px; }
+
   .toast { position:fixed; z-index:70; left:50%; bottom:calc(var(--nav) + 86px + env(safe-area-inset-bottom)); transform:translateX(-50%);
     background:var(--ink); color:var(--y); padding:12px 20px; border-radius:99px; font-size:14.5px; font-weight:700; animation:fade .2s; white-space:nowrap; max-width:92vw; overflow:hidden; text-overflow:ellipsis; }
   @keyframes fade { from { opacity:0; } }
@@ -513,6 +553,87 @@ function pickVerses(texts, seed, fruitId, n = 2) {
   if (fr) tags.push(`${fr.emoji} ${fr.name}`);
   return { tags, verses: picked };
 }
+
+/* ---------- 감사 한 줄 → "무엇에 감사했는지" 키워드 분석 → 말씀 한 구절 ---------- */
+/*__EXTRA_VERSES__*/Object.assign(VERSES, {"빌 1:3":"내가 너희를 생각할 때마다 나의 하나님께 감사하며","시 122:1":"사람이 내게 말하기를 여호와의 집에 올라가자 할 때에 내가 기뻐하였도다","시 119:105":"주의 말씀은 내 발에 등이요 내 길에 빛이니이다","골 3:16":"그리스도의 말씀이 너희 속에 풍성히 거하여 모든 지혜로 피차 가르치며 권면하고 시와 찬송과 신령한 노래를 부르며 감사하는 마음으로 하나님을 찬양하고","시 37:4":"또 여호와를 기뻐하라 그가 네 마음의 소원을 네게 이루어 주시리로다","시 145:15":"모든 사람의 눈이 주를 앙망하오니 주는 때를 따라 그들에게 먹을 것을 주시며","시 104:24":"여호와여 주께서 하신 일이 어찌 그리 많은지요 주께서 지혜로 그들을 다 지으셨으니 주께서 지으신 것들이 땅에 가득하니이다","시 23:2":"그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다","시 4:8":"내가 평안히 눕고 자기도 하리니 나를 안전히 살게 하시는 이는 오직 여호와이시니이다","고후 12:9":"나에게 이르시기를 내 은혜가 네게 족하도다 이는 내 능력이 약한 데서 온전하여짐이라 하신지라 그러므로 도리어 크게 기뻐함으로 나의 여러 약한 것들에 대하여 자랑하리니 이는 그리스도의 능력이 내게 머물게 하려 함이라","시 121:8":"여호와께서 너의 출입을 지금부터 영원까지 지키시리로다","사 43:19":"보라 내가 새 일을 행하리니 이제 나타낼 것이라 너희가 그것을 알지 못하겠느냐 반드시 내가 광야에 길을 사막에 강을 내리니","전 4:12":"한 사람이면 패하겠거니와 두 사람이면 맞설 수 있나니 세 겹 줄은 쉽게 끊어지지 아니하느니라","시 139:14":"내가 주께 감사하옴은 나를 지으심이 심히 기묘하심이라 주께서 하시는 일이 기이함을 내 영혼이 잘 아나이다","시 34:8":"너희는 여호와의 선하심을 맛보아 알지어다 그에게 피하는 자는 복이 있도다","시 103:3":"그가 네 모든 죄악을 사하시며 네 모든 병을 고치시며","엡 6:2":"네 아버지와 어머니를 공경하라 이것은 약속이 있는 첫 계명이니","시 30:11":"주께서 나의 슬픔이 변하여 내게 춤이 되게 하시며 나의 베옷을 벗기고 기쁨으로 띠 띠우셨나이다","렘 33:3":"너는 내게 부르짖으라 내가 네게 응답하겠고 네가 알지 못하는 크고 은밀한 일을 네게 보이리라","시 128:3":"네 집 안방에 있는 네 아내는 결실한 포도나무 같으며 네 식탁에 둘러 앉은 자식들은 어린 감람나무 같으리로다","시 68:19":"날마다 우리 짐을 지시는 주 곧 우리의 구원이신 하나님을 찬송할지로다","민 6:24":"여호와는 네게 복을 주시고 너를 지키시기를 원하며","롬 12:15":"즐거워하는 자들과 함께 즐거워하고 우는 자들과 함께 울라","사 26:3":"주께서 심지가 견고한 자를 평강하고 평강하도록 지키시리니 이는 그가 주를 신뢰함이니이다"});
+const GTOPICS = [
+  { id: "heal", tag: "회복과 치유", why: "아픈 곳을 만져 회복시키신 하나님께 드리는 감사예요", refs: ["렘 30:17", "시 103:3", "출 15:26"],
+    kw: ["수술", "회복", "나았", "낫게", "낫고", "퇴원", "치료", "치유", "완치", "아팠", "아프던", "입원", "열이 내", "병원"] },
+  { id: "health", tag: "건강", why: "건강을 지켜주신 은혜에 대한 감사예요", refs: ["요삼 1:2", "사 40:31"],
+    kw: ["건강", "검진", "강건", "운동", "컨디션", "체력", "몸이 가벼"] },
+  { id: "safe", tag: "지켜주심", why: "가는 길과 오는 길을 지켜주신 것에 대한 감사예요", refs: ["시 121:8", "민 6:24"],
+    kw: ["무사히", "무사", "안전", "사고", "다치지", "출장", "비행", "운전", "귀가", "도착", "잘 다녀"] },
+  { id: "answer", tag: "기도 응답", why: "기도에 응답하신 하나님께 드리는 감사예요", refs: ["시 37:4", "렘 33:3"],
+    kw: ["응답", "기도한 대로", "기도했던", "이루어", "해결", "풀렸", "잘 풀", "소원", "바라던"] },
+  { id: "pass", tag: "합격과 열매", why: "수고의 열매를 맺게 하신 것에 대한 감사예요", refs: ["시 90:17", "빌 4:13", "시 37:4"],
+    kw: ["합격", "붙었", "취업", "입사", "승진", "통과", "뽑혔", "수상", "성과", "계약"] },
+  { id: "work", tag: "일과 배움", why: "맡겨주신 일과 배움의 자리에 대한 감사예요", refs: ["골 3:23", "잠 16:3", "시 90:17"],
+    kw: ["회사", "직장", "업무", "출근", "퇴근", "프로젝트", "마감", "회의", "야근", "시험", "공부", "학교", "수업", "과제", "발표", "면접", "일이 잘", "일을 잘", "일이 빨리"] },
+  { id: "child", tag: "자녀", why: "자녀라는 선물을 주신 것에 대한 감사예요", refs: ["시 127:3", "시 128:3"],
+    kw: ["아기", "아이가", "아이들", "아들", "딸이", "딸과", "자녀", "임신", "출산", "태명", "조카", "육아", "첫걸음"] },
+  { id: "parent", tag: "부모님", why: "부모님을 주신 은혜에 대한 감사예요", refs: ["엡 6:2"],
+    kw: ["엄마", "아빠", "부모", "어머니", "아버지", "할머니", "할아버지", "장모", "시어머니", "부모님"] },
+  { id: "marry", tag: "결혼과 동행", why: "함께 걸어갈 사람을 주신 것에 대한 감사예요", refs: ["전 4:12"],
+    kw: ["결혼", "상견례", "웨딩", "신혼", "연애", "여자친구", "남자친구", "예비 신랑", "예비 신부", "부부"] },
+  { id: "family", tag: "가족", why: "가족이라는 울타리에 대한 감사예요", refs: ["수 24:15", "시 133:1"],
+    kw: ["가족", "식구", "가정", "남편", "아내", "와이프", "신랑", "형제", "동생", "언니", "오빠", "누나", "집에서", "우리 집"] },
+  { id: "word", tag: "말씀", why: "말씀으로 길을 비춰주신 것에 대한 감사예요", refs: ["시 119:105"],
+    kw: ["말씀", "큐티", "QT", "묵상", "성경", "설교", "통독"] },
+  { id: "worship", tag: "예배와 공동체", why: "함께 예배하는 기쁨에 대한 감사예요", refs: ["시 122:1", "골 3:16", "시 100:4"],
+    kw: ["예배", "교회", "찬양", "기도회", "수련회", "셀모임", "목장", "제자반", "청년부", "주일", "새벽", "목사님", "섬김", "봉사"] },
+  { id: "friend", tag: "동기와 친구", why: "고마운 사람들을 떠올리며 드리는 감사예요", refs: ["빌 1:3", "잠 17:17", "전 4:9", "롬 12:15"],
+    kw: ["친구", "동기", "동료", "안부", "연락", "만나", "만남", "모임", "수다", "함께", "같이", "선배", "후배", "이웃", "도와주", "챙겨주", "위로해주", "기도해주"] },
+  { id: "food", tag: "일용할 양식", why: "맛있는 양식을 주신 것에 대한 감사예요", refs: ["시 34:8", "마 6:11", "시 145:15"],
+    kw: ["밥", "맛있", "식사", "음식", "커피", "간식", "저녁", "점심", "빵", "케이크", "디저트", "먹었", "먹어서", "요리"] },
+  { id: "provide", tag: "채우심", why: "필요를 채워주신 것에 대한 감사예요", refs: ["빌 4:19", "약 1:17", "시 68:19"],
+    kw: ["월급", "용돈", "보너스", "선물", "채워", "필요한", "이사", "재정", "경제", "물질", "넉넉", "당첨", "새 집"] },
+  { id: "nature", tag: "자연과 계절", why: "하나님이 지으신 세상의 아름다움에 대한 감사예요", refs: ["시 104:24", "시 19:1", "전 3:11"],
+    kw: ["날씨", "하늘", "햇살", "햇빛", "바람", "꽃", "단풍", "가을", "봄날", "여름", "겨울", "노을", "산책", "바다", "공기", "비가", "눈이 와", "별빛", "달이"] },
+  { id: "rest", tag: "쉼", why: "쉼을 주신 것에 대한 감사예요", refs: ["시 23:2", "마 11:28", "시 4:8"],
+    kw: ["쉬었", "쉴", "쉼", "휴식", "잠을", "잠이", "잘 잤", "푹 잤", "잘 자", "푹 자", "푹 쉬", "여유", "휴가", "주말", "낮잠", "힐링", "여행", "놀러"] },
+  { id: "comfort", tag: "위로와 힘", why: "힘든 가운데 붙들어 주신 것에 대한 감사예요", refs: ["고후 12:9", "시 30:11", "사 41:10", "롬 8:28"],
+    kw: ["힘들", "지쳐", "지친", "걱정", "불안", "버텨", "버틸", "견디", "견뎌", "우울", "슬프", "슬퍼", "눈물", "외로", "위로", "다행", "어려운", "고난"] },
+  { id: "peace", tag: "평안", why: "마음의 평안을 주신 것에 대한 감사예요", refs: ["요 14:27", "사 26:3", "빌 4:6-7"],
+    kw: ["평안", "평화", "안심", "마음이 편", "화해", "용서", "차분"] },
+  { id: "new", tag: "새 시작", why: "새 일을 열어주신 것에 대한 감사예요", refs: ["사 43:19", "애 3:22-23"],
+    kw: ["처음", "시작", "새로운", "새로 ", "첫날", "첫 출근", "이직", "전학", "새해", "도전"] },
+  { id: "birth", tag: "생일과 기념일", why: "존재 자체를 선물로 주신 것에 대한 감사예요", refs: ["시 139:14"],
+    kw: ["생일", "기념일", "축하해", "축하받", "태어난"] },
+  { id: "day", tag: "오늘 하루", why: "오늘 하루를 선물로 주신 것에 대한 감사예요", refs: ["시 118:24", "애 3:22-23"],
+    kw: ["오늘 하루", "하루를", "하루가", "아침에", "일어나", "눈을 떠"] },
+];
+const GFALLBACK = { id: "joy", tag: "감사와 기쁨", why: "범사에 감사하는 마음에 어울리는 말씀이에요", refs: ["살전 5:16-18", "시 136:1", "시 103:2", "골 3:15", "시 100:4"], kw: [] };
+
+// "엄마가 빨리 회복하셔서 감사합니다" → "엄마가 빨리 회복하셔서"
+function thanksPhrase(t) {
+  const s = cleanNum(t).trim();
+  const p = s.replace(/\s*(?:에|을|를|에게)?\s*(?:너무\s*|정말\s*|참\s*)?감사(?:합니다|드립니다|드려요|해요|해|하다|했다|함|해요)?[\s!.~♡❤️🙏]*$/u, "").trim();
+  return p || s;
+}
+function recommendVerse(items, seed, shift = 0) {
+  let best = null;
+  (items || []).forEach((raw) => {
+    const t = thanksPhrase(raw);
+    GTOPICS.forEach((tp) => {
+      let s = 0; const hits = [];
+      tp.kw.forEach((k) => { if (t.includes(k)) { s += 1 + k.length * 0.35; hits.push(k.trim()); } });
+      if (s > 0 && (!best || s > best.s)) best = { s, tp, phrase: t, hits };
+    });
+  });
+  const tp = best ? best.tp : GFALLBACK;
+  const refs = tp.refs.filter((r) => VERSES[r]);
+  const ref = refs[(hashOf(seed + tp.id) + shift) % refs.length];
+  return { topic: tp, phrase: best ? best.phrase : thanksPhrase((items || [])[0] || ""), hits: best ? best.hits : [], ref, text: VERSES[ref], total: refs.length, matched: !!best };
+}
+
+/* ---------- 리액션 (이모티콘 반응) ---------- */
+const REACTS = {
+  thanks: [["amen", "🙌", "아멘"], ["heart", "❤️", "좋아요"], ["joy", "😊", "기뻐요"], ["touched", "🥹", "감동"], ["clap", "👏", "축하해"], ["pray", "🙏", "함께 감사"]],
+  daily: [["heart", "❤️", "좋아요"], ["laugh", "😂", "웃겨요"], ["wow", "😮", "우와"], ["touched", "🥹", "뭉클"], ["clap", "👏", "최고"], ["amen", "🙌", "아멘"]],
+  prayer: [["heart", "❤️", "응원해"], ["cheer", "💪", "힘내"], ["touched", "🥹", "공감해"], ["clap", "👏", "축하해"]],
+};
+// 예전 "아멘"(amenBy) 기록도 함께 세기
+const reactorsOf = (e, key) => [...new Set([...(((e.reactions || {})[key]) || []), ...(key === "amen" ? e.amenBy || [] : [])])];
 
 /* ======================================================================
    캐릭터 (조립식 SVG) v4 - 2등신 말랑 캐릭터
@@ -815,6 +936,7 @@ async function makeFirebaseApi() {
     save: (coll, obj) => F.setDoc(F.doc(db, coll, obj.id), obj),
     remove: (coll, id) => F.deleteDoc(F.doc(db, coll, id)),
     arr: (coll, id, field, value, add) => F.updateDoc(F.doc(db, coll, id), { [field]: add ? F.arrayUnion(value) : F.arrayRemove(value) }),
+    reactTo: (coll, id, key, name, add) => F.updateDoc(F.doc(db, coll, id), new F.FieldPath("reactions", key), add ? F.arrayUnion(name) : F.arrayRemove(name)),
     async get(coll, id) { const s = await F.getDoc(F.doc(db, coll, id)); return s.exists() ? s.data() : null; },
   };
 }
@@ -840,6 +962,10 @@ function makeDemoApi() {
     },
     async save(coll, obj) { (db[coll] = db[coll] || {})[obj.id] = JSON.parse(JSON.stringify(obj)); emit(); },
     async remove(coll, id) { if (db[coll]) delete db[coll][id]; emit(); },
+    async reactTo(coll, id, key, name, add) {
+      const d = (db[coll] || {})[id]; if (!d) throw new Error("not-found");
+      d.reactions = d.reactions || {}; const cur = new Set(d.reactions[key] || []); add ? cur.add(name) : cur.delete(name); d.reactions[key] = [...cur]; emit();
+    },
     async arr(coll, id, field, value, add) {
       const d = (db[coll] || {})[id]; if (!d) throw new Error("not-found");
       const cur = new Set(d[field] || []); add ? cur.add(value) : cur.delete(value); d[field] = [...cur]; emit();
@@ -859,6 +985,11 @@ function seedDemo() {
     if (i >= 11) return; // 일부는 아직 입장 전
     const days = []; for (let k = 0; k < (i * 3) % 9; k++) { const d = new Date(now); d.setDate(d.getDate() - k - (i % 2)); days.push(dstr(d)); }
     db.members[memberId(n)] = { id: memberId(n), name: n, avatar: { ...defaultAvatar(n) }, mbti: MBTIS[(i * 5) % 16], fruit: FRUITS[i % 9].id, no: i + 1, days, joinedAt: nowIso(), createdAt: nowIso() };
+  });
+  [["김은혜", "청년부 수련회 다녀왔어요! 날씨가 너무 좋았어요 ☀️", { heart: ["박소망", "최사랑"], amen: ["이믿음"] }],
+   ["정기쁨", "오늘 처음으로 김치찌개를 끓여봤는데 성공! 🍲", { laugh: ["한평안", "김은혜", "장충성"], clap: ["박소망"] }]].forEach(([n, cap, r], i) => {
+    const id = `demo-d-${i}`, t = new Date(Date.now() - (i + 1) * 3600e3).toISOString();
+    db.photos[id] = { id, name: n, date: todayStr(), caption: cap, thumbs: [], thumb: "", reactions: r, createdAt: t, updatedAt: t };
   });
   let k = 0;
   for (let m = Math.max(0, cm - 2); m <= cm; m++) {
@@ -911,14 +1042,14 @@ function shrink(img, max, q) {
   ctx.drawImage(img, 0, 0, c.width, c.height);
   return { data: c.toDataURL("image/jpeg", q), w: c.width, h: c.height };
 }
-async function processPhoto(file) {
+async function processPhoto(file, thumbMax = 640) {
   const img = await loadImage(file);
   let full;
   for (const [m, q] of [[1600, 0.82], [1280, 0.78], [1080, 0.72], [900, 0.65], [720, 0.6]]) {
     full = shrink(img, m, q);
     if (full.data.length < 850000) break;
   }
-  return { full, thumb: shrink(img, 420, 0.72) };
+  return { full, thumb: shrink(img, thumbMax, 0.72) };
 }
 
 /* ---------- 통계 (카드 능력치) ---------- */
@@ -930,7 +1061,7 @@ function streakOf(days) {
   while (has(d) && n < 999) { n++; d.setDate(d.getDate() - 1); }
   return n;
 }
-function useStats(P, G, M) {
+function useStats(P, G, M, D = []) {
   return useMemo(() => {
     const S = {};
     const get = (n) => (S[n] = S[n] || { topics: 0, thanks: 0, answered: 0, inter: 0, days: new Set() });
@@ -941,15 +1072,17 @@ function useStats(P, G, M) {
       (e.prayedBy || []).forEach((n) => get(n).inter++);
     });
     G.forEach((e) => { if (!e.name) return; const s = get(e.name); s.thanks++; if (e.date) s.days.add(e.date); (e.amenBy || []).forEach((n) => get(n).inter++); });
+    D.forEach((e) => { if (!e.name) return; const s = get(e.name); s.daily = (s.daily || 0) + 1; if (e.date) s.days.add(e.date); });
+    [...P, ...G, ...D].forEach((e) => Object.values(e.reactions || {}).forEach((arr) => (arr || []).forEach((n) => get(n).inter++)));
     M.forEach((m) => { const s = get(m.name); (m.days || []).forEach((d) => s.days.add(d)); });
     Object.values(S).forEach((s) => {
       s.streak = streakOf(s.days);
-      const score = s.topics + s.thanks * 2 + s.inter + s.days.size;
+      const score = s.topics + s.thanks * 2 + (s.daily || 0) * 2 + s.inter + s.days.size;
       s.score = score; s.lv = 1 + Math.floor(score / 5);
       s.stars = score >= 60 ? 4 : score >= 30 ? 3 : score >= 10 ? 2 : 1;
     });
     return S;
-  }, [P, G, M]);
+  }, [P, G, M, D]);
 }
 const EMPTY_STAT = { topics: 0, thanks: 0, answered: 0, inter: 0, streak: 0, stars: 1, score: 0, lv: 1, days: new Set() };
 
@@ -980,6 +1113,51 @@ function TCard({ name, member, stat, big, ghost, mine, onClick, avatarOverride, 
   </${Tag}>`;
 }
 
+/* ---------- 알림 (기도제목 내용은 보여주지 않음) ---------- */
+const canNotify = () => "Notification" in window;
+async function registerSW() {
+  try { if ("serviceWorker" in navigator && location.protocol === "https:") return await navigator.serviceWorker.register("./sw.js"); } catch (e) { console.warn("sw", e); }
+  return null;
+}
+async function showNotif(title, body) {
+  try {
+    if (!canNotify() || Notification.permission !== "granted") return;
+    const opt = { body, icon: "./og-image.png", badge: "./og-image.png", tag: "pt-prayer", renotify: true, data: { url: "./?tab=prayer" } };
+    const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration() : null;
+    if (reg) return await reg.showNotification(title, opt);
+    new Notification(title, opt);
+  } catch (e) { console.warn("notify", e); }
+}
+
+function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, onClose }) {
+  const perm = canNotify() ? Notification.permission : "unsupported";
+  return html`<div class="overlay" onClick=${(e) => e.target === e.currentTarget && onClose()}>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="grip"></div>
+      <div class="sheet-h"><h3>🔔 알림</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
+      <div class="box" style="padding:12px 14px;margin-bottom:14px;font-size:14px;line-height:1.6">
+        <b>📲 휴대폰 알림</b><br />
+        동기가 기도제목을 올리면 "OO님이 기도를 부탁했어요"라고만 알려드려요. <b>기도제목 내용은 알림에 보이지 않아요.</b>
+        <div style="margin-top:10px">${perm === "unsupported"
+          ? html`<span style="color:var(--muted)">이 브라우저는 알림을 지원하지 않아요. 아이폰은 공유 버튼 → "홈 화면에 추가" 후 그 아이콘으로 열어 주세요.</span>`
+          : perm === "denied" ? html`<span style="color:var(--r)">알림이 차단돼 있어요. 휴대폰 설정에서 이 사이트 알림을 허용해 주세요.</span>`
+          : notifOn && perm === "granted" ? html`<span class="pill ok">✅ 알림 켜짐</span> <button class="mini" style="margin-left:6px" onClick=${onDisable}>끄기</button>`
+          : html`<button class="btn full" onClick=${onEnable}>🔔 알림 켜기</button>`}</div>
+        <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">기도나무를 홈 화면에 추가하고 켜두면 알림이 더 잘 와요.</p>
+      </div>
+      <b style="font-size:15px">최근 올라온 기도제목</b>
+      <div class="box nlist" style="padding:2px 14px;margin-top:8px">
+        ${list.length === 0 ? html`<p style="color:var(--muted);padding:10px 0;margin:0">아직 새 소식이 없어요.</p>`
+          : list.map((e) => html`<div class="nrow">
+            <${Av} a=${avOf(e.name)} crop="face" />
+            <div class="nm"><b style="font-size:15px">${e.name}님이 기도를 부탁했어요${(e.createdAt || "") > seenAt && html`<span class="nnew">NEW</span>`}</b>
+              <span style="font-size:12.5px;color:var(--muted)">🙏 기도제목 ${(e.prayers || []).length}개 · ${ago(e.createdAt)}</span></div>
+            <button class="mini" onClick=${() => onGo(e)}>기도하기</button></div>`)}
+      </div>
+    </div>
+  </div>`;
+}
+
 /* ======================================================================
    앱
 ====================================================================== */
@@ -987,13 +1165,18 @@ const TABS = [
   { id: "home", label: "홈", icon: "🌳" },
   { id: "prayer", label: "기도", icon: "🙏" },
   { id: "thanks", label: "감사", icon: "🌼" },
-  { id: "photo", label: "사진", icon: "📷" },
+  { id: "photo", label: "일상", icon: "📸" },
   { id: "people", label: "이름·동기", icon: "🔎" },
 ];
 
 function App() {
   const now = new Date();
-  const [tab, setTab] = useState(() => { const t = lsGet("tab"); return TABS.some((x) => x.id === t) ? t : "home"; });
+  const [tab, setTab] = useState(() => { const t = Q.get("tab") || lsGet("tab"); return TABS.some((x) => x.id === t) ? t : "home"; });
+  const [seenAt, setSeenAt] = useState(() => { let v = lsGet("seenP"); if (!v) { v = nowIso(); lsSet("seenP", v); } return v; });
+  const [notifOn, setNotifOn] = useState(() => lsGet("notif") === "1");
+  const [bellOpen, setBellOpen] = useState(false);
+  const [bellSeen, setBellSeen] = useState("");
+  const known = useRef(null);
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
   const [scope, setScope] = useState("month");
@@ -1021,7 +1204,7 @@ function App() {
   const members = M.items;
   const byName = useMemo(() => Object.fromEntries(members.map((m) => [m.name, m])), [members]);
   const me = meId ? members.find((m) => m.id === meId) || null : null;
-  const stats = useStats(P.items, G.items, members);
+  const stats = useStats(P.items, G.items, members, PH.items);
   const avOf = (n) => byName[n]?.avatar || defaultAvatar(n);
   const names = useMemo(() => {
     const s = new Set(members.map((m) => m.name));
@@ -1031,6 +1214,38 @@ function App() {
   const canEdit = (e) => ADMIN || (me && e.name === me.name);
 
   const needGate = M.status === "ready" && !me && !browse && !gate;
+  const unread = useMemo(() => P.items.filter((e) => e.name && (!me || e.name !== me.name) && (e.createdAt || "") > seenAt)
+    .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")), [P.items, seenAt, me && me.name]);
+  const recentP = useMemo(() => P.items.filter((e) => e.name && (!me || e.name !== me.name))
+    .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, 12), [P.items, me && me.name]);
+  // 앱을 열어둔 동안 동기가 새 기도제목을 올리면 휴대폰 알림 (내용은 숨김)
+  useEffect(() => {
+    if (P.status !== "ready") return;
+    const ids = new Set(P.items.map((e) => e.id));
+    if (!known.current) { known.current = ids; return; }
+    const fresh = P.items.filter((e) => !known.current.has(e.id) && e.name && (!me || e.name !== me.name));
+    known.current = ids;
+    if (!fresh.length) return;
+    const n = fresh[0].name;
+    if (notifOn) showNotif("🙏 새 기도제목이 올라왔어요", `${n}님${fresh.length > 1 ? ` 외 ${fresh.length - 1}명` : ""}이 기도를 부탁했어요. 기도나무에서 함께 기도해 주세요.`);
+    if (document.visibilityState === "visible") say(`🔔 ${n}님이 새 기도제목을 올렸어요`);
+  }, [P.items, P.status]);
+  useEffect(() => { if (notifOn) registerSW(); }, []);
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+    const h = (ev) => { if (ev.data && ev.data.go) go(ev.data.go); };
+    navigator.serviceWorker.addEventListener("message", h);
+    return () => navigator.serviceWorker.removeEventListener("message", h);
+  }, []);
+  function openBell() { setBellSeen(seenAt); setBellOpen(true); const t = nowIso(); setSeenAt(t); lsSet("seenP", t); }
+  async function enableNotif() {
+    if (!canNotify()) return say("이 브라우저는 알림을 지원하지 않아요");
+    const p = await Notification.requestPermission();
+    if (p !== "granted") return say("알림이 허용되지 않았어요");
+    await registerSW();
+    lsSet("notif", "1"); setNotifOn(true);
+    showNotif("🔔 알림이 켜졌어요", "동기가 기도제목을 올리면 알려드릴게요. 내용은 보이지 않아요.");
+  }
   useEffect(() => { document.body.style.overflow = sheet || confirm || lightId || cardOf ? "hidden" : ""; }, [sheet, confirm, lightId, cardOf]);
 
   function requireMe(fn) { if (me) return fn(); setGate("welcome"); say("먼저 내 캐릭터로 입장해 주세요"); }
@@ -1047,14 +1262,19 @@ function App() {
   }
 
   const COLL = { prayer: "prayers", thanks: "gratitude" };
-  const LABEL = { prayer: "기도제목", thanks: "감사일기", photo: "사진" };
+  const LABEL = { prayer: "기도제목", thanks: "감사일기", photo: "일상 글" };
   function askDelete(kind, e) {
     setConfirm({
       title: "정말 삭제할까요?",
       body: `${e.name}님의 ${LABEL[kind]}${kind === "thanks" ? "가" : "이"} 삭제돼요. 삭제하면 되돌릴 수 없어요.`,
       onOk: async () => {
         try {
-          if (kind === "photo") { await api.remove("photos", e.id); await api.remove("photo_full", e.id); setLightId(null); }
+          if (kind === "photo") {
+            await api.remove("photos", e.id);
+            const n = Math.max(1, (e.thumbs || []).length);
+            for (let i = 0; i < n; i++) { try { await api.remove("photo_full", i ? `${e.id}_${i}` : e.id); } catch (er) {} }
+            setLightId(null);
+          }
           else await api.remove(COLL[kind], e.id);
           say("삭제했어요");
         } catch (err) { console.error(err); say("삭제에 실패했어요. 다시 시도해 주세요"); }
@@ -1075,6 +1295,16 @@ function App() {
         await api.arr(coll, e.id, field, me.name, on);
         if (on) { lsSet("inter-" + todayStr(), "1"); setTick((t) => t + 1); }
         if (on) say(coll === "prayers" ? `${e.name}님을 위해 중보했어요 🙏` : "아멘! 🙌");
+      } catch (err) { console.error(err); say("반영에 실패했어요"); }
+    });
+  }
+  async function reactE(coll, e, key, emo) {
+    requireMe(async () => {
+      const on = !reactorsOf(e, key).includes(me.name);
+      try {
+        if (!on && key === "amen" && (e.amenBy || []).includes(me.name)) await api.arr(coll, e.id, "amenBy", me.name, false);
+        await api.reactTo(coll, e.id, key, me.name, on);
+        if (on) say(`${emo} ${e.name}님에게 마음을 전했어요`);
       } catch (err) { console.error(err); say("반영에 실패했어요"); }
     });
   }
@@ -1104,10 +1334,10 @@ function App() {
       onCreate=${(name) => setGate({ name })}
       onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); }} />`;
 
-  const fab = { home: ["prayer", "＋ 기도제목"], prayer: ["prayer", "＋ 기도제목 쓰기"], thanks: ["thanks", "＋ 감사일기 쓰기"], photo: ["photo", "＋ 사진 올리기"], people: null }[tab];
-  const light = lightId ? PH.items.find((p) => p.id === lightId) : null;
+  const fab = { home: ["prayer", "＋ 기도제목"], prayer: ["prayer", "＋ 기도제목 쓰기"], thanks: ["thanks", "＋ 감사일기 쓰기"], photo: ["photo", "＋ 일상 올리기"], people: null }[tab];
+  const light = lightId ? PH.items.find((p) => p.id === lightId.id) : null;
   const listProps = { year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit,
-    onEdit: (kind, e) => setSheet({ type: kind, entry: e }), onDelete: askDelete, onToggle: toggleAnswered, onReact: react };
+    onEdit: (kind, e) => setSheet({ type: kind, entry: e }), onDelete: askDelete, onToggle: toggleAnswered, onReact: react, onEmoji: reactE };
 
   return html`
     <div class="app">
@@ -1122,6 +1352,7 @@ function App() {
               <span>${year}</span>
               <button aria-label="다음 해" onClick=${() => setYear((y) => y + 1)}>›</button>
             </div>`}
+          <button class="bell" onClick=${openBell} aria-label=${`알림 ${unread.length}개`}>🔔${unread.length > 0 && html`<i>${unread.length > 9 ? "9+" : unread.length}</i>`}</button>
           ${me
             ? html`<button class="me-btn" aria-label="내 카드" onClick=${() => setCardOf(me.name)}><${Av} a=${me.avatar} crop="face" /></button>`
             : html`<button class="enter-btn" onClick=${() => setGate("welcome")}>입장하기</button>`}
@@ -1129,12 +1360,13 @@ function App() {
       </header>
 
       ${tab === "home" && html`<${HomeTab} me=${me} members=${members} stats=${stats} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
-          avOf=${avOf} byName=${byName} tick=${tick} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
+          avOf=${avOf} byName=${byName} tick=${tick} unread=${unread} D=${PH.items} onBell=${openBell} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
           onMonth=${(m) => { setMonth(m); setScope("month"); go("prayer"); }} />`}
       ${tab === "prayer" && html`<${ListTab} kind="prayer" data=${P} ...${listProps} />`}
       ${tab === "thanks" && html`<${ListTab} kind="thanks" data=${G} ...${listProps} />`}
-      ${tab === "photo" && html`<${PhotoTab} data=${PH} who=${who} setWho=${setWho} names=${names} limit=${photoLimit}
-          onMore=${() => setPhotoLimit((n) => n + 30)} onOpen=${(p) => setLightId(p.id)} />`}
+      ${tab === "photo" && html`<${PhotoTab} data=${PH} who=${who} setWho=${setWho} names=${names} limit=${photoLimit} me=${me} avOf=${avOf} byName=${byName} canEdit=${canEdit}
+          onMore=${() => setPhotoLimit((n) => n + 30)} onOpen=${(p, i) => setLightId({ id: p.id, i: i || 0 })}
+          onEdit=${(p) => setSheet({ type: "photo", entry: p })} onDelete=${(p) => askDelete("photo", p)} onEmoji=${reactE} />`}
       ${tab === "people" && html`<${PeopleTab} names=${names} members=${members} byName=${byName} stats=${stats} me=${me} onOpen=${(n) => setCardOf(n)} onEnter=${() => setGate("welcome")} onEnterName=${(n) => setGate({ name: n })} />`}
 
       ${fab && html`<button class="fab" onClick=${() => openWrite(fab[0])}>${fab[1]}</button>`}
@@ -1160,8 +1392,12 @@ function App() {
           onPrayers=${() => { setCardOf(null); setWho(cardOf); setScope("all"); go("prayer"); }}
           onLogout=${() => { setCardOf(null); lsSet("me", ""); setMeId(null); setGate("welcome"); }} />`}
 
-      ${light && html`<${Lightbox} p=${light} can=${canEdit(light)} onClose=${() => setLightId(null)}
+      ${light && html`<${Lightbox} p=${light} start=${lightId.i} can=${canEdit(light)} onClose=${() => setLightId(null)}
           onEdit=${() => setSheet({ type: "photo", entry: light })} onDelete=${() => askDelete("photo", light)} />`}
+      ${bellOpen && html`<${NotifSheet} list=${recentP} seenAt=${bellSeen} avOf=${avOf} notifOn=${notifOn} onEnable=${enableNotif}
+          onDisable=${() => { lsSet("notif", "0"); setNotifOn(false); say("알림을 꺼두었어요"); }}
+          onGo=${(e) => { setBellOpen(false); const d = ym(e.date); setYear(d.y); setMonth(d.m); setScope("month"); setWho(""); go("prayer"); }}
+          onClose=${() => setBellOpen(false)} />`}
       ${confirm && html`<${Confirm} c=${confirm} onClose=${() => setConfirm(null)} />`}
       ${toast && html`<div class="toast" role="status">${toast}</div>`}
     </div>`;
@@ -1307,7 +1543,7 @@ function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLog
 }
 
 /* ---------- 홈 ---------- */
-function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
+function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, unread = [], D = [], onBell, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
   const today = todayStr();
   const myStat = me ? stats[me.name] || EMPTY_STAT : null;
   const [revealed, setRevealed] = useState(() => lsGet("verse-" + today) === "1");
@@ -1320,7 +1556,24 @@ function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byN
     const p = P.items.filter((e) => e.name === me.name).sort(sortDesc)[0];
     return [...g, ...((p && p.prayers) || []).map(cleanNum)];
   }, [me && me.name, G.items, P.items]);
-  const daily = useMemo(() => pickVerses(myTexts, today + (me ? me.name : "guest"), me && me.fruit), [myTexts.join("|"), today, me && me.fruit]);
+  const myThanks = useMemo(() => {
+    if (!me) return [];
+    const since = new Date(); since.setDate(since.getDate() - 14);
+    return G.items.filter((e) => e.name === me.name && e.date >= dstr(since)).sort(sortDesc).flatMap((e) => e.items || []);
+  }, [me && me.name, G.items]);
+  const daily = useMemo(() => {
+    const seed = today + (me ? me.name : "guest");
+    const r = pickVerses(myTexts, seed, me && me.fruit);
+    if (myThanks.length) {
+      const rv = recommendVerse(myThanks.slice(0, 6), seed);
+      if (rv.matched && rv.text && !r.verses.some((v) => v.ref === rv.ref)) {
+        r.verses[0] = { ref: rv.ref, text: rv.text };
+        r.tags = r.tags.filter((t) => FRUITS.some((f) => t.startsWith(f.emoji)));
+      }
+    }
+    return r;
+  }, [myTexts.join("|"), myThanks.join("|"), today, me && me.fruit]);
+  const recentD = useMemo(() => [...D].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, 8), [D]);
   const thanksToday = me && G.items.some((e) => e.name === me.name && e.date === today);
   const interToday = lsGet("inter-" + today) === "1";
   const done = [revealed, !!thanksToday, interToday].filter(Boolean).length;
@@ -1352,6 +1605,7 @@ function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byN
     : html`<div class="box hello" style="background:var(--y)"><div style="flex:1"><b>아직 입장하지 않았어요</b><p>내 캐릭터 카드를 만들면 중보하고, 열매를 고르고, 출석 기록을 쌓을 수 있어요.</p></div>
         <button class="btn white" onClick=${onEnter}>입장</button></div>`}
 
+    ${unread.length > 0 && html`<div class="box nbanner"><span style="font-size:24px">🔔</span><b>새 기도제목 ${unread.length}건이 올라왔어요<br /><small style="font-weight:500">${unread.slice(0, 3).map((e) => e.name).join(", ")}${unread.length > 3 ? " 등" : ""}님이 기도를 부탁했어요</small></b><button class="mini" onClick=${onBell}>확인</button></div>`}
     <div class="box progress">
       <div class="progress-top"><span>🃏 우리 공동체 입장 현황</span><span>${entered} / ${TOTAL}명</span></div>
       <div class="bar"><i style=${{ width: `${Math.min(100, (entered / TOTAL) * 100)}%` }}></i></div>
@@ -1382,6 +1636,12 @@ function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byN
       <div class=${"mrow" + (interToday ? " done" : "")}><span class="chk">${interToday ? "✓" : ""}</span><span>동기 기도제목에 🙏 중보하기</span>${!interToday && html`<button onClick=${() => onGo("prayer")}>보러가기</button>`}</div>
       ${done === 3 && html`<div class="allclear">💧 오늘 기도나무에 물을 줬어요! 내일도 만나요</div>`}
     </div>
+
+    <div class="sec"><h2>📸 동기들의 일상</h2><button class="mini" onClick=${() => onGo("photo")}>전체 보기</button></div>
+    ${recentD.length === 0
+      ? html`<button class="box" style="width:100%;padding:14px;text-align:left;font-size:14px" onClick=${() => onWrite("photo")}>📸 아직 올라온 일상이 없어요. <b>첫 일상을 올려보세요!</b></button>`
+      : html`<div class="strip">${recentD.map((p) => { const pics = picsOf(p); return html`<button style=${pics.length ? { backgroundImage: `url(${pics[0]})` } : { background: "#fffaf0" }} onClick=${() => onGo("photo")}>
+          ${!pics.length && html`<p>${p.caption}</p>`}<span>${p.name}</span></button>`; })}</div>`}
 
     <div class="sec"><h2>🍇 성령의 열매</h2><small>이번 달 내가 맺고 싶은 열매는?</small></div>
     <div class="fruits">
@@ -1492,7 +1752,7 @@ function TreeSvg({ prayers, thanks, members, who, onPick, onFruit }) {
 }
 
 /* ---------- 기도 / 감사 목록 ---------- */
-function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit, onEdit, onDelete, onToggle, onReact }) {
+function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit, onEdit, onDelete, onToggle, onReact, onEmoji }) {
   const isP = kind === "prayer";
   const unit = isP ? "기도제목" : "감사";
   const base = useMemo(() => data.items.filter((e) => e.date && (!who || e.name === who)), [data.items, who]);
@@ -1520,7 +1780,7 @@ function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setW
 
   if (data.status === "denied") return html`<div class="wrap"><div class="notice">${isP ? "기도제목" : "감사일기"} 저장 공간이 아직 열려 있지 않아요. 관리자에게 알려주세요.</div></div>`;
   const card = (e) => html`<${EntryCard} key=${e.id} kind=${kind} e=${e} me=${me} member=${byName[e.name]} a=${avOf(e.name)} avOf=${avOf} fresh=${e.id === freshId} can=${canEdit(e)}
-    onEdit=${() => onEdit(kind, e)} onDelete=${() => onDelete(kind, e)} onToggle=${(i) => onToggle(e, i)} onReact=${() => onReact(isP ? "prayers" : "gratitude", e, isP ? "prayedBy" : "amenBy")} />`;
+    onEdit=${() => onEdit(kind, e)} onDelete=${() => onDelete(kind, e)} onToggle=${(i) => onToggle(e, i)} onReact=${() => onReact("prayers", e, "prayedBy")} onEmoji=${onEmoji} />`;
 
   return html`<div class="wrap">
     <div class="seg" role="tablist">
@@ -1546,16 +1806,46 @@ function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setW
   </div>`;
 }
 
-function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete, onToggle, onReact }) {
+/* 이모티콘 반응 바 */
+function ReactionBar({ kind, coll, e, me, avOf, onEmoji, lead }) {
+  const opts = REACTS[kind];
+  const [open, setOpen] = useState(false);
+  const rows = opts.map(([k, emo, label]) => ({ k, emo, label, who: reactorsOf(e, k) }));
+  const all = [...new Set(rows.flatMap((r) => r.who))];
+  const tap = (r) => { setOpen(false); onEmoji(coll, e, r.k, r.emo); };
+  return html`<div class="react">
+    <div class="rbar">
+      ${lead}
+      ${rows.filter((r) => r.who.length).map((r) => html`<button class=${"rchip" + (me && r.who.includes(me.name) ? " on" : "")} onClick=${() => tap(r)} aria-label=${r.label}>${r.emo} ${r.who.length}</button>`)}
+      <button class="radd" onClick=${() => setOpen(!open)} aria-expanded=${open} aria-label="반응 남기기">${open ? "✕" : "😊＋"}</button>
+    </div>
+    ${open && html`<div class="rpick">${rows.map((r) => html`<button class=${me && r.who.includes(me.name) ? "on" : ""} onClick=${() => tap(r)}>${r.emo}<small>${r.label}</small></button>`)}</div>`}
+    ${all.length > 0 && html`<div class="rsum"><div class="faces">${all.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} crop="face" />`)}</div>
+      <span>${all[0]}님${all.length > 1 ? ` 외 ${all.length - 1}명이` : "이"} 반응했어요</span></div>`}
+  </div>`;
+}
+
+/* 감사 한 줄에 맞는 말씀 한 구절 */
+function VerseRec({ items, seed }) {
+  const [shift, setShift] = useState(0);
+  const r = useMemo(() => recommendVerse(items, seed, shift), [items.join("|"), seed, shift]);
+  if (!r.text) return null;
+  return html`<div class="vbox">
+    <div class="vr-key">📖 이 감사에 드리는 말씀</div>
+    <div class="vq"><p>${r.text}</p><cite>${refName(r.ref)} · 개역개정</cite></div>
+    <p class="vnote">${r.topic.why}</p>
+    ${r.total > 1 && html`<button class="vmore" onClick=${() => setShift(shift + 1)}>↻ 같은 주제의 다른 말씀</button>`}
+  </div>`;
+}
+
+function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete, onToggle, onReact, onEmoji }) {
   const isP = kind === "prayer";
   const items = ((isP ? e.prayers : e.items) || []).map(cleanNum);
-  const field = isP ? "prayedBy" : "amenBy";
-  const who = e[field] || [];
+  const who = e.prayedBy || [];
   const on = me && who.includes(me.name);
   const [open, setOpen] = useState(!!fresh);
   const ref = useRef(null);
   useEffect(() => { if (!fresh) return; setOpen(true); setTimeout(() => ref.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" }), 150); }, [fresh]);
-  const vr = useMemo(() => (!isP && open ? pickVerses(items, e.id, null) : null), [open]);
   return html`<article ref=${ref} class=${"card" + (isP ? "" : " thanks")}>
     <div class="card-h">
       <${Av} a=${a} crop="face" />
@@ -1573,16 +1863,12 @@ function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete,
         </li>`;
       })}
     </ul>
-    <div class="react">
-      <button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${isP ? (on ? "🙏 중보했어요" : "🙏 중보할게요") : on ? "🙌 아멘!" : "🙌 아멘"} ${who.length || ""}</button>
-      ${who.length > 0 && html`<div class="faces">${who.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} crop="face" />`)}${who.length > 5 && html`<span>+${who.length - 5}</span>`}</div>`}
-    </div>
+    ${isP && who.length > 0 && html`<div class="rsum" style="margin-top:8px"><div class="faces">${who.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} crop="face" />`)}</div><span>${who.length}명이 중보하고 있어요</span></div>`}
+    <${ReactionBar} kind=${isP ? "prayer" : "thanks"} coll=${isP ? "prayers" : "gratitude"} e=${e} me=${me} avOf=${avOf} onEmoji=${onEmoji}
+      lead=${isP ? html`<button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${on ? "🙏 중보했어요" : "🙏 중보할게요"} ${who.length || ""}</button>` : null} />
     ${!isP && html`
-      <button class="verse-btn" onClick=${() => setOpen(!open)} aria-expanded=${open}>📖 이 감사에 어울리는 말씀 ${open ? "접기 ▴" : "보기 ▾"}</button>
-      ${open && vr && html`<div class="vbox">
-        ${vr.tags.length > 0 && html`<div class="tags">${vr.tags.map((t) => html`<span>#${t}</span>`)}</div>`}
-        ${vr.verses.map((v) => html`<div class="vq"><p>${v.text}</p><cite>${refName(v.ref)} · 개역개정</cite></div>`)}
-      </div>`}`}
+      <button class="verse-btn" onClick=${() => setOpen(!open)} aria-expanded=${open}>📖 이 감사에 맞는 말씀 ${open ? "접기 ▴" : "보기 ▾"}</button>
+      ${open && html`<${VerseRec} items=${items} seed=${e.id} />`}`}
   </article>`;
 }
 
@@ -1638,27 +1924,54 @@ function EntryForm({ kind, entry, me, avOf, onClose, onSaved }) {
   </div>`;
 }
 
-/* ---------- 사진 ---------- */
-function PhotoTab({ data, who, setWho, names, limit, onMore, onOpen }) {
-  const list = useMemo(() => data.items.filter((p) => !who || p.name === who).sort(sortDesc), [data.items, who]);
-  const groups = useMemo(() => {
-    const out = [];
-    list.forEach((p) => { const d = ym(p.date), key = `${d.y}-${d.m}`; if (!out.length || out[out.length - 1].key !== key) out.push({ key, label: `${d.y}년 ${MONTHS[d.m]}`, items: [] }); out[out.length - 1].items.push(p); });
-    return out;
-  }, [list]);
-  if (data.status === "denied") return html`<div class="wrap"><div class="notice">감사사진 저장 공간이 아직 열려 있지 않아요. 관리자에게 알려주세요.</div></div>`;
+/* ---------- 일상 공유 ---------- */
+const picsOf = (p) => (p.thumbs && p.thumbs.length ? p.thumbs : p.thumb ? [p.thumb] : []);
+const fullKey = (p, i) => (i ? `${p.id}_${i}` : p.id);
+function ago(iso) {
+  if (!iso) return "";
+  const s = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (s < 60) return "방금 전"; if (s < 3600) return `${Math.floor(s / 60)}분 전`; if (s < 86400) return `${Math.floor(s / 3600)}시간 전`;
+  if (s < 86400 * 7) return `${Math.floor(s / 86400)}일 전`;
+  const d = new Date(iso); return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+}
+function PostPics({ p, onOpen }) {
+  const pics = picsOf(p);
+  const [cur, setCur] = useState(0);
+  const ref = useRef(null);
+  if (!pics.length) return null;
+  const onScroll = () => { const el = ref.current; if (el) setCur(Math.round(el.scrollLeft / el.clientWidth)); };
+  return html`<div class="pics-wrap">
+    <div class="pics" ref=${ref} onScroll=${onScroll}>
+      ${pics.map((src, i) => html`<button style=${{ backgroundImage: `url(${src})` }} onClick=${() => onOpen(p, i)} aria-label=${`사진 ${i + 1} 크게 보기`}></button>`)}
+    </div>
+    ${pics.length > 1 && html`<span class="pic-count">${cur + 1} / ${pics.length}</span><div class="dots">${pics.map((_, i) => html`<i class=${i === cur ? "on" : ""}></i>`)}</div>`}
+  </div>`;
+}
+function PhotoTab({ data, who, setWho, names, limit, me, avOf, byName, canEdit, onMore, onOpen, onEdit, onDelete, onEmoji }) {
+  const list = useMemo(() => data.items.filter((p) => !who || p.name === who)
+    .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")), [data.items, who]);
+  if (data.status === "denied") return html`<div class="wrap"><div class="notice">일상 저장 공간이 아직 열려 있지 않아요. 관리자에게 알려주세요.</div></div>`;
   return html`<div class="wrap">
+    <div class="box hello" style="background:#ffe6ef;margin-bottom:12px"><div style="flex:1"><b>📸 우리 공동체 일상</b><p>오늘 있었던 일, 감사했던 순간을 사진 한 장으로 나눠요. 이모티콘으로 마음을 전해 주세요!</p></div></div>
     <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
-      <option value="">우리 공동체 사진 전체</option>
+      <option value="">모든 동기의 일상</option>
       ${names.map((n) => html`<option value=${n}>${n}</option>`)}
     </select>
-    ${data.status === "loading" && html`<div class="empty"><span class="big">📷</span>불러오는 중…</div>`}
-    ${data.status === "error" && html`<div class="notice">사진을 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
+    ${data.status === "loading" && html`<div class="empty"><span class="big">📸</span>불러오는 중…</div>`}
+    ${data.status === "error" && html`<div class="notice">일상을 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
     ${data.status === "ready" && (list.length === 0
-      ? html`<div class="empty"><span class="big">📷</span>아직 올라온 감사사진이 없어요.<br />감사했던 순간을 사진으로 남겨 보세요.</div>`
-      : html`${groups.map((g) => html`<h3 class="month-h">${g.label} <small>· ${g.items.length}장</small></h3>
-          <div class="grid">${g.items.map((p) => html`<button style=${{ backgroundImage: `url(${p.thumb})` }} onClick=${() => onOpen(p)} aria-label=${`${p.name} 사진 ${p.caption || ""}`}><span>${p.name}</span></button>`)}</div>`)}
-        ${data.items.length >= limit && html`<button class="btn white more" onClick=${onMore}>사진 더 보기</button>`}`)}
+      ? html`<div class="empty"><span class="big">📸</span>아직 올라온 일상이 없어요.<br />아래 <b>＋ 일상 올리기</b>로 첫 이야기를 나눠 보세요.</div>`
+      : html`${list.map((p) => { const m = byName[p.name]; return html`<article class="card post" key=${p.id}>
+          <div class="card-h">
+            <${Av} a=${avOf(p.name)} crop="face" />
+            <div class="who"><b>${p.name}${m?.mbti && html`<i>${m.mbti}</i>`}</b><span>${ago(p.createdAt)}${p.date && p.date !== todayStr() ? ` · ${fmtDate(p.date)}` : ""}</span></div>
+            ${canEdit(p) && html`<button class="mini" onClick=${() => onEdit(p)}>수정</button><button class="mini del" onClick=${() => onDelete(p)}>삭제</button>`}
+          </div>
+          <${PostPics} p=${p} onOpen=${onOpen} />
+          ${p.caption && html`<p class="cap">${p.caption}</p>`}
+          <${ReactionBar} kind="daily" coll="photos" e=${p} me=${me} avOf=${avOf} onEmoji=${onEmoji} />
+        </article>`; })}
+        ${data.items.length >= limit && html`<button class="btn white more" onClick=${onMore}>일상 더 보기</button>`}`)}
   </div>`;
 }
 
@@ -1670,25 +1983,30 @@ function PhotoForm({ entry, me, onClose, onDone }) {
   const [err, setErr] = useState("");
   const fileRef = useRef(null);
   const name = entry ? entry.name : me.name;
+  const MAXP = 5;
   function onFiles(ev) {
     const files = [...ev.target.files].filter((f) => f.type.startsWith("image/") || /\.(heic|heif)$/i.test(f.name));
     const next = [...picks, ...files.map((f) => ({ file: f, url: URL.createObjectURL(f) }))];
-    if (next.length > 10) setErr("한 번에 10장까지 올릴 수 있어요.");
-    setPicks(next.slice(0, 10)); ev.target.value = "";
+    if (next.length > MAXP) setErr(`한 번에 ${MAXP}장까지 올릴 수 있어요.`);
+    setPicks(next.slice(0, MAXP)); ev.target.value = "";
   }
   async function submit() {
-    if (!entry && !picks.length) return setErr("사진을 한 장 이상 골라 주세요.");
+    if (!entry && !picks.length && !caption.trim()) return setErr("사진을 고르거나 글을 적어 주세요.");
     setErr("");
     try {
-      if (entry) { setBusy("저장 중…"); await api.save("photos", { ...entry, date, caption: caption.trim(), updatedAt: nowIso() }); return onDone("사진 정보를 수정했어요"); }
+      if (entry) { setBusy("저장 중…"); await api.save("photos", { ...entry, date, caption: caption.trim(), updatedAt: nowIso() }); return onDone("일상을 수정했어요"); }
+      const id = newId(), t = nowIso(), thumbs = [];
+      let size = 0;
       for (let i = 0; i < picks.length; i++) {
         setBusy(`사진 올리는 중… ${i + 1} / ${picks.length}`);
         const { full, thumb } = await processPhoto(picks[i].file);
-        const id = newId(), t = nowIso();
-        await api.save("photo_full", { id, data: full.data });
-        await api.save("photos", { id, date, name, caption: caption.trim(), thumb: thumb.data, w: full.w, h: full.h, createdAt: t, updatedAt: t });
+        await api.save("photo_full", { id: i ? `${id}_${i}` : id, data: full.data });
+        size += thumb.data.length;
+        thumbs.push(size > 820000 ? (await processPhoto(picks[i].file, 360)).thumb.data : thumb.data);
       }
-      onDone(`감사사진 ${picks.length}장을 올렸어요 📷`);
+      setBusy("올리는 중…");
+      await api.save("photos", { id, date, name, caption: caption.trim(), thumbs, thumb: thumbs[0] || "", reactions: {}, createdAt: t, updatedAt: t });
+      onDone(picks.length ? `일상을 공유했어요 📸` : "일상을 공유했어요 ✍️");
     } catch (e) {
       console.error(e);
       setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : /이미지/.test(e && e.message) ? "이 사진 형식은 읽을 수 없어요. 다른 사진으로 시도해 주세요." : "업로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -1698,28 +2016,39 @@ function PhotoForm({ entry, me, onClose, onDone }) {
   return html`<div class="overlay">
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
-      <div class="sheet-h"><h3>${entry ? "사진 정보 수정" : "📷 감사사진 올리기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기" disabled=${!!busy}>✕</button></div>
-      ${entry ? html`<div class="picks"><div style=${{ backgroundImage: `url(${entry.thumb})` }}></div></div>`
+      <div class="sheet-h"><h3>${entry ? "일상 수정" : "📸 일상 올리기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기" disabled=${!!busy}>✕</button></div>
+      ${entry ? (picsOf(entry).length > 0 && html`<div class="picks">${picsOf(entry).map((s) => html`<div style=${{ backgroundImage: `url(${s})` }}></div>`)}</div>`)
         : html`<input ref=${fileRef} type="file" accept="image/*" multiple hidden onChange=${onFiles} />
-          <button class="pickbtn" onClick=${() => fileRef.current && fileRef.current.click()}><span style="font-size:28px">📷</span>사진 고르기 / 찍기<small>한 번에 최대 10장 · 자동으로 용량을 줄여서 올려요</small></button>
+          <button class="pickbtn" onClick=${() => fileRef.current && fileRef.current.click()}><span style="font-size:28px">📷</span>사진 고르기 / 찍기<small>최대 ${MAXP}장 · 사진 없이 글만 올려도 돼요</small></button>
           ${picks.length > 0 && html`<div class="picks">${picks.map((p, i) => html`<div style=${{ backgroundImage: `url(${p.url})` }}><button onClick=${() => setPicks(picks.filter((_, j) => j !== i))} aria-label="이 사진 빼기">✕</button></div>`)}</div>`}`}
+      <div class="field"><label>오늘 어떤 하루였나요?</label><textarea rows="3" value=${caption} onInput=${(e) => setCaption(e.target.value)} placeholder="예) 청년부 수련회 다녀왔어요! 날씨가 너무 좋았어요 ☀️"></textarea></div>
       <div class="field"><label>날짜</label><input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} /></div>
-      <div class="field"><label>어떤 감사였나요? (선택)</label><textarea rows="3" value=${caption} onInput=${(e) => setCaption(e.target.value)} placeholder="사진에 담긴 감사한 순간을 적어주세요"></textarea></div>
       ${err && html`<p class="err">${err}</p>`}
-      <button class="btn full" onClick=${submit} disabled=${!!busy}>${busy || (entry ? "수정 완료" : `사진 ${picks.length ? picks.length + "장 " : ""}올리기`)}</button>
+      <button class="btn full" onClick=${submit} disabled=${!!busy}>${busy || (entry ? "수정 완료" : "공유하기")}</button>
     </div>
   </div>`;
 }
 
-function Lightbox({ p, can, onClose, onEdit, onDelete }) {
-  const [full, setFull] = useState(null);
-  useEffect(() => { let alive = true; setFull(null); api.get("photo_full", p.id).then((d) => { if (alive && d) setFull(d.data); }).catch(() => {}); return () => { alive = false; }; }, [p.id]);
+function Lightbox({ p, start = 0, can, onClose, onEdit, onDelete }) {
+  const pics = picsOf(p);
+  const [i, setI] = useState(Math.min(start, Math.max(0, pics.length - 1)));
+  const [full, setFull] = useState({});
+  useEffect(() => {
+    let alive = true; const k = fullKey(p, i);
+    if (!full[k]) api.get("photo_full", k).then((d) => { if (alive && d) setFull((f) => ({ ...f, [k]: d.data })); }).catch(() => {});
+    return () => { alive = false; };
+  }, [p.id, i]);
   return html`<div class="lightbox" role="dialog" aria-modal="true">
     <div class="lb-top">
       <button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button>
-      ${can && html`<div><button class="lb-btn" onClick=${onEdit}>수정</button><button class="lb-btn del" onClick=${onDelete}>삭제</button></div>`}
+      ${pics.length > 1 && html`<span style="font-weight:900">${i + 1} / ${pics.length}</span>`}
+      ${can ? html`<div><button class="lb-btn" onClick=${onEdit}>수정</button><button class="lb-btn del" onClick=${onDelete}>삭제</button></div>` : html`<span></span>`}
     </div>
-    <div class="lb-img"><img src=${full || p.thumb} alt=${p.caption || "감사 사진"} /></div>
+    <div class="lb-img">
+      ${pics.length > 1 && html`<button class="lb-nav" style="left:8px" onClick=${() => setI((i - 1 + pics.length) % pics.length)} aria-label="이전 사진">‹</button>`}
+      <img src=${full[fullKey(p, i)] || pics[i]} alt=${p.caption || "일상 사진"} />
+      ${pics.length > 1 && html`<button class="lb-nav" style="right:8px" onClick=${() => setI((i + 1) % pics.length)} aria-label="다음 사진">›</button>`}
+    </div>
     <div class="lb-info"><small>${p.name} · ${fmtDate(p.date)}</small>${p.caption}</div>
   </div>`;
 }
