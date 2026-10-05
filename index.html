@@ -4,6 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1b1b1b" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="기도나무" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <title>95 기도나무 · 우리 공동체</title>
 
 <!-- Kakao/Facebook/Twitter link preview -->
@@ -386,6 +393,12 @@
   .nnew { background:var(--r); color:#fff; font-size:10px; font-weight:900; border-radius:99px; padding:1px 6px; margin-left:4px; vertical-align:2px; }
   .nbanner { display:flex; align-items:center; gap:10px; padding:11px 13px; background:var(--y); margin-bottom:12px; }
   .nbanner b { flex:1; font-size:14.5px; }
+
+  .istep { display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-top:2px dashed #e4dccb; }
+  .istep:first-child { border-top:0; }
+  .istep .inum { flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--y); border:2.5px solid var(--ink); display:grid; place-items:center; font-weight:900; font-size:14px; }
+  .istep b { display:block; font-size:15px; line-height:1.45; }
+  .istep small { display:block; font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.5; }
 
   .toast { position:fixed; z-index:70; left:50%; bottom:calc(var(--nav) + 86px + env(safe-area-inset-bottom)); transform:translateX(-50%);
     background:var(--ink); color:var(--y); padding:12px 20px; border-radius:99px; font-size:14.5px; font-weight:700; animation:fade .2s; white-space:nowrap; max-width:92vw; overflow:hidden; text-overflow:ellipsis; }
@@ -1122,14 +1135,72 @@ async function registerSW() {
 async function showNotif(title, body) {
   try {
     if (!canNotify() || Notification.permission !== "granted") return;
-    const opt = { body, icon: "./og-image.png", badge: "./og-image.png", tag: "pt-prayer", renotify: true, data: { url: "./?tab=prayer" } };
+    const opt = { body, icon: "./icon-192.png", badge: "./icon-192.png", tag: "pt-prayer", renotify: true, data: { url: "./?tab=prayer" } };
     const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration() : null;
     if (reg) return await reg.showNotification(title, opt);
     new Notification(title, opt);
   } catch (e) { console.warn("notify", e); }
 }
 
-function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, onClose }) {
+/* ---------- 홈 화면에 추가 (앱처럼 쓰기) ---------- */
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; window.dispatchEvent(new Event("pt-installable")); });
+const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+function uaInfo() {
+  const u = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/i.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1);
+  const kakao = /KAKAOTALK/i.test(u);
+  const inapp = kakao || /Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps|everytimeApp|BAND\//i.test(u);
+  return { ios, android: /Android/i.test(u), kakao, inapp, samsung: /SamsungBrowser/i.test(u) };
+}
+const APP_URL = "https://gkssk2890.github.io/prayer-tree/";
+function InstallSheet({ onClose, say }) {
+  const ua = useMemo(uaInfo, []);
+  const [os, setOs] = useState(ua.ios ? "ios" : "android");
+  const [canPrompt, setCanPrompt] = useState(!!deferredPrompt);
+  useEffect(() => { const h = () => setCanPrompt(true); window.addEventListener("pt-installable", h); return () => window.removeEventListener("pt-installable", h); }, []);
+  async function install() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const r = await deferredPrompt.userChoice.catch(() => null);
+    deferredPrompt = null; setCanPrompt(false);
+    if (r && r.outcome === "accepted") { say("홈 화면에 기도나무가 생겼어요 🌳"); onClose(); }
+  }
+  function copy() { (navigator.clipboard ? navigator.clipboard.writeText(APP_URL) : Promise.reject()).then(() => say("주소를 복사했어요")).catch(() => say(APP_URL)); }
+  const step = (n, t, s) => html`<div class="istep"><span class="inum">${n}</span><div><b>${t}</b>${s && html`<small>${s}</small>`}</div></div>`;
+  return html`<div class="overlay" onClick=${(e) => e.target === e.currentTarget && onClose()}>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="grip"></div>
+      <div class="sheet-h"><h3>📲 홈 화면에 추가하기</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
+      <p style="margin:-4px 0 12px;font-size:14px;color:var(--muted);line-height:1.6">한 번만 추가하면 홈 화면의 <b>기도나무 아이콘</b>을 눌러 앱처럼 바로 들어올 수 있어요. 알림도 더 잘 와요.</p>
+      ${ua.inapp && html`<div class="box" style="background:#fff3c4;padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.6">
+        ⚠️ <b>카카오톡 안에서는 홈 화면 추가가 안 돼요.</b><br />아래 버튼으로 ${ua.ios ? "Safari" : "삼성 인터넷/크롬"}에서 연 다음 따라 해 주세요.
+        <div style="display:flex;gap:8px;margin-top:10px">
+          ${ua.kakao && html`<a class="btn" style="flex:1;text-align:center;text-decoration:none;color:var(--ink)" href=${"kakaotalk://web/openExternal?url=" + encodeURIComponent(APP_URL)}>브라우저로 열기</a>`}
+          <button class="btn white" style="flex:1" onClick=${copy}>주소 복사</button>
+        </div></div>`}
+      ${!ua.ios && canPrompt && html`<button class="btn full" style="margin-bottom:12px;font-size:17px" onClick=${install}>📲 지금 바로 설치하기</button>`}
+      <div class="seg"><button class=${os === "android" ? "on" : ""} onClick=${() => setOs("android")}>갤럭시 (안드로이드)</button><button class=${os === "ios" ? "on" : ""} onClick=${() => setOs("ios")}>아이폰</button></div>
+      <div class="box" style="padding:6px 14px">
+        ${os === "android" ? html`
+          ${step(1, "삼성 인터넷 또는 크롬으로 열기", "카카오톡이면 오른쪽 위 ⋮ → '다른 브라우저로 열기'")}
+          ${step(2, "메뉴 열기", "삼성 인터넷: 아래 ≡ · 크롬: 오른쪽 위 ⋮")}
+          ${step(3, "'현재 페이지 추가 → 홈 화면' 또는 '홈 화면에 추가'", "'앱 설치'로 보이면 그걸 눌러도 돼요")}
+          ${step(4, "'추가' 누르면 끝!", "홈 화면에 기도나무 아이콘이 생겨요")}` : html`
+          ${step(1, "Safari로 열기", "카카오톡이면 오른쪽 아래 나침반/⋯ → 'Safari로 열기'")}
+          ${step(2, "아래 공유 버튼 누르기", "네모에 위 화살표 모양 (안 보이면 ⋯ → 공유)")}
+          ${step(3, "메뉴를 위로 올려 '홈 화면에 추가'", "안 보이면 맨 아래 '동작 편집'에서 추가")}
+          ${step(4, "오른쪽 위 '추가' 누르면 끝!", "홈 화면의 기도나무 아이콘으로 열면 알림도 받을 수 있어요")}`}
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+        <img src="icon-192.png" alt="" width="56" height="56" style="border-radius:14px;border:2.5px solid var(--ink)" />
+        <span style="font-size:13.5px;color:var(--muted);line-height:1.5">추가하면 이 <b>기도나무</b> 아이콘이 홈 화면에 생겨요</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, onClose, onInstall }) {
   const perm = canNotify() ? Notification.permission : "unsupported";
   return html`<div class="overlay" onClick=${(e) => e.target === e.currentTarget && onClose()}>
     <div class="sheet" role="dialog" aria-modal="true">
@@ -1143,7 +1214,7 @@ function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, on
           : perm === "denied" ? html`<span style="color:var(--r)">알림이 차단돼 있어요. 휴대폰 설정에서 이 사이트 알림을 허용해 주세요.</span>`
           : notifOn && perm === "granted" ? html`<span class="pill ok">✅ 알림 켜짐</span> <button class="mini" style="margin-left:6px" onClick=${onDisable}>끄기</button>`
           : html`<button class="btn full" onClick=${onEnable}>🔔 알림 켜기</button>`}</div>
-        <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">기도나무를 홈 화면에 추가하고 켜두면 알림이 더 잘 와요.</p>
+        <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">기도나무를 홈 화면에 추가하면 알림이 더 잘 와요. ${onInstall && html`<button class="mini" onClick=${onInstall}>📲 추가 방법</button>`}</p>
       </div>
       <b style="font-size:15px">최근 올라온 기도제목</b>
       <div class="box nlist" style="padding:2px 14px;margin-top:8px">
@@ -1230,7 +1301,9 @@ function App() {
     if (notifOn) showNotif("🙏 새 기도제목이 올라왔어요", `${n}님${fresh.length > 1 ? ` 외 ${fresh.length - 1}명` : ""}이 기도를 부탁했어요. 기도나무에서 함께 기도해 주세요.`);
     if (document.visibilityState === "visible") say(`🔔 ${n}님이 새 기도제목을 올렸어요`);
   }, [P.items, P.status]);
-  useEffect(() => { if (notifOn) registerSW(); }, []);
+  useEffect(() => { registerSW(); }, []);
+  const [installOpen, setInstallOpen] = useState(false);
+  const [showInstallCard, setShowInstallCard] = useState(() => !isStandalone() && lsGet("hideInstall") !== "1");
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
     const h = (ev) => { if (ev.data && ev.data.go) go(ev.data.go); };
@@ -1360,7 +1433,8 @@ function App() {
       </header>
 
       ${tab === "home" && html`<${HomeTab} me=${me} members=${members} stats=${stats} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
-          avOf=${avOf} byName=${byName} tick=${tick} unread=${unread} D=${PH.items} onBell=${openBell} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
+          avOf=${avOf} byName=${byName} tick=${tick} unread=${unread} D=${PH.items} onBell=${openBell}
+          installCard=${showInstallCard} onInstall=${() => setInstallOpen(true)} onHideInstall=${() => { lsSet("hideInstall", "1"); setShowInstallCard(false); }} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
           onMonth=${(m) => { setMonth(m); setScope("month"); go("prayer"); }} />`}
       ${tab === "prayer" && html`<${ListTab} kind="prayer" data=${P} ...${listProps} />`}
       ${tab === "thanks" && html`<${ListTab} kind="thanks" data=${G} ...${listProps} />`}
@@ -1394,10 +1468,11 @@ function App() {
 
       ${light && html`<${Lightbox} p=${light} start=${lightId.i} can=${canEdit(light)} onClose=${() => setLightId(null)}
           onEdit=${() => setSheet({ type: "photo", entry: light })} onDelete=${() => askDelete("photo", light)} />`}
+      ${installOpen && html`<${InstallSheet} say=${say} onClose=${() => setInstallOpen(false)} />`}
       ${bellOpen && html`<${NotifSheet} list=${recentP} seenAt=${bellSeen} avOf=${avOf} notifOn=${notifOn} onEnable=${enableNotif}
           onDisable=${() => { lsSet("notif", "0"); setNotifOn(false); say("알림을 꺼두었어요"); }}
           onGo=${(e) => { setBellOpen(false); const d = ym(e.date); setYear(d.y); setMonth(d.m); setScope("month"); setWho(""); go("prayer"); }}
-          onClose=${() => setBellOpen(false)} />`}
+          onClose=${() => setBellOpen(false)} onInstall=${() => { setBellOpen(false); setInstallOpen(true); }} />`}
       ${confirm && html`<${Confirm} c=${confirm} onClose=${() => setConfirm(null)} />`}
       ${toast && html`<div class="toast" role="status">${toast}</div>`}
     </div>`;
@@ -1543,7 +1618,7 @@ function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLog
 }
 
 /* ---------- 홈 ---------- */
-function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, unread = [], D = [], onBell, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
+function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, unread = [], D = [], onBell, installCard, onInstall, onHideInstall, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
   const today = todayStr();
   const myStat = me ? stats[me.name] || EMPTY_STAT : null;
   const [revealed, setRevealed] = useState(() => lsGet("verse-" + today) === "1");
@@ -1605,6 +1680,9 @@ function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byN
     : html`<div class="box hello" style="background:var(--y)"><div style="flex:1"><b>아직 입장하지 않았어요</b><p>내 캐릭터 카드를 만들면 중보하고, 열매를 고르고, 출석 기록을 쌓을 수 있어요.</p></div>
         <button class="btn white" onClick=${onEnter}>입장</button></div>`}
 
+    ${installCard && html`<div class="box nbanner" style="background:#ffe3ee"><img src="icon-192.png" alt="" width="44" height="44" style="border-radius:11px;border:2px solid var(--ink)" />
+      <b>홈 화면에 앱처럼 추가하기<br /><small style="font-weight:500">아이콘 한 번으로 바로 들어와요</small></b>
+      <div style="display:flex;flex-direction:column;gap:4px"><button class="mini" onClick=${onInstall}>방법 보기</button><button class="mini" style="border-style:dashed;font-size:11px" onClick=${onHideInstall}>다음에</button></div></div>`}
     ${unread.length > 0 && html`<div class="box nbanner"><span style="font-size:24px">🔔</span><b>새 기도제목 ${unread.length}건이 올라왔어요<br /><small style="font-weight:500">${unread.slice(0, 3).map((e) => e.name).join(", ")}${unread.length > 3 ? " 등" : ""}님이 기도를 부탁했어요</small></b><button class="mini" onClick=${onBell}>확인</button></div>`}
     <div class="box progress">
       <div class="progress-top"><span>🃏 우리 공동체 입장 현황</span><span>${entered} / ${TOTAL}명</span></div>
