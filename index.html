@@ -716,6 +716,8 @@ label.people-search { display: flex; align-items: center; gap: 10px; margin: 0 0
 }
 
 </style>
+<style>.prayer-people{margin:18px 0 4px;padding:14px 0 4px;border-top:1px solid #ebe2d5}.prayer-people-title{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}.prayer-people-title>span{font-size:12px;color:#8a7568}.prayer-people-list{display:flex;flex-wrap:wrap;gap:8px}.prayer-person-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;background:#f4eadd;border:1px solid #eadbcb;border-radius:999px;font-size:13px;color:#45362e}.prayer-person-chip .av{width:28px;height:28px;overflow:hidden;border-radius:50%;flex:0 0 auto}.prayer-person-chip .avatar-image{width:100%;height:100%;display:block}.name-check{margin:0 0 16px;padding:12px 14px;background:#fff4e8;border:1px solid #eadfcd;border-radius:12px;font-size:14px}.name-check p{margin:0 0 5px}.name-check>small{color:#78695e}.name-suggestions{display:grid;gap:8px;margin-top:10px}.name-suggestion{display:grid;grid-template-columns:1fr auto;gap:3px 8px;text-align:left;border:1px solid #d7b5a5;background:#fffdf7;border-radius:10px;padding:10px 12px;min-height:54px;color:#282522}.name-suggestion small{font-size:11px;color:#78695e;grid-column:1}.name-suggestion>span{font-size:12px;grid-column:2;grid-row:1 / span 2;align-self:center;color:#ac1730}.new-name-confirm{display:flex!important;align-items:flex-start;gap:8px;padding:12px;background:#fff8f0;font-size:13px!important;line-height:1.6;font-weight:400!important;border-radius:10px;margin-bottom:14px}.new-name-confirm input{width:20px!important;height:20px!important;min-height:20px!important;padding:0!important;flex:0 0 auto;margin:2px 0 0!important;accent-color:#ac1730}.registered-names{margin-bottom:16px;text-align:left;font-size:13px}.registered-names summary{min-height:44px;cursor:pointer;padding:10px 0}.registered-names>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.rsum>span{overflow-wrap:anywhere}.gate .name-check{text-align:left}@media(max-width:420px){.prayer-person-chip{font-size:12px}.name-suggestion>span{font-size:11px}}
+</style>
 </head>
 <body>
 <div id="root"><div class="boot">🌳<br />기도항아리를 불러오는 중…</div></div>
@@ -1581,55 +1583,48 @@ function App() {
 }
 
 /* ---------- 이름 확인 ---------- */
-function similarNames(q, names) {
-  q = (q || "").trim(); if (!q) return [];
-  return names.filter((n) => n !== q && (n.includes(q) || q.includes(n) || (q.length >= 2 && n.length >= 2 && n.slice(-2) === q.slice(-2)))).slice(0, 8);
+const normalizedName = (n) => String(n || "").normalize("NFKC").replace(/\s+/g, "").trim();
+function similarNames(q,names) {
+ const n=normalizedName(q);if(!n)return [];
+ return names.filter(x=>x!==q && (normalizedName(x)===n || normalizedName(x).includes(n) || n.includes(normalizedName(x)) || (n.length>=2 && normalizedName(x).length>=2 && n.slice(-2)===normalizedName(x).slice(-2)))).sort((a,b)=>(normalizedName(a)===n?-1:normalizedName(b)===n?1:a.localeCompare(b,"ko"))).slice(0,8);
 }
-function NameCheck({ q, names, byName, stats, dark, onPick }) {
-  const n = (q || "").trim();
-  if (!n) return null;
-  const m = byName[n], s = stats[n], sim = similarNames(n, names);
-  const cnt = s ? `기도제목 ${s.topics}개 · 감사 ${s.thanks}개` : "";
-  return html`<div class=${dark ? "ncheck" : "box"} style=${dark ? null : { padding: "12px 14px", marginBottom: "12px", fontSize: "14.5px", lineHeight: 1.6 }}>
-    ${m ? html`✅ <b>${n}</b>님으로 이어서 시작할 수 있어요${cnt && html`<br />${cnt}`}`
-      : names.includes(n) ? html`📝 <b>${n}</b>님 이름으로 쓴 글이 있어요 (${cnt}).<br />같은 이름으로 시작하면 이 기록과 연결돼요.`
-      : html`<b>${n}</b>님으로 새로 시작해요.`}
-    ${!m && sim.length > 0 && html`<div style="margin-top:6px">혹시 이 이름인가요? (띄어쓰기나 오타를 확인해 주세요)</div>
-      <div class="sim" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${sim.map((x) => html`<button class=${dark ? "" : "chip"} onClick=${() => onPick(x)}>${x}${byName[x] ? " ✅" : ""}</button>`)}</div>`}
-  </div>`;
+function NameCheck({q,names,byName,stats,onPick}) {
+ const n=(q||"").trim();if(!n)return null;
+ const exact=names.includes(n),m=byName[n],s=stats[n],sim=similarNames(n,names);
+ return html`<div class="name-check">
+  ${exact ? html`<p><b>${n}</b>님으로 이어서 시작해요.</p><small>${s ? "기도 "+s.topics+"개 · 감사 "+s.thanks+"개" : "기존 캐릭터와 연결돼요"}</small>` : html`<p>${sim.length ? "비슷한 이름이 있어요. 먼저 확인해 주세요." : n+"님으로 새로 시작해요."}</p>`}
+  ${sim.length>0&&html`<div class="name-suggestions">${sim.map(x=>html`<button type="button" class="name-suggestion" onClick=${()=>onPick(x)}><b>${x}</b><small>${stats[x] ? "기도 "+stats[x].topics+" · 감사 "+stats[x].thanks : "등록된 이름"}</small><span>이 이름 사용 →</span></button>`)}</div>`}
+ </div>`;
+}
+function PrayerPeople({names=[],avOf}) {
+ const people=[...new Set(names.filter(n=>typeof n==="string" && n.trim()))];
+ const [expanded,setExpanded]=useState(false);if(!people.length)return null;
+ const shown=expanded ? people : people.slice(0,4);
+ return html`<section class="prayer-people" aria-label="함께 기도한 사람"><div class="prayer-people-title"><b>함께 기도했어요</b><span>${people.length}명</span></div><div class="prayer-people-list">${shown.map(n=>html`<span class="prayer-person-chip"><${Av} a=${avOf(n)} name=${n} crop="face" /><span>${n}</span></span>`)}</div>${people.length>4&&html`<button type="button" class="text-link" aria-expanded=${expanded} onClick=${()=>setExpanded(!expanded)}>${expanded ? "접기" : "모두 보기 ("+people.length+"명)"}</button>`}</section>`;
 }
 
+
 /* ---------- 입장 화면 ---------- */
-function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
-  const [name, setName] = useState("");
-  const [err, setErr] = useState("");
-  const [busy, setBusy] = useState(false);
-  async function go(e) {
-    if(e) e.preventDefault();
-    const n = name.trim();
-    if (!n) return setErr("이름을 입력해 주세요");
-    if (n.length > 10) return setErr("이름은 10자 이내로 적어 주세요");
-    setBusy(true); setErr("");
-    try { const m = byName[n]; if(m) await onEnter(m); else await onCreate(n); }
-    catch(e) { setErr(e.message === "name-id-collision" ? "이 이름은 기존 이름과 겹쳐요. 띄어쓰기나 특수문자 없이 입력해 주세요." : "이름을 저장하지 못했어요. 연결을 확인하고 다시 시도해 주세요."); setBusy(false); }
-  }
-  return html`<main class="gate gate-simple">
-    <div class="gate-art"><${Av} a=${defaultAvatar("시작")} /></div>
-    <p class="gate-kicker">95 공동체 · 횃불기도</p>
-    <h1 class="gate-title">반가워요!<br />이름을 알려주세요.</h1>
-    <p class="gate-description">이름만 입력하면 바로 시작해요.<br />전에 쓰던 이름을 입력하면 기존 기록과 연결돼요.</p>
-    <form class="gate-form" onSubmit=${go}>
-      <label for="gate-name">내 이름</label>
-      <input id="gate-name" value=${name} onInput=${(e) => {setName(e.target.value);setErr("");}} placeholder="예: 유한나" list="gate-names" autocomplete="name" maxlength="10" aria-describedby="gate-note" />
-      <datalist id="gate-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
-      <${NameCheck} q=${name} names=${names} byName=${byName} stats=${stats} dark=${false} onPick=${(x) => {setName(x);setErr("");}} />
-      ${err && html`<p class="err" role="alert">${err}</p>`}
-      <button class="btn full" type="submit" disabled=${busy}>${busy ? "연결하는 중…" : "이 이름으로 시작하기"}</button>
-    </form>
-    <button class="skip" type="button" onClick=${onBrowse}>나중에 등록하고 둘러보기</button>
-    <p class="gate-note" id="gate-note">기도와 감사는 공동체에 공개돼요.<br />캐릭터는 홈에서 언제든 꾸밀 수 있어요.</p>
-  </main>`;
+function Gate({names,members,byName,stats,onEnter,onCreate,onBrowse}) {
+ const [name,setName]=useState("");const [err,setErr]=useState("");const [busy,setBusy]=useState(false);const [confirmed,setConfirmed]=useState(false);
+ const q=name.trim(),exact=names.includes(q),similar=similarNames(q,names),sameSpelling=names.filter(n=>n!==q&&normalizedName(n)===normalizedName(q));
+ const change=(v)=>{setName(v);setErr("");setConfirmed(false);};
+ async function go(e){
+  if(e)e.preventDefault();if(busy)return;
+  const n=name.trim();if(!n)return setErr("이름을 입력해 주세요");if(n.length>10)return setErr("이름은 10자 이내로 적어 주세요");
+  if(!exact&&sameSpelling.length)return setErr("띄어쓰기만 다른 기존 이름이 있어요. 아래에서 기존 이름을 선택해 주세요.");
+  if(!exact&&similar.length&&!confirmed)return setErr("비슷한 이름을 확인한 뒤, 본인의 이름이 없으면 새 이름 확인에 체크해 주세요.");
+  setBusy(true);setErr("");try{const m=byName[n];if(m)await onEnter(m);else await onCreate(n);}catch(e){setErr(e.message==="name-id-collision" ? "기존 이름과 겹쳐요. 등록된 이름을 선택해 주세요." : "이름을 연결하지 못했어요. 인터넷 연결을 확인해 주세요.");setBusy(false);}
+ }
+ return html`<main class="gate gate-simple"><div class="gate-art"><${Av} a=${defaultAvatar("시작")} /></div><p class="gate-kicker">95 공동체 · 횃불기도</p><h1 class="gate-title">반가워요!<br />이름을 알려주세요.</h1><p class="gate-description">전에 쓰던 이름으로 시작하면<br />기도와 캐릭터가 그대로 이어져요.</p>
+  <form class="gate-form" onSubmit=${go}><label for="gate-name">내 이름</label><input id="gate-name" value=${name} onInput=${e=>change(e.target.value)} placeholder="예: 유한나" list="gate-names" autocomplete="name" maxlength="10" aria-describedby="gate-note" /><datalist id="gate-names">${names.map(n=>html`<option value=${n} />`)}</datalist>
+   <${NameCheck} q=${name} names=${names} byName=${byName} stats=${stats} onPick=${change} />
+   ${!q&&names.length>0&&html`<details class="registered-names"><summary>이미 등록된 이름에서 선택</summary><div>${names.map(n=>html`<button type="button" class="chip" onClick=${()=>change(n)}>${n}</button>`)}</div></details>`}
+   ${!exact&&similar.length>0&&!sameSpelling.length&&html`<label class="new-name-confirm"><input type="checkbox" checked=${confirmed} onChange=${e=>{setConfirmed(e.target.checked);setErr("");}} /><span>위 목록에 제 이름이 없어요. <b>${q}</b> 이름을 새로 사용할게요.</span></label>`}
+   ${err&&html`<p class="err" role="alert">${err}</p>`}<button type="submit" class="btn full" disabled=${busy||(!exact&&sameSpelling.length>0)}>${busy ? "연결하는 중…" : exact ? "기존 이름으로 이어서 시작" : "이 이름으로 시작하기"}</button>
+  </form><button class="skip" type="button" onClick=${onBrowse}>나중에 등록하고 둘러보기</button><p class="gate-note" id="gate-note">기도와 감사, 함께 기도한 이름은 공동체에 공개돼요.<br />이름을 바꾸고 싶다면 새로 등록하기보다 통합을 요청해 주세요.</p></main>`;
 }
+
 
 // EDITOR START
 const mascotEditorCss = `
@@ -1978,7 +1973,7 @@ function ReactionBar({ kind, coll, e, me, avOf, onEmoji, lead }) {
     </div>
     ${open && html`<div class="rpick">${rows.map((r) => html`<button class=${me && r.who.includes(me.name) ? "on" : ""} onClick=${() => tap(r)}>${r.emo}<small>${r.label}</small></button>`)}</div>`}
     ${all.length > 0 && html`<div class="rsum"><div class="faces">${all.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} name=${n} crop="face" />`)}</div>
-      <span>${all[0]}님${all.length > 1 ? ` 외 ${all.length - 1}명이` : "이"} 반응했어요</span></div>`}
+      <span>${all.join(", ")}님이 반응했어요</span></div>`}
   </div>`;
 }
 
@@ -1998,7 +1993,7 @@ function VerseRec({ items, seed }) {
 function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete, onToggle, onReact, onEmoji }) {
   const isP = kind === "prayer";
   const items = ((isP ? e.prayers : e.items) || []).map(cleanNum);
-  const who = e.prayedBy || [];
+  const who = [...new Set((e.prayedBy || []).filter(n=>typeof n==="string" && n.trim()))];
   const on = me && who.includes(me.name);
   const [open, setOpen] = useState(!!fresh);
   const ref = useRef(null);
@@ -2020,9 +2015,9 @@ function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete,
         </li>`;
       })}
     </ul>
-    ${isP && who.length > 0 && html`<div class="rsum" style="margin-top:8px"><div class="faces">${who.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} name=${n} crop="face" />`)}</div><span>${who.length}명이 중보하고 있어요</span></div>`}
+    ${isP && html`<${PrayerPeople} names=${who} avOf=${avOf} />`}
     <${ReactionBar} kind=${isP ? "prayer" : "thanks"} coll=${isP ? "prayers" : "gratitude"} e=${e} me=${me} avOf=${avOf} onEmoji=${onEmoji}
-      lead=${isP ? html`<button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${on ? "함께 기도했어요" : "함께 기도하기"} ${who.length || ""}</button>` : null} />
+      lead=${isP ? html`<button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on} title="이 버튼을 누르면 내 이름이 함께 기도한 사람에게 표시돼요">${on ? "함께 기도했어요" : "함께 기도하기"} ${who.length || ""}</button>` : null} />
     ${!isP && html`
       <button class="verse-btn" onClick=${() => setOpen(!open)} aria-expanded=${open}>📖 이 감사에 맞는 말씀 ${open ? "접기 ▴" : "보기 ▾"}</button>
       ${open && html`<${VerseRec} items=${items} seed=${e.id} />`}`}
