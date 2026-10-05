@@ -731,6 +731,7 @@ textarea {overflow-y:auto;touch-action:pan-y pinch-zoom;}
 .chips,.tabs,.pics,.strip {touch-action:pan-x pan-y pinch-zoom;}
 @media(max-height:600px){.overlay{padding-top:8px}.sheet,.mascot-editor{max-height:calc(100dvh - 8px) !important}.mascot-editor-hero{width:130px!important;height:169px!important}.mascot-editor-preview{margin-bottom:10px}.mascot-editor-choice{min-height:90px}.mascot-editor-thumb{height:56px!important}}
 </style>
+<style>.rename-sheet p{font-size:14px;line-height:1.7}.rename-note{font-size:12px!important;color:var(--muted)}.character-modal>.text-link{display:block;margin:8px auto}.rename-sheet input{font-size:16px;min-height:48px}</style>
 </head>
 <body>
 <div id="root"><div class="boot">🌳<br />기도항아리를 불러오는 중…</div></div>
@@ -1054,12 +1055,86 @@ function Icon({name,cls="ui-icon"}) {
 }
 
 
+// Keep original records intact. Resolve names and reaction identities on read.
+function memberIdentity(rows) {
+ const byId=Object.fromEntries(rows.map(m=>[m.id,m]));
+ const resolve=(m)=>{const seen=new Set();while(m&&m.mergedInto){if(seen.has(m.id))return null;seen.add(m.id);m=byId[m.mergedInto];}return m||null;};
+ const members=rows.filter(m=>!m.mergedInto&&!m.aliasOnly);
+ const byName={},resolvedIds={};
+ for(const m of rows){const final=resolve(m);if(!final)continue;resolvedIds[m.id]=final;for(const n of [m.name,...(m.aliases||[])])if(n){byName[n]=final;byName[String(n).normalize("NFKC").replace(/\s+/g,"")]=final;}}
+ return {members,byName,byId:resolvedIds};
+}
+function canonicalRecords(rows,identity) {
+ const name=(n)=>identity.byName[n]?.name||n;
+ const people=(a)=>[...new Set((a||[]).map(name))];
+ return rows.map(e=>({...e,name:name(e.name),...(e.prayedBy?{prayedBy:people(e.prayedBy)}:{}),...(e.amenBy?{amenBy:people(e.amenBy)}:{}),...(e.reactions?{reactions:Object.fromEntries(Object.entries(e.reactions).map(([k,a])=>[k,Array.isArray(a)?people(a):a]))}:{})}));
+}
+function identityMutations(F,db) {
+ const key=(n)=>String(n||'').normalize('NFKC').replace(/\s+/g,'').trim();
+ const docId=(n)=>n.trim().replace(/[\/.#$\[\]\s]+/g,'_')||'_';
+ return {
+  async rename(id,newName,knownNames=[]) {
+   const n=String(newName||'').trim().normalize('NFKC');if(!n||n.length>10)throw new Error('invalid-name');
+   const snap=await F.getDocs(F.collection(db,'members'));
+   const rows=snap.docs.map(d=>({...d.data(),id:d.id}));
+   const identity=memberIdentity(rows),me=identity.byId[id];if(!me||me.id!==id)throw new Error('identity-changed');
+   if(n===me.name)return me;
+   const taken=Object.entries(identity.byName).find(([old,m])=>key(old)===key(n)&&m.id!==id);
+   if(taken||knownNames.some(old=>key(old)===key(n)&&identity.byName[old]?.id!==id))throw new Error('name-taken');
+   const meRef=F.doc(db,'members',id),reserveRef=F.doc(db,'members',docId(n));
+   return F.runTransaction(db,async tx=>{
+    const source=await tx.get(meRef),reservation=reserveRef.path===meRef.path?source:await tx.get(reserveRef);
+    if(!source.exists()||source.data().mergedInto)throw new Error('identity-changed');
+    if(reservation.exists()&&reserveRef.path!==meRef.path&&reservation.data().mergedInto!==id)throw new Error('name-taken');
+    const old=source.data();const aliases=[...new Set([...(old.aliases||[]),old.name])].filter(x=>x!==n);
+    const updated={...old,id,name:n,aliases,updatedAt:new Date().toISOString()};
+    tx.set(meRef,updated);
+    if(reserveRef.path!==meRef.path&&!reservation.exists())tx.set(reserveRef,{id:docId(n),name:n,mergedInto:id,aliasOnly:true,createdAt:new Date().toISOString()});
+    return updated;
+   });
+  },
+  async merge(sourceId,targetId) {
+   if(sourceId===targetId)throw new Error('same-identity');
+   const all=await F.getDocs(F.collection(db,'members'));
+   const rows=all.docs.map(d=>({...d.data(),id:d.id}));const identity=memberIdentity(rows);
+   const src=identity.byId[sourceId],dst=identity.byId[targetId];
+   if(!src||!dst)throw new Error('missing-identity');
+   for(const n of [src.name,...(src.aliases||[])]){const owners=rows.filter(m=>[m.name,...(m.aliases||[])].some(x=>key(x)===key(n)));if(owners.some(m=>![sourceId,targetId].includes(identity.byId[m.id]?.id)))throw new Error('alias-conflict');}
+
+   return F.runTransaction(db,async tx=>{
+    const sourceRef=F.doc(db,'members',sourceId),targetRef=F.doc(db,'members',targetId);
+    const s=await tx.get(sourceRef),t=await tx.get(targetRef);
+    if(!s.exists()||!t.exists())throw new Error('missing-identity');
+    const source=s.data(),target=t.data();
+    if(source.mergedInto===targetId)return {alreadyMerged:true,target};
+    if(source.mergedInto||target.mergedInto)throw new Error('identity-changed');
+    const aliases=[...new Set([...(target.aliases||[]),source.name,...(source.aliases||[])])].filter(n=>n!==target.name);
+    const now=new Date().toISOString();
+    const updated={...target,id:targetId,aliases,days:[...new Set([...(target.days||[]),...(source.days||[])])].sort(),updatedAt:now};
+    // Keep target avatar exactly. Archive source profile in place, preserving rollback data.
+    tx.set(targetRef,updated);
+    tx.set(sourceRef,{...source,id:sourceId,mergedInto:targetId,mergedAt:now});
+    return {target:updated,sourceName:source.name};
+   });
+  }
+ };
+}
+function RenameSheet({member,names,byName,onClose,onSave}) {
+ const [value,setValue]=useState(member.name),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const n=value.trim(),same=Object.entries(byName).find(([old,m])=>normalizedName(old)===normalizedName(n)&&m.id!==member.id);
+ const taken=!!same||names.some(old=>normalizedName(old)===normalizedName(n)&&byName[old]?.id!==member.id);
+ async function save(e){if(e)e.preventDefault();if(busy)return;if(!n||n.length>10)return setError('이름은 1~10자로 입력해 주세요.');if(taken)return setError('다른 사람이 쓰는 이름이에요. 다른 이름을 입력해 주세요.');if(n===member.name)return onClose();setBusy(true);setError('');try{await onSave(n);}catch(e){setError(e.message==='name-taken'?'이미 사용 중인 이름이에요. 다른 이름을 입력해 주세요.':'이름을 저장하지 못했어요. 연결을 확인하고 다시 시도해 주세요.');setBusy(false);}}
+ return html`<div class="overlay"><section class="sheet rename-sheet" role="dialog" aria-modal="true" aria-label="이름 수정"><div class="sheet-h"><h3>이름 수정</h3><button class="xbtn" aria-label="닫기" disabled=${busy} onClick=${onClose}>×</button></div><p>기도와 감사, 캐릭터는 그대로 유지돼요.<br />예전 이름으로 입장해도 새 이름에 연결돼요.</p><form onSubmit=${save}><div class="field"><label for="new-profile-name">새 이름</label><input id="new-profile-name" value=${value} onInput=${e=>{setValue(e.target.value);setError('');}} maxlength="10" autocomplete="name" /></div>${n!==member.name&&html`<p class=${taken?'err':'rename-note'}>${taken?'이미 사용 중인 이름이에요.':member.name+' → '+n}</p>`}${error&&html`<p class="err" role="alert">${error}</p>`}<button class="btn full" type="submit" disabled=${busy||taken||!n}>${busy?'저장하는 중…':'이 이름으로 저장'}</button></form><p class="rename-note">별칭: ${[member.name,...(member.aliases||[])].join(', ')}</p></section></div>`;
+}
+
+
 /* ---------- 데이터 연결 ---------- */
 async function makeFirebaseApi() {
   const A = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
   const F = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js");
   const db = F.getFirestore(A.initializeApp(firebaseConfig));
   return {
+    ...identityMutations(F,db),
     watch(coll, cb, onErr, lim) {
       const ref = F.collection(db, coll);
       const q = lim ? F.query(ref, F.orderBy("createdAt", "desc"), F.limit(lim)) : ref;
@@ -1103,6 +1178,7 @@ function makeDemoApi() {
       const cur = new Set(d[field] || []); add ? cur.add(value) : cur.delete(value); d[field] = [...cur]; emit();
     },
     async get(coll, id) { return (db[coll] || {})[id] || null; },
+    async rename(id,newName,knownNames=[]) { const identity=memberIdentity(Object.values(db.members)); const me=identity.byId[id]; if(!me)throw new Error("missing-identity"); if(knownNames.some(n=>normalizedName(n)===normalizedName(newName)&&identity.byName[n]?.id!==id))throw new Error("name-taken"); const updated={...me,name:newName,aliases:[...new Set([...(me.aliases||[]),me.name])].filter(n=>n!==newName)}; db.members[id]=updated;emit();return updated; },
   };
 }
 
@@ -1359,9 +1435,9 @@ function App() {
   const [who, setWho] = useState("");
   const [photoLimit, setPhotoLimit] = useState(30);
   const M = useColl("members");
-  const P = useColl("prayers");
-  const G = useColl("gratitude");
-  const PH = useColl("photos", photoLimit);
+  const rawP = useColl("prayers");
+  const rawG = useColl("gratitude");
+  const rawPH = useColl("photos", photoLimit);
   const [meId, setMeId] = useState(() => lsGet("me"));
   const [gate, setGate] = useState(null);         // null | "welcome" | {name, member}
   const [browse, setBrowse] = useState(true);
@@ -1371,6 +1447,7 @@ function App() {
   const [confirm, setConfirm] = useState(null);
   const [lightId, setLightId] = useState(null);
   const [cardOf, setCardOf] = useState(null);
+  const [renameOpen,setRenameOpen] = useState(false);
   const [toast, setToast] = useState("");
   const [freshId, setFreshId] = useState(null);
   const [tick, setTick] = useState(0);
@@ -1379,9 +1456,13 @@ function App() {
   const say = (msg) => { setToast(msg); clearTimeout(toastTimer.current); toastTimer.current = setTimeout(() => setToast(""), 2600); };
   const go = (t) => { setTab(t); lsSet("tab", t); window.scrollTo(0, 0); };
 
-  const members = M.items;
-  const byName = useMemo(() => Object.fromEntries(members.map((m) => [m.name, m])), [members]);
-  const me = meId ? members.find((m) => m.id === meId) || null : null;
+  const identity=useMemo(()=>memberIdentity(M.items),[M.items]);
+  const members=identity.members,byName=identity.byName;
+  const me=meId ? identity.byId[meId]||null : null;
+  const P={...rawP,items:useMemo(()=>canonicalRecords(rawP.items,identity),[rawP.items,identity])};
+  const G={...rawG,items:useMemo(()=>canonicalRecords(rawG.items,identity),[rawG.items,identity])};
+  const PH={...rawPH,items:useMemo(()=>canonicalRecords(rawPH.items,identity),[rawPH.items,identity])};
+  useEffect(()=>{if(me&&me.id!==meId){lsSet("me",me.id);setMeId(me.id);}},[me&&me.id,meId]);
   const stats = useStats(P.items, G.items, members, PH.items);
   const avOf = (n) => byName[n]?.avatar || defaultAvatar(n);
   const names = useMemo(() => {
@@ -1426,7 +1507,7 @@ function App() {
     lsSet("notif", "1"); setNotifOn(true);
     showNotif("🔔 알림이 켜졌어요", "동기가 기도제목을 올리면 알려드릴게요. 내용은 보이지 않아요.");
   }
-  const modalOpen = !!(sheet || confirm || lightId || cardOf || (gate && gate.name) || installOpen || bellOpen);
+  const modalOpen = !!(renameOpen || sheet || confirm || lightId || cardOf || (gate && gate.name) || installOpen || bellOpen);
   useEffect(() => {
     if (!modalOpen) return;
     const body = document.body, root = document.documentElement;
@@ -1451,7 +1532,7 @@ function App() {
     };
   }, [modalOpen]);
   useEffect(() => {
-    const esc = (e) => { if (e.key !== "Escape") return; setSheet(null); setConfirm(null); setLightId(null); setCardOf(null); setBellOpen(false); setInstallOpen(false); };
+    const esc = (e) => { if (e.key !== "Escape") return; setSheet(null); setConfirm(null); setLightId(null); setCardOf(null); setBellOpen(false); setInstallOpen(false); setRenameOpen(false); };
     document.addEventListener("keydown", esc);
     return () => document.removeEventListener("keydown", esc);
   }, []);
@@ -1460,7 +1541,7 @@ function App() {
 
   async function saveMember(name, data, existing) {
     const t = nowIso();
-    const id = memberId(name);
+    const id = existing?.id || memberId(name);
     const stored = await api.get("members", id);
     if (stored && stored.name !== name) throw new Error("name-id-collision");
     existing = stored || existing;
@@ -1503,7 +1584,7 @@ function App() {
     requireMe(async () => {
       const on = !(e[field] || []).includes(me.name);
       try {
-        await api.arr(coll, e.id, field, me.name, on);
+        if(on) await api.arr(coll,e.id,field,me.name,true); else {const raw=(coll==="prayers"?rawP:rawG).items.find(x=>x.id===e.id);const aliases=(raw?.[field]||[]).filter(n=>(byName[n]?.id||n)===(me.id||me.name));for(const n of aliases)await api.arr(coll,e.id,field,n,false);}
         if (on) { lsSet("inter-" + todayStr(), "1"); setTick((t) => t + 1); }
         if (on) say(coll === "prayers" ? `${e.name}님을 위해 중보했어요 🙏` : "아멘! 🙌");
       } catch (err) { console.error(err); say("반영에 실패했어요"); }
@@ -1513,8 +1594,7 @@ function App() {
     requireMe(async () => {
       const on = !reactorsOf(e, key).includes(me.name);
       try {
-        if (!on && key === "amen" && (e.amenBy || []).includes(me.name)) await api.arr(coll, e.id, "amenBy", me.name, false);
-        await api.reactTo(coll, e.id, key, me.name, on);
+        if(on) await api.reactTo(coll,e.id,key,me.name,true); else {const raw=({prayers:rawP,gratitude:rawG,photos:rawPH}[coll]).items.find(x=>x.id===e.id);const matches=n=>(byName[n]?.id||n)===(me.id||me.name);if(key==="amen")for(const n of (raw?.amenBy||[]).filter(matches))await api.arr(coll,e.id,"amenBy",n,false);for(const n of (raw?.reactions?.[key]||[]).filter(matches))await api.reactTo(coll,e.id,key,n,false);}
         if (on) say(`${emo} ${e.name}님에게 마음을 전했어요`);
       } catch (err) { console.error(err); say("반영에 실패했어요"); }
     });
@@ -1605,8 +1685,10 @@ function App() {
       ${gate && gate.name && html`<${Editor} name=${gate.name} member=${byName[gate.name]} stat=${stats[gate.name]}
           onClose=${() => setGate(me ? null : "welcome")} onSave=${(data) => saveMember(gate.name, data, byName[gate.name])} />`}
 
+      ${renameOpen && me && html`<${RenameSheet} member=${me} names=${names} byName=${byName} onClose=${()=>setRenameOpen(false)} onSave=${async n=>{await api.rename(me.id,n,names);setRenameOpen(false);setWho("");say("이름을 수정했어요. 기록은 그대로 유지돼요.");}} />`}
       ${cardOf && html`<${CardModal} name=${cardOf} member=${byName[cardOf]} stat=${stats[cardOf]} mine=${me && me.name === cardOf}
           onClose=${() => setCardOf(null)}
+          onRename=${()=>{setCardOf(null);setRenameOpen(true);}}
           onEdit=${() => { setCardOf(null); setGate({ name: cardOf }); }}
           onPrayers=${() => { setCardOf(null); setWho(cardOf); setScope("all"); go("prayer"); }}
           onLogout=${() => { setCardOf(null); lsSet("me", ""); setMeId(null); setGate("welcome"); }} />`}
@@ -1631,7 +1713,7 @@ function similarNames(q,names) {
 }
 function NameCheck({q,names,byName,stats,onPick}) {
  const n=(q||"").trim();if(!n)return null;
- const exact=names.includes(n),m=byName[n],s=stats[n],sim=similarNames(n,names);
+ const exact=names.includes(n)||!!byName[n]||!!byName[normalizedName(n)],m=byName[n]||byName[normalizedName(n)],s=stats[n],sim=similarNames(n,names);
  return html`<div class="name-check">
   ${exact ? html`<p><b>${n}</b>님으로 이어서 시작해요.</p><small>${s ? "기도 "+s.topics+"개 · 감사 "+s.thanks+"개" : "기존 캐릭터와 연결돼요"}</small>` : html`<p>${sim.length ? "비슷한 이름이 있어요. 먼저 확인해 주세요." : n+"님으로 새로 시작해요."}</p>`}
   ${sim.length>0&&html`<div class="name-suggestions">${sim.map(x=>html`<button type="button" class="name-suggestion" onClick=${()=>onPick(x)}><b>${x}</b><small>${stats[x] ? "기도 "+stats[x].topics+" · 감사 "+stats[x].thanks : "등록된 이름"}</small><span>이 이름 사용 →</span></button>`)}</div>`}
@@ -1648,14 +1730,14 @@ function PrayerPeople({names=[],avOf}) {
 /* ---------- 입장 화면 ---------- */
 function Gate({names,members,byName,stats,onEnter,onCreate,onBrowse}) {
  const [name,setName]=useState("");const [err,setErr]=useState("");const [busy,setBusy]=useState(false);const [confirmed,setConfirmed]=useState(false);
- const q=name.trim(),exact=names.includes(q),similar=similarNames(q,names),sameSpelling=names.filter(n=>n!==q&&normalizedName(n)===normalizedName(q));
+ const q=name.trim(),exact=names.includes(q)||!!byName[q]||!!byName[normalizedName(q)],similar=similarNames(q,names),sameSpelling=names.filter(n=>n!==q&&normalizedName(n)===normalizedName(q));
  const change=(v)=>{setName(v);setErr("");setConfirmed(false);};
  async function go(e){
   if(e)e.preventDefault();if(busy)return;
   const n=name.trim();if(!n)return setErr("이름을 입력해 주세요");if(n.length>10)return setErr("이름은 10자 이내로 적어 주세요");
   if(!exact&&sameSpelling.length)return setErr("띄어쓰기만 다른 기존 이름이 있어요. 아래에서 기존 이름을 선택해 주세요.");
   if(!exact&&similar.length&&!confirmed)return setErr("비슷한 이름을 확인한 뒤, 본인의 이름이 없으면 새 이름 확인에 체크해 주세요.");
-  setBusy(true);setErr("");try{const m=byName[n];if(m)await onEnter(m);else await onCreate(n);}catch(e){setErr(e.message==="name-id-collision" ? "기존 이름과 겹쳐요. 등록된 이름을 선택해 주세요." : "이름을 연결하지 못했어요. 인터넷 연결을 확인해 주세요.");setBusy(false);}
+  setBusy(true);setErr("");try{const m=byName[n]||byName[normalizedName(n)];if(m)await onEnter(m);else await onCreate(n);}catch(e){setErr(e.message==="name-id-collision" ? "기존 이름과 겹쳐요. 등록된 이름을 선택해 주세요." : "이름을 연결하지 못했어요. 인터넷 연결을 확인해 주세요.");setBusy(false);}
  }
  return html`<main class="gate gate-simple"><div class="gate-art"><${Av} a=${defaultAvatar("시작")} /></div><p class="gate-kicker">95 공동체 · 횃불기도</p><h1 class="gate-title">반가워요!<br />이름을 알려주세요.</h1><p class="gate-description">전에 쓰던 이름으로 시작하면<br />기도와 캐릭터가 그대로 이어져요.</p>
   <form class="gate-form" onSubmit=${go}><label for="gate-name">내 이름</label><input id="gate-name" value=${name} onInput=${e=>change(e.target.value)} placeholder="예: 유한나" list="gate-names" autocomplete="name" maxlength="10" aria-describedby="gate-note" /><datalist id="gate-names">${names.map(n=>html`<option value=${n} />`)}</datalist>
@@ -1730,12 +1812,13 @@ function Editor({name,member,stat,onClose,onSave}) {
   </div>`;
 }
 
-function CardModal({name,member,stat,mine,onClose,onEdit,onPrayers,onLogout}) {
+function CardModal({name,member,stat,mine,onClose,onEdit,onPrayers,onLogout,onRename}) {
   return html`<div class="overlay center" onClick=${e=>e.target===e.currentTarget&&onClose()}><section class="character-modal" role="dialog" aria-modal="true" aria-label=${name+"님의 캐릭터"}>
     <button class="icon-btn modal-close" aria-label="닫기" onClick=${onClose}><${Icon} name="close" /></button>
     <${TCard} big name=${name} member=${member} stat=${stat} />
     ${member?.bio && html`<p class="character-bio">${member.bio}</p>`}
     <div class="profile-actions"><button class="btn" onClick=${onPrayers}>기도 보기</button>${mine && html`<button class="btn secondary" onClick=${onEdit}>캐릭터 꾸미기</button>`}</div>
+    ${mine && html`<button class="text-link" onClick=${onRename}>이름 수정</button>`}
     ${mine && html`<button class="text-link" onClick=${onLogout}>다른 이름으로 시작</button>`}
   </section></div>`;
 }
