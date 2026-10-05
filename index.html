@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#1b1b1b" />
+<meta name="color-scheme" content="light" />
+<meta name="theme-color" content="#fbf7f0" />
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/png" href="icon-192.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="기도나무" />
+<meta name="apple-mobile-web-app-title" content="기도항아리" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<title>95 기도나무 · 우리 공동체</title>
+<title>기도항아리 · 우리 공동체</title>
 
 <!-- Kakao/Facebook/Twitter link preview -->
-<meta property="og:title" content="95 기도나무" />
-<meta property="og:description" content="내 캐릭터로 입장해서 기도제목을 나누고, 오늘의 말씀 카드를 뒤집어 보세요" />
+<meta property="og:title" content="기도항아리" />
+<meta property="og:description" content="횃불기도를 항아리에 담고, 동기들과 함께 기도해요." />
 <meta property="og:image" content="https://gkssk2890.github.io/prayer-tree/og-image.png" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -406,13 +407,369 @@
   @keyframes up { from { transform:translateY(40px); opacity:.4; } }
   @keyframes pop { from { transform:scale(.94); opacity:0; } }
 </style>
+<style>
+/* Prayer jar redesign. Load after the original stylesheet. No image assets. */
+:root {
+  --ink: #3f2d26;
+  --paper: #fffdf7;
+  --bg: #f7f3eb;
+  --muted: #796a60;
+  --y: #e9d6b9;
+  --o: #b77951;
+  --r: #a94f3d;
+  --p: #efd9d2;
+  --pu: #887184;
+  --b: #786d59;
+  --g: #6e8068;
+  --m: #e7eadf;
+  --nav: 72px;
+  --jar-accent: #874c38;
+  --jar-accent-hover: #703c2b;
+  --jar-line: #e3dace;
+  --jar-soft: #eee5d8;
+  --jar-serif: 'Noto Serif KR', Georgia, serif;
+  --jar-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  color-scheme: light;
+}
+html { background: var(--bg); scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--jar-sans); line-height: 1.6; }
+button, input, textarea, select { font-family: var(--jar-sans); }
+button, a, input, textarea, select, summary { -webkit-tap-highlight-color: transparent; }
+button { touch-action: manipulation; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid #9b6548;
+  outline-offset: 4px;
+}
+button:disabled { cursor: not-allowed; }
+.disp, .sec h2, .sheet-h h3, .month-h, .stat b, .front h3, .back .vh b, .mission h4 span {
+  font-family: var(--jar-sans); font-weight: 700; letter-spacing: -.025em;
+}
+.app { max-width: 1064px; overflow-x: clip; padding-bottom: calc(var(--nav) + 90px + env(safe-area-inset-bottom)); }
+.wrap { max-width: 780px; margin: 0 auto; padding: 28px 24px; }
+.sec { margin: 26px 0 14px; }
+.sec h2 { font-size: 20px; }
+.sec small, .summary, .hint, .empty { color: var(--muted); }
+.demo-badge { background: #eae1d3; border-bottom: 1px solid var(--jar-line); color: #6b5240; font-weight: 500; font-size: 12px; padding: 6px 12px; }
+.admin-badge { background: #8e5340; font-weight: 600; }
+.topbar {
+  padding: calc(12px + env(safe-area-inset-top)) 28px 12px;
+  min-height: 76px;
+  gap: 16px;
+  background: rgba(247, 243, 235, .97);
+  color: var(--ink);
+  border-bottom: 1px solid var(--jar-line);
+  box-shadow: none;
+  backdrop-filter: blur(16px);
+}
+.logo { gap: 10px; }
+.logo b { font-family: var(--jar-serif); font-size: 23px; font-weight: 700; color: var(--ink); letter-spacing: -.04em; }
+.logo small { color: var(--muted); font-size: 9px; font-weight: 500; letter-spacing: .16em; line-height: 1.5; }
+.top-r { gap: 8px; }
+.yearsw { border: 1px solid var(--jar-line); background: #f0e8dc; border-radius: 24px; }
+.yearsw button { width: 44px; height: 44px; color: var(--jar-accent); font-size: 20px; }
+.yearsw span { font-weight: 600; font-size: 13px; min-width: 43px; }
+.me-btn { width: 44px; height: 44px; border: 1px solid #c4a48c; border-radius: 50%; }
+.enter-btn { min-height: 44px; background: var(--jar-accent); border: 1px solid var(--jar-accent); color: #fffdf7; border-radius: 24px; font-weight: 600; padding: 9px 15px; }
+.bell { width: 44px; height: 44px; background: #eee5d8; border-radius: 50%; }
+.bell i { border: 2px solid var(--bg); background: var(--jar-accent); font-weight: 600; }
+.btn {
+  min-height: 48px; display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+  border: 1px solid var(--jar-accent); border-radius: 11px;
+  background: var(--jar-accent); color: #fffdf7; padding: 12px 20px;
+  font-size: 14px; font-weight: 600; line-height: 1.5;
+  box-shadow: none; transition: background .18s ease, border-color .18s ease;
+}
+.btn:hover:not(:disabled), .enter-btn:hover, .fab:hover { background: var(--jar-accent-hover); border-color: var(--jar-accent-hover); }
+.btn:active, .fab:active { transform: none; box-shadow: none; }
+.btn.secondary, .btn.white { background: transparent; border-color: #c8b7a6; color: var(--jar-accent); }
+.btn.secondary:hover:not(:disabled), .btn.white:hover:not(:disabled) { background: #eee4d6; border-color: #b29780; }
+.btn.ink { background: #574033; color: #fffdf7; border-color: #574033; }
+.btn.danger { background: #9f4536; color: #fffdf7; border-color: #9f4536; }
+.btn.full { width: 100%; }
+.box, .card, .face, .dialog, .fruit, .notice, .vbox, .rpick, .ecard {
+  border: 1px solid var(--jar-line); box-shadow: none; border-radius: 16px;
+}
+.box, .card, .ecard { background: var(--paper); }
+.card, .ecard { padding: 20px; margin-bottom: 16px; }
+.card.thanks { background: #fdf8ee; }
+.hello { background: #eeeee3; padding: 16px; }
+.hello .av, .card-h .av, .writer .av, .nrow .av { border: 1px solid #d9caba; border-radius: 50%; }
+.hello b { font-weight: 600; }
+.hello p { color: var(--muted); }
+.fire { color: #744a35; background: #e9decd; font-weight: 600; }
+.bar { height: 10px; border: 0; background: #e8e2d7; }
+.bar i { background: #8c987d; border: 0; }
+.faces .av { border: 2px solid var(--paper); }
+.stat b { font-size: 27px; color: var(--jar-accent); }
+.seg { border: 1px solid var(--jar-line); border-radius: 12px; background: #efe8de; padding: 4px; }
+.seg button { min-height: 44px; font-size: 14px; border-radius: 9px; font-weight: 600; }
+.seg button.on { background: var(--paper); color: var(--jar-accent); box-shadow: 0 1px 4px rgba(70, 42, 26, .05); }
+.chip, .mini, .ans, .react-btn, .rchip, .radd, .tabs button, .gfilter button, .pill, .mbtis button, .opt, .ncheck, .lb-btn {
+  border-width: 1px; border-color: var(--jar-line); box-shadow: none; font-weight: 600;
+}
+.chip, .mini, .ans, .react-btn, .rchip, .radd, .tabs button, .gfilter button, .mbtis button, .mrow button, .vmore, .lb-btn, .gate .skip, .gate .check-link, .ncheck .sim button { min-height: 44px; }
+.chip.on, .opt.on { background: #ede0cc; border-color: #b89c7e; box-shadow: none; }
+.chip i { background: #795946; }
+.chip.zero { color: #8b8177; border-color: #ddd4c7; }
+.mini { color: var(--jar-accent); padding: 9px 12px; }
+.mini.del { color: #9d4437; }
+.select, .field input, .field textarea, .writer input[type=date], .gate input {
+  min-height: 48px; border: 1px solid #cbbcae; background-color: var(--paper); border-radius: 10px; font-weight: 400;
+}
+.select { padding: 12px 40px 12px 14px; }
+.field > label { font-weight: 600; }
+.field textarea { min-height: 90px; line-height: 1.8; }
+.who b { font-size: 15px; font-weight: 600; }
+.who b i { border-width: 1px; color: var(--jar-accent); font-weight: 500; }
+.plist li, .mrow, .nrow, .istep { border-top: 1px solid #eae2d7; }
+.plist li { font-size: 15px; padding: 14px 0; line-height: 1.85; }
+.num, .istep .inum { border: 0; background: #eee1cf; color: #7d5238; font-weight: 600; }
+.card.thanks .num { background: #ead8ca; }
+.ans { padding: 9px 12px; color: #7a5b48; }
+.ans.on { background: #85604b; color: #fff; border-color: #85604b; }
+.react { border-top: 1px solid var(--jar-line); }
+.react-btn.on { background: #ece2d3; color: #794e36; border-color: #b99e84; }
+.rchip.on { background: #f2e2da; border-color: #b5826b; color: #864c36; }
+.rpick button { min-height: 56px; }
+.rpick button.on { background: #f2e2da; }
+.verse-btn { min-height: 44px; color: var(--jar-accent); font-weight: 600; }
+.vbox, .back { background: #594737; color: #fffaf0; }
+.vq { border-left: 2px solid #d4b38e; }
+.vq cite, .back .vh b, .vr-key { color: #ead1aa; }
+.back .vh small, .vnote, .vr-key span { color: #e1d4c3; }
+.notice { background: #f2eadc; color: #65503f; }
+.fab { right: max(24px, calc(50% - 490px)); min-height: 52px; border: 1px solid var(--jar-accent); background: var(--jar-accent); color: #fffdf7; border-radius: 28px; padding: 12px 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 16px rgba(93, 53, 32, .12); }
+.nav { background: rgba(255, 253, 247, .98); border-top: 1px solid var(--jar-line); backdrop-filter: blur(16px); }
+.nav-in { max-width: 1000px; height: var(--nav); padding: 5px 16px; gap: 4px; }
+.nav button { min-height: 44px; min-width: 44px; font-size: 12px; font-weight: 500; color: #7d7065; border-radius: 12px; gap: 5px; }
+.nav button .ni { font-size: 19px; opacity: .7; }
+.nav button .ni svg { width: 22px; height: 22px; display: block; }
+.nav button.on { background: #f2e8dc; color: var(--jar-accent); font-weight: 700; }
+.nav button.on .ni { transform: none; }
+.overlay { background: rgba(54, 38, 27, .42); }
+.sheet { max-width: 640px; background: var(--bg); border: 1px solid #d1beaa; border-bottom: 0; border-radius: 24px 24px 0 0; padding: 10px 24px calc(24px + env(safe-area-inset-bottom)); }
+.sheet-h { margin-bottom: 20px; }
+.sheet-h h3 { font-size: 22px; }
+.xbtn { width: 44px; height: 44px; border: 1px solid var(--jar-line); color: var(--jar-accent); background: var(--paper); font-weight: 500; }
+.grip { width: 36px; height: 4px; background: #bca68f; opacity: .65; margin-bottom: 18px; }
+.item-row .rm { width: 44px; height: 44px; color: #826f5f; flex-shrink: 0; }
+.addline, .pickbtn { border: 1px dashed #bea78e; background: #fdf9f1; font-weight: 600; }
+.editing { border: 1px solid #ddc9b9; background: #f0e1d6; font-weight: 500; }
+.dialog { background: var(--paper); padding: 26px 22px 22px; }
+.dialog h4 { font-weight: 600; }
+.picks div, .grid button, .pics, .strip button { border: 1px solid #ddd0c0; border-radius: 12px; }
+.picks button { width: 44px; height: 44px; }
+.grid { gap: 10px; }
+.post { padding: 20px; }
+.strip { gap: 12px; }
+.tcard { background: #9d8570; box-shadow: none; }
+.tc-head, .tc-pic, .tc-foot, .tc-mbti { border-width: 1px; border-color: #b1a08e; }
+.tc-head b, .tc-lv, .tc-moves b, .tc-foot b { font-family: var(--jar-sans); font-weight: 700; }
+.tc-badge { background: #705946; }
+.tcard.mine { outline: 2px solid var(--jar-accent); }
+.opt .av { border-width: 1px; border-color: var(--jar-line); }
+.swatches button { width: 44px; height: 44px; border-width: 1px; }
+.swatches button.on { outline: 2px solid var(--jar-accent); }
+.mbtis button.on { background: #806573; }
+.tabs button.on { background: #71533e; color: #fffaf0; }
+.front { background: #eadcc5; }
+.front .q { border: 1px solid #c9b59b; background: var(--paper); color: var(--jar-accent); font-family: var(--jar-serif); }
+.front .tap { background: #796047; color: #fff8e9; transform: none; font-weight: 500; }
+.fruit { padding: 14px 6px; }
+.fruit.on { transform: none; box-shadow: none; border-color: #a58b72; }
+.fruit.on::after { background: #735642; color: #fff9ee; font-weight: 600; }
+.chk { border-width: 1px; }
+.allclear { border-width: 1px; border-color: #6e8068; font-weight: 600; }
+.toast { background: #634733; color: #fff7e7; border-radius: 14px; font-weight: 500; }
+.nbanner { background: #eee1cc; }
+.nbanner b { font-weight: 600; }
+.nnew { background: var(--jar-accent); }
+
+/* Home hierarchy: invitation, prayer preview, then supporting routes. */
+.jar-home { width: 100%; max-width: 1000px; margin: 0 auto; padding: 28px 24px 38px; }
+.jar-greeting { color: var(--muted); margin: 0 0 12px; font-size: 13px; letter-spacing: .01em; }
+.jar-greeting b, .jar-greeting strong { font-weight: 600; color: var(--ink); }
+.jar-hero { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: 24px; min-height: 352px; padding: 22px 20px 22px 10px; }
+.jar-hero-copy { min-width: 0; max-width: 520px; }
+.eyebrow, .gate-kicker { margin: 0 0 16px; color: #956b50; font-size: 11px; font-weight: 600; line-height: 1.6; letter-spacing: .18em; text-transform: uppercase; }
+.jar-hero h1 { font-family: var(--jar-serif); font-weight: 600; font-size: clamp(32px, 3.5vw, 43px); line-height: 1.5; letter-spacing: -.065em; word-break: keep-all; margin: 0 0 18px; color: #4b3327; }
+.jar-hero-copy > p:not(.eyebrow) { max-width: 425px; margin: 0; font-size: 14px; line-height: 1.9; color: var(--muted); word-break: keep-all; overflow-wrap: anywhere; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.hero-actions .btn { min-width: 146px; }
+.jar-visual { width: 100%; min-width: 0; display: grid; place-items: center; position: relative; }
+.moon-jar-svg { width: 100%; max-width: 408px; height: auto; display: block; overflow: visible; }
+.jar-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 20px 12px; background: #f0e9de; border: 1px solid #e7ddcf; border-radius: 16px; margin: 18px 0 30px; }
+.summary-stat { text-align: center; padding: 0 12px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+.summary-stat + .summary-stat { border-left: 1px solid #ded1c1; }
+.summary-stat b { color: #754b35; font-weight: 500; font-size: 27px; line-height: 1.25; letter-spacing: -.035em; }
+.summary-stat span { font-size: 12px; line-height: 1.7; color: #7a6858; }
+.jar-main-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.jar-main-grid > * { min-width: 0; }
+.jar-panel { background: var(--paper); border: 1px solid var(--jar-line); border-radius: 16px; padding: 22px; margin-bottom: 22px; }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
+.panel-heading h2 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.04em; line-height: 1.5; }
+.panel-heading > button { border: 0; min-height: 44px; padding: 8px 0 8px 8px; background: transparent; color: #916447; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+.panel-heading > button:hover { color: #663c25; text-decoration: underline; text-underline-offset: 4px; }
+.prayer-preview-card { padding: 17px 0; border-top: 1px solid #eae3d9; }
+.prayer-preview-card:first-of-type { padding-top: 0; border-top: 0; }
+.prayer-preview-card:last-child { padding-bottom: 0; }
+.preview-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 11px; line-height: 1.6; margin-bottom: 8px; }
+.preview-meta .av { width: 28px; height: 28px; border: 1px solid #e1d6c7; border-radius: 50%; overflow: hidden; }
+.preview-meta .av svg { width: 100%; height: 100%; display: block; }
+.preview-meta b, .preview-meta strong { color: #5b4433; font-weight: 600; font-size: 12px; }
+.preview-meta time { margin-left: auto; }
+.preview-title { margin: 0 0 7px; font-weight: 600; font-size: 15px; line-height: 1.6; letter-spacing: -.02em; }
+.preview-lines { margin: 0; padding: 0; list-style: none; font-size: 13px; line-height: 1.85; color: #756457; word-break: keep-all; overflow-wrap: anywhere; }
+.preview-lines p { margin: 5px 0; }
+.preview-lines li { display: flex; align-items: baseline; gap: 7px; }
+.preview-lines li::before { content: ''; display: block; width: 3px; height: 3px; border-radius: 50%; background: #b2967e; flex-shrink: 0; align-self: start; margin-top: 12px; }
+.preview-footer { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: #8a7260; font-size: 11px; }
+.preview-footer button { min-height: 44px; border: 1px solid #e1d1bc; border-radius: 24px; background: #f8f0e3; color: #855d42; padding: 8px 12px; font-size: 12px; font-weight: 500; }
+.preview-footer button:hover { background: #eee0cc; }
+.jar-shortcuts { display: flex; flex-direction: column; gap: 2px; }
+.jar-shortcuts button { width: 100%; min-height: 76px; display: flex; align-items: center; gap: 13px; padding: 14px 0; border: 0; border-bottom: 1px solid #eae3d9; background: transparent; text-align: left; }
+.jar-shortcuts button:last-child { border-bottom: 0; }
+.jar-shortcuts button:hover .shortcut-copy b { color: var(--jar-accent); }
+.shortcut-icon { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; background: #f2e9dc; color: #9b7355; border-radius: 12px; }
+.shortcut-icon svg { width: 21px; height: 21px; stroke-width: 1.5; }
+.shortcut-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.shortcut-copy b { font-size: 14px; font-weight: 600; color: #513c2e; }
+.shortcut-copy small { font-size: 11px; line-height: 1.6; color: var(--muted); }
+.shortcut-arrow { font-size: 20px; line-height: 1; color: #a38a72; padding: 4px; }
+.jar-months { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.jar-months button { min-width: 0; min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 1px solid #e6dbcd; border-radius: 10px; background: #fbf7ef; color: #6e5541; font-size: 12px; padding: 9px 4px; }
+.jar-months button:hover, .jar-months button.on, .jar-months button[aria-pressed='true'] { border-color: #b28c69; background: #ede0cf; color: #70492f; }
+.month-count { font-size: 10px; line-height: 1.5; color: #79614e; }
+.jar-verse { padding: 25px 26px; background: #efe7da; border: 1px solid #e1d5c4; border-radius: 14px; }
+.jar-verse blockquote { margin: 0; font-family: var(--jar-serif); font-size: 14px; font-weight: 600; line-height: 2; letter-spacing: -.03em; color: #65503d; word-break: keep-all; }
+.jar-verse cite { display: block; margin-top: 14px; font-family: var(--jar-sans); font-size: 11px; font-weight: 400; font-style: normal; color: #78604c; }
+.jar-extras { margin-top: 24px; border-top: 1px solid var(--jar-line); padding-top: 8px; }
+.jar-extras > summary { min-height: 48px; padding: 12px 0; cursor: pointer; color: #887362; font-size: 13px; font-weight: 500; }
+.jar-extras[open] > summary { margin-bottom: 14px; }
+.jar-status { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; font-size: 11px; color: var(--muted); line-height: 1.8; margin-top: 20px; }
+.jar-status i, .jar-status .status-dot { width: 5px; height: 5px; display: inline-block; border-radius: 50%; background: #829178; }
+.jar-install { margin-top: 28px; padding: 20px 22px; border: 1px solid var(--jar-line); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: #f4eee4; color: #6d5744; font-size: 13px; }
+.jar-install b { font-weight: 600; display: block; }
+.jar-install p { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+.jar-install .btn { flex-shrink: 0; min-height: 44px; padding: 10px 16px; font-size: 12px; }
+
+/* Gentle, straightforward entry screen. */
+.gate-simple { max-width: 1000px; margin: 0 auto; min-height: 100svh; padding: 36px 24px calc(36px + env(safe-area-inset-bottom)); background: var(--bg); color: var(--ink); display: flex; flex-direction: column; align-items: center; text-align: center; }
+.gate-simple .gate-art { width: min(340px, 78vw); margin: 4px auto 2px; }
+.gate-simple .gate-art .moon-jar-svg { width: 100%; }
+.gate-simple .gate-kicker { margin: 0 0 12px; }
+.gate-simple .gate-title { font-family: var(--jar-serif); font-size: clamp(30px, 5vw, 42px); font-weight: 600; letter-spacing: -.065em; line-height: 1.5; margin: 0 0 15px; color: #4b3327; }
+.gate-simple .gate-description { max-width: 370px; margin: 0 0 28px; color: var(--muted); font-size: 14px; line-height: 1.9; word-break: keep-all; }
+.gate-simple .gate-form { width: 100%; max-width: 340px; text-align: left; }
+.gate-simple .gate-form label { display: block; margin-bottom: 9px; font-size: 13px; font-weight: 500; }
+.gate-simple .gate-form input { width: 100%; min-height: 52px; border: 1px solid #c9b6a3; background: var(--paper); color: var(--ink); border-radius: 10px; padding: 13px 16px; font-size: 16px; font-weight: 400; margin-bottom: 12px; }
+.gate-simple .gate-form .btn { width: 100%; }
+.gate-simple .gate-note { max-width: 350px; margin: 18px 0 0; color: var(--muted); font-size: 11px; line-height: 1.8; word-break: keep-all; }
+.gate-simple .gate-note button { min-height: 44px; border: 0; background: transparent; color: var(--jar-accent); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+
+@media (min-width: 1100px) {
+  .topbar { border-radius: 0 0 14px 14px; }
+  .jar-hero { padding-top: 28px; padding-bottom: 30px; }
+}
+@media (max-width: 760px) {
+  .jar-hero { grid-template-columns: 1.1fr .85fr; gap: 8px; min-height: 320px; padding: 16px 0; }
+  .jar-hero h1 { font-size: 32px; }
+  .jar-main-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .jar-months { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .jar-verse { margin-bottom: 22px; }
+}
+@media (max-width: 540px) {
+  .topbar { min-height: 68px; padding: calc(10px + env(safe-area-inset-top)) 18px 10px; gap: 10px; }
+  .logo b { font-size: 20px; }
+  .logo small { display: none; }
+  .top-r { gap: 6px; }
+  .yearsw button { width: 44px; }
+  .yearsw span { min-width: 38px; font-size: 12px; }
+  .yearsw { border-radius: 24px; }
+  .enter-btn { padding: 8px 12px; font-size: 12px; }
+  .wrap { padding: 22px 18px; }
+  .jar-home { padding: 22px 18px 28px; }
+  .jar-greeting { margin-bottom: 16px; font-size: 12px; }
+  .jar-hero { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 5px 0 0; min-height: 0; }
+  .jar-hero-copy { max-width: none; }
+  .eyebrow { font-size: 10px; margin-bottom: 12px; }
+  .jar-hero h1 { font-size: 32px; line-height: 1.48; margin-bottom: 15px; }
+  .jar-hero-copy > p:not(.eyebrow) { font-size: 13px; line-height: 1.85; max-width: 340px; }
+  .hero-actions { margin-top: 22px; gap: 9px; flex-wrap: nowrap; }
+  .hero-actions .btn { flex: 1; min-width: 0; min-height: 48px; padding: 12px 9px; font-size: 13px; }
+  .jar-visual { height: 258px; margin: 3px 0 0; }
+  .moon-jar-svg { width: 310px; max-width: 100%; height: auto; }
+  .jar-summary { margin: 4px 0 24px; padding: 17px 6px; border-radius: 14px; }
+  .summary-stat { padding: 0 5px; gap: 5px; }
+  .summary-stat b { font-size: 23px; }
+  .summary-stat span { font-size: 11px; }
+  .jar-panel { padding: 19px; margin-bottom: 18px; border-radius: 14px; }
+  .panel-heading { margin-bottom: 14px; gap: 8px; }
+  .panel-heading h2 { font-size: 16px; }
+  .preview-title { font-size: 14px; }
+  .preview-lines { font-size: 13px; }
+  .jar-months { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+  .jar-months button { min-height: 58px; }
+  .jar-verse { padding: 22px; }
+  .jar-install { padding: 18px; flex-wrap: wrap; gap: 14px; }
+  .jar-install .btn { width: 100%; }
+  .fab { right: 18px; padding: 12px 18px; }
+  .nav-in { padding: 5px 8px; gap: 2px; }
+  .nav button { font-size: 11px; }
+  .sheet { padding-left: 18px; padding-right: 18px; }
+  .writer { flex-wrap: wrap; }
+  .writer input[type=date] { max-width: 150px; padding: 9px 10px; font-size: 13px; }
+  .card, .ecard, .post { padding: 17px; }
+  .card-h { gap: 8px; }
+  .who b { font-size: 14px; }
+  .who span { font-size: 11px; }
+  .mini { padding: 9px 10px; font-size: 11px; }
+  .plist li { gap: 7px; font-size: 14px; }
+  .ans { font-size: 10px; padding: 8px; }
+  .gate-simple { padding-top: 24px; }
+  .gate-simple .gate-art { width: 280px; margin-top: 0; }
+  .gate-simple .gate-title { font-size: 32px; }
+  .gate-simple .gate-description { font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .topbar { padding-left: 12px; padding-right: 12px; }
+  .logo b { font-size: 18px; }
+  .top-r { gap: 4px; }
+  .yearsw span { min-width: 30px; }
+  .jar-home { padding-left: 15px; padding-right: 15px; }
+  .jar-hero h1 { font-size: 29px; }
+  .hero-actions .btn { font-size: 12px; }
+  .jar-panel { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .front.turn { transform: none; opacity: 0; }
+  .back { transform: none; }
+}
+
+</style>
+<style>
+.logo { border:0; background:transparent; padding:0; min-height:44px; text-align:left; cursor:pointer; }
+.text-link { border:0; background:transparent; color:var(--jar-accent); font:inherit; font-size:13px; font-weight:600; min-height:44px; padding:8px 0; cursor:pointer; text-align:left; }
+.jar-greeting { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.prayer-preview-card .preview-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.prayer-preview-card .preview-meta time { white-space:nowrap; }
+.prayer-preview-card .preview-title { overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.preview-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.preview-footer > span { font-size:12px; }
+.jar-status { width:100%; cursor:pointer; text-align:left; display:flex; justify-content:space-between; gap:12px; }
+.jar-extras summary { min-height:48px; }
+@media(max-width:600px) { .nav button { font-size:11px; } .topbar { gap:8px; } .logo b {font-size:21px;} .top-r{gap:6px;} .jar-panel{padding:18px;} .preview-footer { flex-wrap:wrap; } }
+</style>
+<style>@media(max-width:600px){.jar-hero{gap:10px;padding-top:10px;}.jar-visual .moon-jar-svg{max-width:225px;}.jar-greeting{font-size:12px;flex-wrap:nowrap;}.jar-greeting>.text-link{white-space:nowrap;font-size:12px;}.nav button{white-space:nowrap;}.jar-home .hero-actions{gap:8px;}.hero-actions .btn{padding:12px 10px;min-width:0;font-size:13px;}}</style>
 </head>
 <body>
-<div id="root"><div class="boot">🌳<br />95 기도나무를 불러오는 중…</div></div>
+<div id="root"><div class="boot">🌳<br />기도항아리를 불러오는 중…</div></div>
 
 <script type="module">
 /* ======================================================================
-   95 기도나무 v3
+   기도항아리 v3
    - 빌드 없이 바로 실행 (Preact + htm)
    - Firebase Firestore 컬렉션
        members    : 동기 캐릭터 카드 (이름, 캐릭터 꾸미기, MBTI, 성령의 열매, 출석일)
@@ -1164,7 +1521,7 @@ function InstallSheet({ onClose, say }) {
     deferredPrompt.prompt();
     const r = await deferredPrompt.userChoice.catch(() => null);
     deferredPrompt = null; setCanPrompt(false);
-    if (r && r.outcome === "accepted") { say("홈 화면에 기도나무가 생겼어요 🌳"); onClose(); }
+    if (r && r.outcome === "accepted") { say("홈 화면에 기도항아리가 생겼어요 🌳"); onClose(); }
   }
   function copy() { (navigator.clipboard ? navigator.clipboard.writeText(APP_URL) : Promise.reject()).then(() => say("주소를 복사했어요")).catch(() => say(APP_URL)); }
   const step = (n, t, s) => html`<div class="istep"><span class="inum">${n}</span><div><b>${t}</b>${s && html`<small>${s}</small>`}</div></div>`;
@@ -1172,7 +1529,7 @@ function InstallSheet({ onClose, say }) {
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
       <div class="sheet-h"><h3>📲 홈 화면에 추가하기</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
-      <p style="margin:-4px 0 12px;font-size:14px;color:var(--muted);line-height:1.6">한 번만 추가하면 홈 화면의 <b>기도나무 아이콘</b>을 눌러 앱처럼 바로 들어올 수 있어요. 알림도 더 잘 와요.</p>
+      <p style="margin:-4px 0 12px;font-size:14px;color:var(--muted);line-height:1.6">한 번만 추가하면 홈 화면의 <b>기도항아리 아이콘</b>을 눌러 앱처럼 바로 들어올 수 있어요. 알림도 더 잘 와요.</p>
       ${ua.inapp && html`<div class="box" style="background:#fff3c4;padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.6">
         ⚠️ <b>카카오톡 안에서는 홈 화면 추가가 안 돼요.</b><br />아래 버튼으로 ${ua.ios ? "Safari" : "삼성 인터넷/크롬"}에서 연 다음 따라 해 주세요.
         <div style="display:flex;gap:8px;margin-top:10px">
@@ -1186,15 +1543,15 @@ function InstallSheet({ onClose, say }) {
           ${step(1, "삼성 인터넷 또는 크롬으로 열기", "카카오톡이면 오른쪽 위 ⋮ → '다른 브라우저로 열기'")}
           ${step(2, "메뉴 열기", "삼성 인터넷: 아래 ≡ · 크롬: 오른쪽 위 ⋮")}
           ${step(3, "'현재 페이지 추가 → 홈 화면' 또는 '홈 화면에 추가'", "'앱 설치'로 보이면 그걸 눌러도 돼요")}
-          ${step(4, "'추가' 누르면 끝!", "홈 화면에 기도나무 아이콘이 생겨요")}` : html`
+          ${step(4, "'추가' 누르면 끝!", "홈 화면에 기도항아리 아이콘이 생겨요")}` : html`
           ${step(1, "Safari로 열기", "카카오톡이면 오른쪽 아래 나침반/⋯ → 'Safari로 열기'")}
           ${step(2, "아래 공유 버튼 누르기", "네모에 위 화살표 모양 (안 보이면 ⋯ → 공유)")}
           ${step(3, "메뉴를 위로 올려 '홈 화면에 추가'", "안 보이면 맨 아래 '동작 편집'에서 추가")}
-          ${step(4, "오른쪽 위 '추가' 누르면 끝!", "홈 화면의 기도나무 아이콘으로 열면 알림도 받을 수 있어요")}`}
+          ${step(4, "오른쪽 위 '추가' 누르면 끝!", "홈 화면의 기도항아리 아이콘으로 열면 알림도 받을 수 있어요")}`}
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
         <img src="icon-192.png" alt="" width="56" height="56" style="border-radius:14px;border:2.5px solid var(--ink)" />
-        <span style="font-size:13.5px;color:var(--muted);line-height:1.5">추가하면 이 <b>기도나무</b> 아이콘이 홈 화면에 생겨요</span>
+        <span style="font-size:13.5px;color:var(--muted);line-height:1.5">추가하면 이 <b>기도항아리</b> 아이콘이 홈 화면에 생겨요</span>
       </div>
     </div>
   </div>`;
@@ -1214,7 +1571,7 @@ function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, on
           : perm === "denied" ? html`<span style="color:var(--r)">알림이 차단돼 있어요. 휴대폰 설정에서 이 사이트 알림을 허용해 주세요.</span>`
           : notifOn && perm === "granted" ? html`<span class="pill ok">✅ 알림 켜짐</span> <button class="mini" style="margin-left:6px" onClick=${onDisable}>끄기</button>`
           : html`<button class="btn full" onClick=${onEnable}>🔔 알림 켜기</button>`}</div>
-        <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">기도나무를 홈 화면에 추가하면 알림이 더 잘 와요. ${onInstall && html`<button class="mini" onClick=${onInstall}>📲 추가 방법</button>`}</p>
+        <p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">기도항아리를 홈 화면에 추가하면 알림이 더 잘 와요. ${onInstall && html`<button class="mini" onClick=${onInstall}>📲 추가 방법</button>`}</p>
       </div>
       <b style="font-size:15px">최근 올라온 기도제목</b>
       <div class="box nlist" style="padding:2px 14px;margin-top:8px">
@@ -1233,16 +1590,16 @@ function NotifSheet({ list, seenAt, avOf, notifOn, onEnable, onDisable, onGo, on
    앱
 ====================================================================== */
 const TABS = [
-  { id: "home", label: "홈", icon: "🌳" },
-  { id: "prayer", label: "기도", icon: "🙏" },
-  { id: "thanks", label: "감사", icon: "🌼" },
-  { id: "photo", label: "일상", icon: "📸" },
-  { id: "people", label: "이름·동기", icon: "🔎" },
+  { id: "home", label: "홈", icon: "⌂" },
+  { id: "prayer", label: "기도", icon: "♧" },
+  { id: "thanks", label: "감사", icon: "♡" },
+  { id: "photo", label: "일상", icon: "▧" },
+  { id: "people", label: "동기들", icon: "◎" },
 ];
 
 function App() {
   const now = new Date();
-  const [tab, setTab] = useState(() => { const t = Q.get("tab") || lsGet("tab"); return TABS.some((x) => x.id === t) ? t : "home"; });
+  const [tab, setTab] = useState(() => { const t = Q.get("tab"); return TABS.some((x) => x.id === t) ? t : "home"; });
   const [seenAt, setSeenAt] = useState(() => { let v = lsGet("seenP"); if (!v) { v = nowIso(); lsSet("seenP", v); } return v; });
   const [notifOn, setNotifOn] = useState(() => lsGet("notif") === "1");
   const [bellOpen, setBellOpen] = useState(false);
@@ -1250,7 +1607,7 @@ function App() {
   const known = useRef(null);
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
-  const [scope, setScope] = useState("month");
+  const [scope, setScope] = useState("all");
   const [who, setWho] = useState("");
   const [photoLimit, setPhotoLimit] = useState(30);
   const M = useColl("members");
@@ -1259,7 +1616,8 @@ function App() {
   const PH = useColl("photos", photoLimit);
   const [meId, setMeId] = useState(() => lsGet("me"));
   const [gate, setGate] = useState(null);         // null | "welcome" | {name, member}
-  const [browse, setBrowse] = useState(() => lsGet("browse") === "1");
+  const [browse, setBrowse] = useState(true);
+  const [pendingWrite, setPendingWrite] = useState(null);
   const [sheet, setSheet] = useState(null);
   const [confirm, setConfirm] = useState(null);
   const [lightId, setLightId] = useState(null);
@@ -1298,7 +1656,7 @@ function App() {
     known.current = ids;
     if (!fresh.length) return;
     const n = fresh[0].name;
-    if (notifOn) showNotif("🙏 새 기도제목이 올라왔어요", `${n}님${fresh.length > 1 ? ` 외 ${fresh.length - 1}명` : ""}이 기도를 부탁했어요. 기도나무에서 함께 기도해 주세요.`);
+    if (notifOn) showNotif("🙏 새 기도제목이 올라왔어요", `${n}님${fresh.length > 1 ? ` 외 ${fresh.length - 1}명` : ""}이 기도를 부탁했어요. 기도항아리에서 함께 기도해 주세요.`);
     if (document.visibilityState === "visible") say(`🔔 ${n}님이 새 기도제목을 올렸어요`);
   }, [P.items, P.status]);
   useEffect(() => { registerSW(); }, []);
@@ -1319,19 +1677,22 @@ function App() {
     lsSet("notif", "1"); setNotifOn(true);
     showNotif("🔔 알림이 켜졌어요", "동기가 기도제목을 올리면 알려드릴게요. 내용은 보이지 않아요.");
   }
-  useEffect(() => { document.body.style.overflow = sheet || confirm || lightId || cardOf ? "hidden" : ""; }, [sheet, confirm, lightId, cardOf]);
+  useEffect(() => { document.body.style.overflow = sheet || confirm || lightId || cardOf ? "hidden" : ""; const esc = (e) => { if(e.key === "Escape") { setSheet(null); setConfirm(null); setLightId(null); setCardOf(null); setBellOpen(false); } }; document.addEventListener("keydown",esc); return () => {document.removeEventListener("keydown",esc);document.body.style.overflow="";}; }, [sheet, confirm, lightId, cardOf]);
 
-  function requireMe(fn) { if (me) return fn(); setGate("welcome"); say("먼저 내 캐릭터로 입장해 주세요"); }
+  function requireMe(fn) { if (me) return fn(); setGate("welcome"); say("이름을 입력하면 참여할 수 있어요"); }
 
   async function saveMember(name, data, existing) {
     const t = nowIso();
     const id = memberId(name);
+    const stored = await api.get("members", id);
+    if (stored && stored.name !== name) throw new Error("name-id-collision");
+    existing = stored || existing;
     const no = existing?.no || members.reduce((mx, m) => Math.max(mx, m.no || 0), 0) + 1;
     const obj = { ...(existing || {}), id, name, ...data, no, joinedAt: existing?.joinedAt || t, createdAt: existing?.createdAt || t, updatedAt: t,
       days: [...new Set([...(existing?.days || []), todayStr()])] };
     await api.save("members", obj);
     lsSet("me", id); setMeId(id); setGate(null); setBrowse(false); lsSet("browse", "0");
-    say(existing ? "내 카드를 업데이트했어요 ✨" : `환영해요! NO.${String(no).padStart(3, "0")} ${name}님의 카드가 생겼어요 🎉`);
+    say(existing ? "내 카드를 업데이트했어요 ✨" : `${name}님, 이제 기도를 담을 수 있어요`);
   }
 
   const COLL = { prayer: "prayers", thanks: "gratitude" };
@@ -1358,7 +1719,7 @@ function App() {
     if (!canEdit(e)) return say("응답 표시는 본인만 할 수 있어요");
     const ans = (e.prayers || []).map((_, j) => !!(e.answered || [])[j]);
     ans[i] = !ans[i];
-    try { await api.save("prayers", { ...e, answered: ans, updatedAt: nowIso() }); if (ans[i]) say("기도 응답 할렐루야! 🍎 열매가 맺혔어요"); }
+    try { await api.save("prayers", { ...e, answered: ans, updatedAt: nowIso() }); if (ans[i]) say("기도 응답을 기록했어요!"); }
     catch (err) { console.error(err); say("저장에 실패했어요"); }
   }
   async function react(coll, e, field) {
@@ -1399,15 +1760,16 @@ function App() {
     if (kind !== tab) go(kind);
     setSheet(null); say(msg); checkIn();
   }
-  const openWrite = (type) => requireMe(() => setSheet({ type, entry: null }));
+  const openWrite = (type) => { if (me) setSheet({ type, entry: null }); else { setPendingWrite(type); setGate("welcome"); } };
+  useEffect(() => { if (me && pendingWrite && !gate) { setSheet({ type: pendingWrite, entry: null }); setPendingWrite(null); } }, [me && me.id, pendingWrite, gate]);
 
-  if (M.status === "loading") return html`<div class="boot">🌳<br />95 기도나무를 불러오는 중…</div>`;
-  if (needGate || gate === "welcome") return html`<${Gate} names=${names} members=${members} byName=${byName} stats=${stats}
+  if (M.status === "loading") return html`<div class="boot">기도항아리를 불러오고 있어요…</div>`;
+  if (gate === "welcome") return html`<${Gate} names=${names} members=${members} byName=${byName} stats=${stats}
       onEnter=${(m) => { lsSet("me", m.id); setMeId(m.id); setGate(null); setBrowse(false); lsSet("browse", "0"); checkIn(); say(`다시 오신 걸 환영해요, ${m.name}님!`); }}
-      onCreate=${(name) => setGate({ name })}
-      onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); }} />`;
+      onCreate=${(name) => saveMember(name, { avatar: defaultAvatar(name) }, null)}
+      onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); setPendingWrite(null); }} />`;
 
-  const fab = { home: ["prayer", "＋ 기도제목"], prayer: ["prayer", "＋ 기도제목 쓰기"], thanks: ["thanks", "＋ 감사일기 쓰기"], photo: ["photo", "＋ 일상 올리기"], people: null }[tab];
+  const fab = { home: null, prayer: ["prayer", "+ 기도 담기"], thanks: ["thanks", "+ 감사 쓰기"], photo: ["photo", "+ 일상 올리기"], people: null }[tab];
   const light = lightId ? PH.items.find((p) => p.id === lightId.id) : null;
   const listProps = { year, month, setMonth, scope, setScope, who, setWho, names, freshId, me, avOf, byName, canEdit,
     onEdit: (kind, e) => setSheet({ type: kind, entry: e }), onDelete: askDelete, onToggle: toggleAnswered, onReact: react, onEmoji: reactE };
@@ -1417,9 +1779,9 @@ function App() {
       ${DEMO && html`<div class="demo-badge">체험 모드 · 이 기기에만 저장되고 동기들에게는 보이지 않아요</div>`}
       ${ADMIN && html`<div class="admin-badge">관리자 모드 · 모든 글을 수정/삭제할 수 있어요</div>`}
       <header class="topbar">
-        <div class="logo"><b>95 기도나무</b><small>PRAYER<br />TREE</small></div>
+        <button class="logo" onClick=${() => go("home")} aria-label="기도항아리 홈"><b>기도항아리</b><small>95 공동체</small></button>
         <div class="top-r">
-          ${(tab === "prayer" || tab === "thanks" || tab === "home") && html`
+          ${((tab === "prayer" || tab === "thanks") && scope !== "all") && html`
             <div class="yearsw">
               <button aria-label="이전 해" onClick=${() => setYear((y) => y - 1)}>‹</button>
               <span>${year}</span>
@@ -1427,15 +1789,18 @@ function App() {
             </div>`}
           <button class="bell" onClick=${openBell} aria-label=${`알림 ${unread.length}개`}>🔔${unread.length > 0 && html`<i>${unread.length > 9 ? "9+" : unread.length}</i>`}</button>
           ${me
-            ? html`<button class="me-btn" aria-label="내 카드" onClick=${() => setCardOf(me.name)}><${Av} a=${me.avatar} crop="face" /></button>`
-            : html`<button class="enter-btn" onClick=${() => setGate("welcome")}>입장하기</button>`}
+            ? html`<button class="me-btn" aria-label="내 프로필" onClick=${() => setCardOf(me.name)}><${Av} a=${me.avatar} crop="face" /></button>`
+            : html`<button class="enter-btn" onClick=${() => setGate("welcome")}>내 이름 등록</button>`}
         </div>
       </header>
 
       ${tab === "home" && html`<${HomeTab} me=${me} members=${members} stats=${stats} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
           avOf=${avOf} byName=${byName} tick=${tick} unread=${unread} D=${PH.items} onBell=${openBell}
-          installCard=${showInstallCard} onInstall=${() => setInstallOpen(true)} onHideInstall=${() => { lsSet("hideInstall", "1"); setShowInstallCard(false); }} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${go} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
-          onMonth=${(m) => { setMonth(m); setScope("month"); go("prayer"); }} />`}
+          installCard=${showInstallCard} onInstall=${() => setInstallOpen(true)} onHideInstall=${() => { lsSet("hideInstall", "1"); setShowInstallCard(false); }} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${(t) => { setWho(""); setScope("all"); go(t); }} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
+          onViewPrayer=${(e) => { const d = ym(e.date); setYear(d.y); setMonth(d.m); setScope("month"); setWho(e.name); go("prayer"); }}
+          onViewAll=${() => { setScope("all"); setWho(""); go("prayer"); }}
+          onMine=${() => { if (!me) return setGate("welcome"); setScope("all"); setWho(me.name); go("prayer"); }}
+          onMonth=${(m) => { setMonth(m); setScope("month"); setWho(""); go("prayer"); }} />`}
       ${tab === "prayer" && html`<${ListTab} kind="prayer" data=${P} ...${listProps} />`}
       ${tab === "thanks" && html`<${ListTab} kind="thanks" data=${G} ...${listProps} />`}
       ${tab === "photo" && html`<${PhotoTab} data=${PH} who=${who} setWho=${setWho} names=${names} limit=${photoLimit} me=${me} avOf=${avOf} byName=${byName} canEdit=${canEdit}
@@ -1447,7 +1812,7 @@ function App() {
 
       <nav class="nav"><div class="nav-in">
         ${TABS.map((t) => html`
-          <button class=${tab === t.id ? "on" : ""} onClick=${() => go(t.id)} aria-current=${tab === t.id ? "page" : undefined}>
+          <button class=${tab === t.id ? "on" : ""} onClick=${() => { if(t.id === "prayer" || t.id === "thanks") { setWho(""); setScope("all"); } go(t.id); }} aria-current=${tab === t.id ? "page" : undefined}>
             <span class="ni">${t.icon}</span><span>${t.label}</span>
           </button>`)}
       </div></nav>
@@ -1489,9 +1854,9 @@ function NameCheck({ q, names, byName, stats, dark, onPick }) {
   const m = byName[n], s = stats[n], sim = similarNames(n, names);
   const cnt = s ? `기도제목 ${s.topics}개 · 감사 ${s.thanks}개` : "";
   return html`<div class=${dark ? "ncheck" : "box"} style=${dark ? null : { padding: "12px 14px", marginBottom: "12px", fontSize: "14.5px", lineHeight: 1.6 }}>
-    ${m ? html`✅ <b>${n}</b>님 카드가 있어요 (NO.${String(m.no || 0).padStart(3, "0")})${cnt && html`<br />${cnt}`}`
-      : names.includes(n) ? html`📝 <b>${n}</b>님 이름으로 쓴 글이 있어요 (${cnt}).<br />아직 캐릭터 카드만 없어요. 만들면 글이 내 카드로 연결돼요!`
-      : html`🌱 <b>${n}</b>님은 아직 없는 이름이에요. 처음 오셨다면 새 카드를 만들면 돼요.`}
+    ${m ? html`✅ <b>${n}</b>님으로 이어서 시작할 수 있어요${cnt && html`<br />${cnt}`}`
+      : names.includes(n) ? html`📝 <b>${n}</b>님 이름으로 쓴 글이 있어요 (${cnt}).<br />같은 이름으로 시작하면 이 기록과 연결돼요.`
+      : html`<b>${n}</b>님으로 새로 시작해요.`}
     ${!m && sim.length > 0 && html`<div style="margin-top:6px">혹시 이 이름인가요? (띄어쓰기나 오타를 확인해 주세요)</div>
       <div class="sim" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${sim.map((x) => html`<button class=${dark ? "" : "chip"} onClick=${() => onPick(x)}>${x}${byName[x] ? " ✅" : ""}</button>`)}</div>`}
   </div>`;
@@ -1501,34 +1866,32 @@ function NameCheck({ q, names, byName, stats, dark, onPick }) {
 function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
   const [name, setName] = useState("");
   const [err, setErr] = useState("");
-  const sample = useMemo(() => {
-    const pool = members.length >= 3 ? [...members].sort(() => Math.random() - 0.5).slice(0, 3) : ["은혜", "소망", "사랑"].map((n, i) => ({ name: n, avatar: randomAvatar(), no: i + 1 }));
-    return pool;
-  }, [members.length]);
-  function go() {
+  const [busy, setBusy] = useState(false);
+  async function go(e) {
+    if(e) e.preventDefault();
     const n = name.trim();
     if (!n) return setErr("이름을 입력해 주세요");
     if (n.length > 10) return setErr("이름은 10자 이내로 적어 주세요");
-    const m = byName[n];
-    if (m) onEnter(m); else onCreate(n);
+    setBusy(true); setErr("");
+    try { const m = byName[n]; if(m) await onEnter(m); else await onCreate(n); }
+    catch(e) { setErr(e.message === "name-id-collision" ? "이 이름은 기존 이름과 겹쳐요. 띄어쓰기나 특수문자 없이 입력해 주세요." : "이름을 저장하지 못했어요. 연결을 확인하고 다시 시도해 주세요."); setBusy(false); }
   }
-  return html`<div class="gate">
-    ${DEMO && html`<div class="demo-badge" style="margin:-28px -18px 18px;color:#1b1b1b">체험 모드</div>`}
-    <div class="gate-cards">
-      ${sample.map((m) => html`<${TCard} name=${m.name} member=${m} stat=${stats[m.name]} />`)}
-    </div>
-    <h1>95 기도나무에<br />입장하기</h1>
-    <p class="sub">우리 공동체 ${TOTAL}명이 함께 키우는 기도나무예요.<br />내 캐릭터 카드를 만들고 기도제목을 나눠요.</p>
-    <label for="gate-name">내 이름</label>
-    <input id="gate-name" value=${name} onInput=${(e) => { setName(e.target.value); setErr(""); }} onKeyDown=${(e) => e.key === "Enter" && go()}
-      placeholder="이름을 적어주세요" list="gate-names" autocomplete="off" />
-    <datalist id="gate-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
-    ${err && html`<p class="err" style="margin-top:-4px">${err}</p>`}
-    <${NameCheck} q=${name} names=${names} byName=${byName} stats=${stats} dark=${true} onPick=${(x) => { setName(x); setErr(""); }} />
-    <button class="btn full" onClick=${go}>${byName[name.trim()] ? "내 카드로 입장 →" : "캐릭터 만들고 입장 →"}</button>
-    <button class="skip" onClick=${onBrowse}>입장하지 않고 둘러보기</button>
-    <p class="verse-mini">나는 포도나무요 너희는 가지라<br />그가 내 안에, 내가 그 안에 거하면 사람이 열매를 많이 맺나니<br />요한복음 15:5</p>
-  </div>`;
+  return html`<main class="gate gate-simple">
+    <div class="gate-art"><${JarVisual} count=${members.length} /></div>
+    <p class="gate-kicker">95 공동체 · 횃불기도</p>
+    <h1 class="gate-title">어떤 이름으로<br />기도를 담을까요?</h1>
+    <p class="gate-description">이름만 입력하면 바로 시작해요.<br />전에 쓰던 이름을 입력하면 기존 기록과 연결돼요.</p>
+    <form class="gate-form" onSubmit=${go}>
+      <label for="gate-name">내 이름</label>
+      <input id="gate-name" value=${name} onInput=${(e) => {setName(e.target.value);setErr("");}} placeholder="예: 유한나" list="gate-names" autocomplete="name" maxlength="10" aria-describedby="gate-note" />
+      <datalist id="gate-names">${names.map((n) => html`<option value=${n} />`)}</datalist>
+      <${NameCheck} q=${name} names=${names} byName=${byName} stats=${stats} dark=${false} onPick=${(x) => {setName(x);setErr("");}} />
+      ${err && html`<p class="err" role="alert">${err}</p>`}
+      <button class="btn full" type="submit" disabled=${busy}>${busy ? "연결하는 중…" : "이 이름으로 시작하기"}</button>
+    </form>
+    <button class="skip" type="button" onClick=${onBrowse}>나중에 등록하고 둘러보기</button>
+    <p class="gate-note" id="gate-note">기도와 감사는 공동체에 공개돼요.<br />캐릭터는 시작한 뒤 내 프로필에서 꾸밀 수 있어요.</p>
+  </main>`;
 }
 
 /* ---------- 캐릭터 꾸미기 ---------- */
@@ -1605,7 +1968,7 @@ function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLog
         ${member?.bio && html`<div style="font-weight:700;margin-bottom:6px">“${member.bio}”</div>`}
         ${fr && html`<div>${fr.emoji} <b>${fr.name}</b>의 열매를 구하고 있어요</div>`}
         <div style="color:var(--muted)">🙏 기도제목 ${stat?.topics || 0} · 🍎 응답 ${stat?.answered || 0} · 💌 중보 ${stat?.inter || 0} · 🔥 ${stat?.streak || 0}일 연속</div>
-        ${!member && html`<div style="color:var(--muted);margin-top:4px">아직 입장 전이에요. 기도나무 링크를 보내서 초대해 보세요!</div>`}
+        ${!member && html`<div style="color:var(--muted);margin-top:4px">아직 입장 전이에요. 기도항아리 링크를 보내서 초대해 보세요!</div>`}
       </div>
       <div style="display:flex;gap:8px;margin-top:12px">
         <button class="btn white" style="flex:1" onClick=${onPrayers}>기도제목 보기</button>
@@ -1617,216 +1980,128 @@ function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLog
   </div>`;
 }
 
-/* ---------- 홈 ---------- */
-function HomeTab({ me, members, stats, P, G, year, who, setWho, names, avOf, byName, tick, unread = [], D = [], onBell, installCard, onInstall, onHideInstall, onCheckIn, onPickFruit, onGo, onWrite, onEnter, onMonth }) {
-  const today = todayStr();
-  const myStat = me ? stats[me.name] || EMPTY_STAT : null;
-  const [revealed, setRevealed] = useState(() => lsGet("verse-" + today) === "1");
-  const [turning, setTurning] = useState(false);
-  const [fruitView, setFruitView] = useState(null);
-  const myTexts = useMemo(() => {
-    if (!me) return [];
-    const since = new Date(); since.setDate(since.getDate() - 14);
-    const g = G.items.filter((e) => e.name === me.name && e.date >= dstr(since)).flatMap((e) => e.items || []);
-    const p = P.items.filter((e) => e.name === me.name).sort(sortDesc)[0];
-    return [...g, ...((p && p.prayers) || []).map(cleanNum)];
-  }, [me && me.name, G.items, P.items]);
-  const myThanks = useMemo(() => {
-    if (!me) return [];
-    const since = new Date(); since.setDate(since.getDate() - 14);
-    return G.items.filter((e) => e.name === me.name && e.date >= dstr(since)).sort(sortDesc).flatMap((e) => e.items || []);
-  }, [me && me.name, G.items]);
-  const daily = useMemo(() => {
-    const seed = today + (me ? me.name : "guest");
-    const r = pickVerses(myTexts, seed, me && me.fruit);
-    if (myThanks.length) {
-      const rv = recommendVerse(myThanks.slice(0, 6), seed);
-      if (rv.matched && rv.text && !r.verses.some((v) => v.ref === rv.ref)) {
-        r.verses[0] = { ref: rv.ref, text: rv.text };
-        r.tags = r.tags.filter((t) => FRUITS.some((f) => t.startsWith(f.emoji)));
-      }
-    }
-    return r;
-  }, [myTexts.join("|"), myThanks.join("|"), today, me && me.fruit]);
-  const recentD = useMemo(() => [...D].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")).slice(0, 8), [D]);
-  const thanksToday = me && G.items.some((e) => e.name === me.name && e.date === today);
-  const interToday = lsGet("inter-" + today) === "1";
-  const done = [revealed, !!thanksToday, interToday].filter(Boolean).length;
-  const entered = members.length;
-  const recent = [...members].sort((a, b) => (b.joinedAt || "").localeCompare(a.joinedAt || "")).slice(0, 8);
-  const fruitCount = useMemo(() => { const c = {}; members.forEach((m) => { if (m.fruit) c[m.fruit] = (c[m.fruit] || 0) + 1; }); return c; }, [members]);
-
-  const inYear = (e) => e.date && ym(e.date).y === year;
-  const py = P.items.filter(inYear), gy = G.items.filter(inYear);
-  const mine = (e) => !who || e.name === who;
-  const topics = py.filter(mine).reduce((s, e) => s + (e.prayers || []).length, 0);
-  const answered = py.filter(mine).reduce((s, e) => s + (e.answered || []).filter(Boolean).length, 0);
-
-  function reveal() {
-    if (revealed || turning) return;
-    setTurning(true);
-    setTimeout(() => { setTurning(false); setRevealed(true); lsSet("verse-" + today, "1"); onCheckIn(); }, 300);
-  }
-  const fv = fruitView ? FRUIT[fruitView] : null;
-
-  return html`<div class="wrap">
-    ${me ? html`
-      <div class="box hello">
-        <${Av} a=${me.avatar} crop="face" />
-        <div><b>${me.name}님, 오늘도 와줘서 반가워요!</b>
-          <p>${me.fruit ? `${FRUIT[me.fruit]?.emoji} ${FRUIT[me.fruit]?.name}의 열매를 구하는 중` : "아래에서 이번 달 맺고 싶은 열매를 골라보세요"}</p>
-          <span class="fire">🔥 ${myStat.streak}일 연속 · ${"★".repeat(myStat.stars)}</span></div>
-      </div>`
-    : html`<div class="box hello" style="background:var(--y)"><div style="flex:1"><b>아직 입장하지 않았어요</b><p>내 캐릭터 카드를 만들면 중보하고, 열매를 고르고, 출석 기록을 쌓을 수 있어요.</p></div>
-        <button class="btn white" onClick=${onEnter}>입장</button></div>`}
-
-    ${installCard && html`<div class="box nbanner" style="background:#ffe3ee"><img src="icon-192.png" alt="" width="44" height="44" style="border-radius:11px;border:2px solid var(--ink)" />
-      <b>홈 화면에 앱처럼 추가하기<br /><small style="font-weight:500">아이콘 한 번으로 바로 들어와요</small></b>
-      <div style="display:flex;flex-direction:column;gap:4px"><button class="mini" onClick=${onInstall}>방법 보기</button><button class="mini" style="border-style:dashed;font-size:11px" onClick=${onHideInstall}>다음에</button></div></div>`}
-    ${unread.length > 0 && html`<div class="box nbanner"><span style="font-size:24px">🔔</span><b>새 기도제목 ${unread.length}건이 올라왔어요<br /><small style="font-weight:500">${unread.slice(0, 3).map((e) => e.name).join(", ")}${unread.length > 3 ? " 등" : ""}님이 기도를 부탁했어요</small></b><button class="mini" onClick=${onBell}>확인</button></div>`}
-    <div class="box progress">
-      <div class="progress-top"><span>🃏 우리 공동체 입장 현황</span><span>${entered} / ${TOTAL}명</span></div>
-      <div class="bar"><i style=${{ width: `${Math.min(100, (entered / TOTAL) * 100)}%` }}></i></div>
-      <div class="faces">${recent.map((m) => html`<${Av} a=${m.avatar} crop="face" />`)}<span>${entered < TOTAL ? `${TOTAL - entered}명 남았어요!` : "모두 입장 완료!"}</span></div>
-    </div>
-
-    <div class="flip" onClick=${reveal} role="button" aria-label="오늘의 말씀 뒤집기">
-      ${!revealed ? html`
-        <div class=${"face front" + (turning ? " turn" : "")}>
-          <span class="corner">TODAY'S WORD</span><span class="stars">★★★★</span>
-          <div class="q">?</div>
-          <h3>오늘의 말씀은?</h3>
-          <p>${me ? `${me.name}님의 기도와 감사를 읽고 골랐어요` : "카드를 눌러서 뒤집어 보세요"}</p>
-          <span class="tap">TAP!</span>
-        </div>` : html`
-        <div class="face back">
-          <div class="vh"><b>📖 오늘의 말씀</b><small>${fmtDate(today)}</small></div>
-          ${daily.tags.length > 0 && html`<div class="tags">${daily.tags.map((t) => html`<span>#${t}</span>`)}</div>`}
-          ${daily.verses.map((v) => html`<div class="vq"><p>${v.text}</p><cite>${refName(v.ref)} · 개역개정</cite></div>`)}
-          <p class="vnote">내일 또 새로운 말씀 카드가 기다려요</p>
-        </div>`}
-    </div>
-
-    <div class="box mission">
-      <h4>✅ 오늘의 미션 <span>${done} / 3</span></h4>
-      <div class=${"mrow" + (revealed ? " done" : "")}><span class="chk">${revealed ? "✓" : ""}</span><span>오늘의 말씀 카드 뒤집기</span>${!revealed && html`<button onClick=${reveal}>뒤집기</button>`}</div>
-      <div class=${"mrow" + (thanksToday ? " done" : "")}><span class="chk">${thanksToday ? "✓" : ""}</span><span>감사 한 줄 남기기</span>${!thanksToday && html`<button onClick=${() => onWrite("thanks")}>쓰기</button>`}</div>
-      <div class=${"mrow" + (interToday ? " done" : "")}><span class="chk">${interToday ? "✓" : ""}</span><span>동기 기도제목에 🙏 중보하기</span>${!interToday && html`<button onClick=${() => onGo("prayer")}>보러가기</button>`}</div>
-      ${done === 3 && html`<div class="allclear">💧 오늘 기도나무에 물을 줬어요! 내일도 만나요</div>`}
-    </div>
-
-    <div class="sec"><h2>📸 동기들의 일상</h2><button class="mini" onClick=${() => onGo("photo")}>전체 보기</button></div>
-    ${recentD.length === 0
-      ? html`<button class="box" style="width:100%;padding:14px;text-align:left;font-size:14px" onClick=${() => onWrite("photo")}>📸 아직 올라온 일상이 없어요. <b>첫 일상을 올려보세요!</b></button>`
-      : html`<div class="strip">${recentD.map((p) => { const pics = picsOf(p); return html`<button style=${pics.length ? { backgroundImage: `url(${pics[0]})` } : { background: "#fffaf0" }} onClick=${() => onGo("photo")}>
-          ${!pics.length && html`<p>${p.caption}</p>`}<span>${p.name}</span></button>`; })}</div>`}
-
-    <div class="sec"><h2>🍇 성령의 열매</h2><small>이번 달 내가 맺고 싶은 열매는?</small></div>
-    <div class="fruits">
-      ${FRUITS.map((f) => html`<button class=${"fruit" + (me && me.fruit === f.id ? " on" : "")} style=${{ "--fc": f.color }} onClick=${() => setFruitView(f.id)}>
-        <span class="em">${f.emoji}</span><b>${f.name}</b><small>${fruitCount[f.id] || 0}명</small></button>`)}
-    </div>
-    ${fv && html`<div class="box fdetail" style=${{ "--fc": fv.color }}>
-      <h4><span style="font-size:28px">${fv.emoji}</span>${fv.name}의 열매</h4>
-      <p class="d">${fv.desc}</p>
-      ${fv.refs.map((r) => html`<div class="vq"><p>${VERSES[r]}</p><cite>${refName(r)} · 개역개정</cite></div>`)}
-      <div class="faces" style="margin-top:12px">${members.filter((m) => m.fruit === fv.id).slice(0, 10).map((m) => html`<${Av} a=${m.avatar} crop="face" />`)}
-        <span>${fruitCount[fv.id] ? `${fruitCount[fv.id]}명이 함께 구하고 있어요` : "아직 아무도 고르지 않았어요"}</span></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        ${me && me.fruit === fv.id
-          ? html`<button class="btn white" style="flex:1" disabled>✓ 내가 구하는 열매</button>`
-          : html`<button class="btn" style="flex:1" onClick=${() => onPickFruit(fv.id)}>이 열매 구하기</button>`}
-        <button class="btn white" onClick=${() => setFruitView(null)}>닫기</button>
-      </div>
-    </div>`}
-
-    <div class="sec"><h2>🌳 ${year} 기도나무</h2><small>잎 = 기도 · 꽃 = 감사</small></div>
-    <select class="select" value=${who} onChange=${(e) => setWho(e.target.value)} aria-label="이름으로 보기">
-      <option value="">우리 공동체 전체</option>
-      ${names.map((n) => html`<option value=${n}>${n}님만 보기</option>`)}
-    </select>
-    <div class="stats">
-      <div class="box stat"><b>${topics}</b><span>🍃 기도제목</span></div>
-      <div class="box stat"><b>${answered}</b><span>✨ 응답</span></div>
-      <div class="box stat"><b>${gy.filter(mine).length}</b><span>🌼 감사</span></div>
-    </div>
-    <div class="box tree-box">
-      <${TreeSvg} prayers=${py} thanks=${G.status === "ready" ? gy : []} members=${members} who=${who} onPick=${onMonth} onFruit=${(id) => setFruitView(id)} />
-      <div class="legend"><span>🍃 기도제목</span><span>✨ 응답된 기도</span><span>🌼 감사일기</span><span>🍓 동기들의 열매</span></div>
-      <p class="hint">달 이름을 누르면 그 달 기도제목으로, 열매를 누르면 성령의 열매 말씀으로 가요</p>
-    </div>
-    <p class="psalm">그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며<br />그 잎사귀가 마르지 아니함 같으니<cite>시편 1:3</cite></p>
-  </div>`;
+/* Decorative only. Load beside the app's existing htm `html` binding. */
+let jarVisualSequence = 0;
+function JarVisual({ count = 0 }) {
+  const id = `prayer-moon-jar-${++jarVisualSequence}`;
+  const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+  const flame = (x, y, scale, tilt) => html`
+    <g class="jar-flame" transform=${`translate(${x} ${y}) rotate(${tilt}) scale(${scale})`}>
+      <ellipse cx="0" cy="-5" rx="23" ry="30" fill=${`url(#${id}-aura)`} />
+      <path d="M0 21C-13 20-17 9-12-2C-8-12-3-16-2-31C5-23 4-17 9-12C16-5 17 4 12 13C9 18 5 21 0 21Z" fill=${`url(#${id}-flame)`} />
+      <path d="M0 16C-6 15-8 9-4 2C-1-3 1-7 1-13C7-6 10 1 7 8C6 13 3 16 0 16Z" fill="#fff8dd" opacity=".92" />
+      <path d="M-1 19L-1 28" stroke="#b8825c" stroke-width="1.6" stroke-linecap="round" opacity=".45" />
+    </g>`;
+  return html`
+    <svg class="moon-jar-svg" viewBox="0 0 480 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prayer-count=${safeCount}>
+      <defs>
+        <linearGradient id=${`${id}-ceramic`} x1="135" y1="106" x2="361" y2="318" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fffdf5" />
+          <stop offset=".34" stop-color="#f8efdb" />
+          <stop offset=".72" stop-color="#ead8bd" />
+          <stop offset="1" stop-color="#cfad8f" />
+        </linearGradient>
+        <linearGradient id=${`${id}-foot`} x1="180" y1="330" x2="303" y2="357" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#b78468" />
+          <stop offset=".5" stop-color="#e0c3a3" />
+          <stop offset="1" stop-color="#9e684e" />
+        </linearGradient>
+        <linearGradient id=${`${id}-rim`} x1="193" y1="86" x2="294" y2="108" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#e4cfb0" />
+          <stop offset=".48" stop-color="#fff8e7" />
+          <stop offset="1" stop-color="#c5a381" />
+        </linearGradient>
+        <linearGradient id=${`${id}-flame`} x1="-10" y1="-28" x2="10" y2="22" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#e8b777" />
+          <stop offset=".46" stop-color="#d99152" />
+          <stop offset="1" stop-color="#b87547" stop-opacity=".75" />
+        </linearGradient>
+        <radialGradient id=${`${id}-aura`}>
+          <stop stop-color="#ffe4ac" stop-opacity=".7" />
+          <stop offset="1" stop-color="#f3cb84" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id=${`${id}-light`} cx=".38" cy=".35" r=".6">
+          <stop stop-color="#fff8e1" stop-opacity=".6" />
+          <stop offset="1" stop-color="#ffedc5" stop-opacity="0" />
+        </radialGradient>
+        <clipPath id=${`${id}-body`}>
+          <path d="M193 103C193 118 181 127 156 143C111 172 96 210 98 247C100 294 130 323 183 339C213 348 269 349 302 337C353 319 381 285 380 239C379 198 355 166 322 145C302 132 288 120 288 103Z" />
+        </clipPath>
+      </defs>
+      <ellipse cx="241" cy="370" rx="142" ry="13" fill="#7c4a35" opacity=".035" />
+      <ellipse cx="241" cy="363" rx="104" ry="8" fill="#7c4a35" opacity=".075" />
+      <path d="M181 330L183 350C190 361 286 362 299 351L302 330Z" fill=${`url(#${id}-foot)`} stroke="#b18a6d" stroke-width=".8" />
+      <path d="M193 103C193 118 181 127 156 143C111 172 96 210 98 247C100 294 130 323 183 339C213 348 269 349 302 337C353 319 381 285 380 239C379 198 355 166 322 145C302 132 288 120 288 103Z" fill=${`url(#${id}-ceramic)`} stroke="#c4a78b" stroke-width="1.25" />
+      <g clip-path=${`url(#${id}-body)`}>
+        <ellipse cx="219" cy="224" rx="112" ry="98" fill=${`url(#${id}-light)`} />
+        <path d="M144 160C121 184 112 212 113 243" stroke="#fffdf3" stroke-width="6" stroke-linecap="round" opacity=".52" />
+        <path d="M151 157C178 143 193 125 196 111" stroke="#fffdf4" stroke-width="2" stroke-linecap="round" opacity=".65" />
+        <path d="M106 256C157 239 239 257 296 247C336 240 358 245 380 254" stroke="#b89a77" stroke-width=".7" opacity=".11" />
+        ${flame(156, 233, .7, -9)}
+        ${flame(202, 200, .83, 7)}
+        ${flame(245, 249, .95, -4)}
+        ${flame(289, 201, .8, 10)}
+        ${flame(333, 241, .65, -7)}
+        <path d="M126 283C151 320 191 335 243 335C291 335 323 325 348 300" stroke="#fff4de" stroke-width="1.6" opacity=".35" />
+        <path d="M335 171C352 199 360 225 357 249" stroke="#b08869" stroke-width="2" stroke-linecap="round" opacity=".14" />
+      </g>
+      <path d="M193 92L192 108C206 119 273 121 290 108L288 92Z" fill=${`url(#${id}-rim)`} stroke="#bea183" stroke-width="1" />
+      <ellipse cx="241" cy="93" rx="48" ry="12" fill="#ede0c7" stroke="#bea183" stroke-width="1.25" />
+      <ellipse cx="241" cy="94" rx="39" ry="7.5" fill="#aa8567" />
+      <ellipse cx="241" cy="96" rx="37" ry="5.5" fill="#806047" opacity=".38" />
+      <path d="M195 92C209 105 273 105 287 92" stroke="#fff9e8" stroke-width="2.4" stroke-linecap="round" />
+      <path d="M190 348C217 356 272 356 296 348" stroke="#f1ddc1" stroke-width="1" opacity=".55" />
+    </svg>`;
 }
 
-function TreeSvg({ prayers, thanks, members, who, onPick, onFruit }) {
-  const cx = 200, cy = 200, rx = 150, ry = 138;
-  const branches = useMemo(() => MONTHS.map((name, i) => {
-    const a = ((200 - i * 20) * Math.PI) / 180;
-    const T = { x: cx + rx * Math.cos(a), y: cy - ry * Math.sin(a) };
-    const side = Math.abs(Math.cos(a)) < 0.2 ? 0 : Math.sign(Math.cos(a));
-    const S = { x: 200 + side * 4, y: Math.min(325, Math.max(194, 194 + ((T.y - 62) / (247 - 62)) * 131)) };
-    const C = { x: S.x + (T.x - S.x) * 0.3, y: T.y + (S.y - T.y) * 0.18 };
-    const len = Math.hypot(T.x - cx, T.y - cy) || 1;
-    const L = { x: T.x + ((T.x - cx) / len) * 20, y: T.y + ((T.y - cy) / len) * 18 + 4 };
-    return { i, name, S, C, T, L };
-  }), []);
-  const bez = (b, t) => ({ x: (1 - t) * (1 - t) * b.S.x + 2 * (1 - t) * t * b.C.x + t * t * b.T.x, y: (1 - t) * (1 - t) * b.S.y + 2 * (1 - t) * t * b.C.y + t * t * b.T.y });
-  const spot = (b, seed, n, tMin = 0.35) => {
-    const h = hashOf(seed), t = tMin + ((h % 1000) / 1000) * (1.1 - tMin);
-    const p = bez(b, Math.min(t, 1)), ext = Math.max(0, t - 1);
-    const ang = ((h >> 5) % 360) * (Math.PI / 180), dist = 4 + (((h >> 11) % 100) / 100) * (14 + Math.sqrt(n) * 3);
-    return { x: p.x + Math.cos(ang) * dist + (b.T.x - cx) * ext * 0.3, y: p.y + Math.sin(ang) * dist * 0.85 + (b.T.y - cy) * ext * 0.3, h };
-  };
-  const byMonth = (arr) => { const g = Array.from({ length: 12 }, () => []); arr.forEach((e) => g[ym(e.date).m].push(e)); return g; };
-  const pm = useMemo(() => byMonth(prayers), [prayers]);
-  const gm = useMemo(() => byMonth(thanks), [thanks]);
-  const dim = (e) => (who && e.name !== who ? 0.12 : 1);
-  const LEAF = ["#2f9a57", "#45b36b", "#6cc77f", "#3a8d50", "#8fd18f"];
-  const fruitsOnTree = useMemo(() => members.filter((m) => m.fruit && FRUIT[m.fruit]).map((m) => {
-    const h = hashOf(m.id + "fruit"), ang = (12 + (h % 156)) * (Math.PI / 180), r = 0.42 + ((h >> 8) % 50) / 100;
-    return { m, x: cx + Math.cos(ang) * rx * 0.95 * r, y: cy + 10 - Math.sin(ang) * ry * 0.95 * r };
-  }), [members]);
-
-  return html`
-    <svg viewBox="0 0 400 420" role="img" aria-label="월별 기도나무">
-      <ellipse cx="200" cy="190" rx="190" ry="168" fill="#e7f5df" stroke="#1b1b1b" stroke-width="3" />
-      <ellipse cx="200" cy="408" rx="140" ry="9" fill="#c9b892" stroke="#1b1b1b" stroke-width="3" />
-      <path d="M182 408 C188 382 191 356 193 322 L196 188 L204 188 L207 322 C209 356 212 382 218 408 Z" fill="#8a5a2b" stroke="#1b1b1b" stroke-width="4" stroke-linejoin="round" />
-      <path d="M186 406 C170 408 160 404 148 408 M214 406 C230 408 240 404 252 408" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" fill="none" />
-      ${branches.map((b) => {
-        const has = pm[b.i].length + gm[b.i].length > 0, d = `M${b.S.x},${b.S.y} Q${b.C.x},${b.C.y} ${b.T.x},${b.T.y}`;
-        return has
-          ? html`<g><path d=${d} fill="none" stroke="#1b1b1b" stroke-width="9" stroke-linecap="round" /><path d=${d} fill="none" stroke="#8a5a2b" stroke-width="4.5" stroke-linecap="round" /></g>`
-          : html`<path d=${d} fill="none" stroke="#b3a68e" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 6" />`;
-      })}
-      ${branches.map((b) => {
-        const n = pm[b.i].reduce((s, e) => s + (e.prayers || []).length, 0), sc0 = n > 60 ? 1.1 : n > 30 ? 1.3 : 1.6;
-        return pm[b.i].map((e) => (e.prayers || []).map((_, k) => {
-          const s = spot(b, e.id + "p" + k, n), ans = (e.answered || [])[k];
-          const sc = sc0 + ((s.h >> 3) % 50) / 100;
-          return html`<path d="M0,0 C-5,-4 -5.5,-10 0,-15 C5.5,-10 5,-4 0,0 Z" transform=${`translate(${s.x.toFixed(1)},${s.y.toFixed(1)}) rotate(${s.h % 360}) scale(${sc.toFixed(2)})`}
-            fill=${ans ? "#ffd23f" : LEAF[s.h % LEAF.length]} opacity=${dim(e)} stroke="#1b1b1b" stroke-width="0.9" />`;
-        }));
-      })}
-      ${branches.map((b) => gm[b.i].map((e) => {
-        const s = spot(b, e.id + "g", gm[b.i].length + pm[b.i].length, 0.5);
-        return html`<g transform=${`translate(${s.x.toFixed(1)},${s.y.toFixed(1)})`} opacity=${dim(e)}>
-          ${[0, 72, 144, 216, 288].map((d) => html`<circle cx=${(Math.cos((d * Math.PI) / 180) * 4).toFixed(2)} cy=${(Math.sin((d * Math.PI) / 180) * 4).toFixed(2)} r="3.4" fill="#fff" stroke="#1b1b1b" stroke-width=".9" />`)}
-          <circle r="2.6" fill="#ffd23f" stroke="#1b1b1b" stroke-width=".9" />
-        </g>`;
-      }))}
-      ${fruitsOnTree.map(({ m, x, y }) => html`<text x=${x.toFixed(1)} y=${y.toFixed(1)} font-size="17" text-anchor="middle" dominant-baseline="middle"
-          opacity=${who && m.name !== who ? 0.2 : 1} style="cursor:pointer" onClick=${() => onFruit(m.fruit)}>${FRUIT[m.fruit].emoji}</text>`)}
-      ${branches.map((b) => {
-        const n = (who ? pm[b.i].filter((e) => e.name === who) : pm[b.i]).length;
-        return html`<g onClick=${() => onPick(b.i)} style="cursor:pointer">
-          <circle cx=${b.T.x} cy=${b.T.y} r="24" fill="transparent" />
-          <rect x=${b.L.x - (n ? 25 : 16)} y=${b.L.y - 12} width=${n ? 50 : 32} height="21" rx="10.5" fill=${n ? "#ffd23f" : "#fff"} stroke="#1b1b1b" stroke-width=${n ? 2.5 : 1.5} />
-          <text x=${b.L.x} y=${b.L.y + 3.5} text-anchor="middle" font-size="11.5" font-weight="900" fill=${n ? "#1b1b1b" : "#a39b8a"} font-family="Noto Sans KR, sans-serif">${b.name}${n ? ` ${n}` : ""}</text>
-        </g>`;
-      })}
-    </svg>`;
+/* ---------- 홈 ---------- */
+function HomeTab({ me, members, stats, P, G, year, avOf, tick, unread = [], D = [], onBell, installCard, onInstall, onHideInstall, onPickFruit, onGo, onWrite, onEnter, onMonth, onViewPrayer, onViewAll, onMine }) {
+  const [fruitView, setFruitView] = useState(null);
+  const total = P.items.reduce((s,e)=>s+(e.prayers||[]).length,0);
+  const answered = P.items.reduce((s,e)=>s+(e.answered||[]).filter(Boolean).length,0);
+  const recent = [...P.items].filter(e=>e.date).sort(sortDesc).slice(0,3);
+  const months = MONTHS.map((label,i)=>({ label, count:P.items.filter(e=>e.date && ym(e.date).y===year && ym(e.date).m===i).reduce((s,e)=>s+(e.prayers||[]).length,0) }));
+  const texts = me ? P.items.filter(e=>e.name===me.name).flatMap(e=>e.prayers||[]).slice(0,6) : [];
+  const daily = pickVerses(texts,todayStr()+(me ? me.name : "guest"),me && me.fruit);
+  const verse = daily.verses[0];
+  const fv = fruitView ? FRUIT[fruitView] : null;
+  return html`<main class="wrap jar-home">
+    <div class="jar-greeting"><span>${me ? me.name+"님, 오늘도 함께 기도해요." : "우리의 기도가 모이는 곳"}</span><button class="text-link" onClick=${me ? onMine : onEnter}>${me ? "내 기도 →" : "내 이름 등록 →"}</button></div>
+    <section class="jar-hero" aria-labelledby="jar-title">
+      <div class="jar-hero-copy"><p class="eyebrow">95 공동체 · 횃불기도</p>
+        <h1 id="jar-title">기도를 담고,<br />함께 불을 밝혀요.</h1>
+        <p>오늘의 기도 한 가지를 항아리에 담아 주세요.</p>
+        <div class="hero-actions"><button class="btn" onClick=${()=>onWrite("prayer")}>+ 기도 담기</button><button class="btn secondary" onClick=${onViewAll}>담긴 기도 보기 →</button></div>
+      </div><div class="jar-visual"><${JarVisual} count=${total} /></div>
+    </section>
+    <div class="jar-summary" aria-label="공동체 기도 기록">
+      <div class="summary-stat"><b>${P.status==="ready" ? total : "…"}</b><span>담긴 기도</span></div>
+      <div class="summary-stat"><b>${P.status==="ready" ? answered : "…"}</b><span>응답된 기도</span></div>
+      <div class="summary-stat"><b>${members.length}</b><span>함께하는 동기</span></div>
+    </div>
+    ${unread.length>0 && html`<button class="jar-status" onClick=${onBell}>새 기도 ${unread.length}건이 도착했어요 <span>확인하기 →</span></button>`}
+    <div class="jar-main-grid">
+      <section class="jar-panel" aria-labelledby="recent-prayers"><div class="panel-heading"><h2 id="recent-prayers">함께 기도해 주세요</h2><button class="text-link" onClick=${onViewAll}>전체 보기 →</button></div>
+        ${P.status==="loading" && html`<p class="jar-status" role="status">기도를 불러오고 있어요…</p>`}
+        ${(P.status==="error" || P.status==="denied") && html`<p class="notice" role="alert">기도를 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</p>`}
+        ${P.status==="ready" && !recent.length && html`<div class="empty"><p>항아리에 첫 기도를 담아 주세요.</p><button class="btn" onClick=${()=>onWrite("prayer")}>+ 첫 기도 담기</button></div>`}
+        ${recent.map(e=>html`<article class="prayer-preview-card"><div class="preview-meta"><span>${e.name}님의 기도</span><time datetime=${e.date}>${fmtDate(e.date)}</time></div><p class="preview-title">${cleanNum((e.prayers||[])[0]||"")}</p>${(e.prayers||[]).length>1 && html`<p class="preview-lines">외 ${e.prayers.length-1}개의 기도제목</p>`}<div class="preview-footer"><span>${(e.prayedBy||[]).length ? e.prayedBy.length+"명이 함께 기도했어요" : "함께 마음을 모아 주세요"}</span><button class="text-link" onClick=${()=>onViewPrayer(e)} aria-label=${e.name+"님의 기도 읽기"}>기도 읽기 →</button></div></article>`)}
+      </section>
+      <section class="jar-panel" aria-labelledby="with-community"><div class="panel-heading"><h2 id="with-community">오늘을 함께 나눠요</h2></div><div class="jar-shortcuts">
+        <button onClick=${()=>onWrite("thanks")}><span class="shortcut-icon" aria-hidden="true">♡</span><span class="shortcut-copy"><b>감사 한 줄 쓰기</b><small>오늘의 감사한 순간을 남겨요</small></span><span class="shortcut-arrow" aria-hidden="true">→</span></button>
+        <button onClick=${()=>onGo("thanks")}><span class="shortcut-icon" aria-hidden="true">☀</span><span class="shortcut-copy"><b>동기들의 감사 보기</b><small>작은 감사에 함께 아멘해요</small></span><span class="shortcut-arrow" aria-hidden="true">→</span></button>
+        <button onClick=${()=>onGo("photo")}><span class="shortcut-icon" aria-hidden="true">▧</span><span class="shortcut-copy"><b>사진과 일상 나누기</b><small>${D.length ? "동기들의 소식을 만나보세요" : "오늘의 한 장을 올려보세요"}</small></span><span class="shortcut-arrow" aria-hidden="true">→</span></button>
+        <button onClick=${()=>onGo("people")}><span class="shortcut-icon" aria-hidden="true">◎</span><span class="shortcut-copy"><b>함께하는 동기들</b><small>친구의 프로필과 기도를 봐요</small></span><span class="shortcut-arrow" aria-hidden="true">→</span></button>
+      </div>${verse && html`<div class="jar-verse"><p class="eyebrow">오늘의 말씀</p><blockquote>${verse.text}</blockquote><cite>${refName(verse.ref)} · 개역개정</cite></div>`}</section>
+    </div>
+    <details class="jar-extras"><summary>지난 기도와 성령의 열매</summary>
+      <section class="jar-panel"><div class="panel-heading"><h2>${year}년 월별 기도</h2></div><div class="jar-months">${months.map((m,i)=>html`<button onClick=${()=>onMonth(i)} aria-label=${year+"년 "+m.label+" 기도 "+m.count+"개 보기"}><b>${m.label}</b><span class="month-count">${m.count}개</span></button>`)}</div>
+        <div class="panel-heading" style="margin-top:24px"><h2>내가 구하는 성령의 열매</h2></div><div class="fruits">${FRUITS.map(f=>html`<button class=${"fruit"+(me && me.fruit===f.id ? " on" : "")} style=${{"--fc":f.color}} onClick=${()=>setFruitView(f.id)}><span class="em">${f.emoji}</span><b>${f.name}</b></button>`)}</div>
+        ${fv && html`<div class="box fdetail"><h4>${fv.name}의 열매</h4><p class="d">${fv.desc}</p>${fv.refs.map(r=>html`<div class="vq"><p>${VERSES[r]}</p><cite>${refName(r)}</cite></div>`)}<button class="btn" onClick=${()=>onPickFruit(fv.id)}>이 열매 구하기</button><button class="btn secondary" onClick=${()=>setFruitView(null)}>닫기</button></div>`}
+      </section>
+    </details>
+    ${installCard && html`<div class="jar-install"><div><b>다음에도 바로 만나요</b><p>휴대폰 홈 화면에 기도항아리를 추가할 수 있어요.</p></div><button class="btn secondary" onClick=${onInstall}>앱처럼 추가</button><button class="text-link" onClick=${onHideInstall}>나중에</button></div>`}
+  </main>`;
 }
 
 /* ---------- 기도 / 감사 목록 ---------- */
@@ -1860,9 +2135,10 @@ function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setW
   const card = (e) => html`<${EntryCard} key=${e.id} kind=${kind} e=${e} me=${me} member=${byName[e.name]} a=${avOf(e.name)} avOf=${avOf} fresh=${e.id === freshId} can=${canEdit(e)}
     onEdit=${() => onEdit(kind, e)} onDelete=${() => onDelete(kind, e)} onToggle=${(i) => onToggle(e, i)} onReact=${() => onReact("prayers", e, "prayedBy")} onEmoji=${onEmoji} />`;
 
-  return html`<div class="wrap">
+  return html`<main class="wrap">
+    <div class="sec"><h1 style="font-size:24px;margin:0">${isP ? "항아리에 담긴 기도" : "우리의 감사"}</h1></div>
     <div class="seg" role="tablist">
-      ${[["month", "월별"], ["year", `${year}년 누적`], ["all", "전체 누적"]].map(([v, l]) => html`<button class=${scope === v ? "on" : ""} onClick=${() => setScope(v)}>${l}</button>`)}
+      ${[["all", "모든 기록"], ["month", "월별 보기"], ["year", `${year}년 보기`]].map(([v, l]) => html`<button class=${scope === v ? "on" : ""} role="tab" aria-selected=${scope === v} onClick=${() => setScope(v)}>${l}</button>`)}
     </div>
     ${scope === "month" && html`<div class="chips" ref=${chipsRef}>
       ${MONTHS.map((m, i) => html`<button class=${"chip" + (i === month ? " on" : counts[i] ? "" : " zero")} onClick=${() => setMonth(i)}>${m}${counts[i] > 0 && html`<i>${counts[i]}</i>`}</button>`)}
@@ -1876,12 +2152,12 @@ function ListTab({ kind, data, year, month, setMonth, scope, setScope, who, setW
     ${data.status === "error" && html`<div class="notice">데이터를 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.</div>`}
     ${data.status === "ready" && (list.length === 0
       ? html`<div class="empty"><span class="big">${isP ? "🍃" : "🌼"}</span>
-          ${who ? `${who}님의 ` : ""}${scope === "month" ? `${year}년 ${MONTHS[month]}에는` : "아직"} ${isP ? "심어진 기도제목이" : "적힌 감사일기가"} 없어요.<br />
-          아래 <b>＋ ${isP ? "기도제목" : "감사일기"} 쓰기</b>로 첫 잎을 심어 보세요.</div>`
+          ${who ? `${who}님의 ` : ""}${scope === "month" ? `${year}년 ${MONTHS[month]}에는` : "아직"} ${isP ? "담긴 기도가" : "적힌 감사일기가"} 없어요.<br />
+          아래 <b>${isP ? "+ 기도 담기" : "+ 감사 쓰기"}</b>로 마음을 나눠 보세요.</div>`
       : html`
         <p class="summary">${people}명 · ${unit} <b>${total}개</b>${isP ? html` · 응답 <b>${list.reduce((s, e) => s + (e.answered || []).filter(Boolean).length, 0)}개</b>` : ""}</p>
         ${scope === "month" ? list.map(card) : groups.map((g) => html`<h3 class="month-h">${g.label} <small>· ${g.items.length}건</small></h3>${g.items.map(card)}`)}`)}
-  </div>`;
+  </main>`;
 }
 
 /* 이모티콘 반응 바 */
@@ -1936,14 +2212,14 @@ function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete,
         return html`<li class=${done ? "done" : ""}>
           <span class="num">${isP ? i + 1 : "♡"}</span><span class="txt">${t}</span>
           ${isP && (can
-            ? html`<button class=${"ans" + (done ? " on" : "")} onClick=${() => onToggle(i)} aria-pressed=${!!done}>${done ? "✨ 응답" : "응답?"}</button>`
+            ? html`<button class=${"ans" + (done ? " on" : "")} onClick=${() => onToggle(i)} aria-pressed=${!!done}>${done ? "✨ 응답" : "응답 표시"}</button>`
             : done && html`<span class="ans on">✨ 응답</span>`)}
         </li>`;
       })}
     </ul>
     ${isP && who.length > 0 && html`<div class="rsum" style="margin-top:8px"><div class="faces">${who.slice(0, 5).map((n) => html`<${Av} a=${avOf(n)} crop="face" />`)}</div><span>${who.length}명이 중보하고 있어요</span></div>`}
     <${ReactionBar} kind=${isP ? "prayer" : "thanks"} coll=${isP ? "prayers" : "gratitude"} e=${e} me=${me} avOf=${avOf} onEmoji=${onEmoji}
-      lead=${isP ? html`<button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${on ? "🙏 중보했어요" : "🙏 중보할게요"} ${who.length || ""}</button>` : null} />
+      lead=${isP ? html`<button class=${"react-btn" + (on ? " on" : "")} onClick=${onReact} aria-pressed=${!!on}>${on ? "함께 기도했어요" : "함께 기도하기"} ${who.length || ""}</button>` : null} />
     ${!isP && html`
       <button class="verse-btn" onClick=${() => setOpen(!open)} aria-expanded=${open}>📖 이 감사에 맞는 말씀 ${open ? "접기 ▴" : "보기 ▾"}</button>
       ${open && html`<${VerseRec} items=${items} seed=${e.id} />`}`}
@@ -1955,7 +2231,7 @@ function EntryForm({ kind, entry, me, avOf, onClose, onSaved }) {
   const isP = kind === "prayer";
   const name = entry ? entry.name : me.name;
   const [date, setDate] = useState(entry ? entry.date : todayStr());
-  const [items, setItems] = useState(entry ? ((isP ? entry.prayers : entry.items) || []).map(cleanNum) : ["", "", ""]);
+  const [items, setItems] = useState(entry ? ((isP ? entry.prayers : entry.items) || []).map(cleanNum) : [""]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   const setAt = (i, v) => setItems(items.map((x, j) => (j === i ? v : x)));
@@ -1972,8 +2248,9 @@ function EntryForm({ kind, entry, me, avOf, onClose, onSaved }) {
       obj = { ...common, prayers: clean, answered: clean.map((p) => { const k = old.indexOf(p); return k >= 0 ? !!oldAns[k] : false; }), prayedBy: entry?.prayedBy || [] };
     } else obj = { ...common, items: clean, amenBy: entry?.amenBy || [] };
     try {
+      if (entry) { const latest = await api.get(isP ? "prayers" : "gratitude", entry.id); if (!latest) { setBusy(false); return setErr("이 기록은 이미 삭제됐어요. 닫고 새로 작성해 주세요."); } obj = { ...latest, ...obj, reactions: latest.reactions || {}, ...(isP ? { prayedBy: latest.prayedBy || [] } : { amenBy: latest.amenBy || [] }) }; }
       await api.save(isP ? "prayers" : "gratitude", obj);
-      onSaved(date, entry ? "수정했어요" : isP ? "기도나무에 잎이 돋았어요 🍃" : "감사일기를 남겼어요. 말씀 선물을 확인해 보세요 🌼", obj.id);
+      onSaved(date, entry ? "수정했어요" : isP ? "항아리에 기도를 담았어요. 함께 기도할게요!" : "감사일기를 남겼어요. 말씀 선물을 확인해 보세요 🌼", obj.id);
     } catch (e) {
       console.error(e);
       setErr(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : "저장에 실패했어요. 인터넷 연결을 확인해 주세요.");
@@ -1983,21 +2260,21 @@ function EntryForm({ kind, entry, me, avOf, onClose, onSaved }) {
   return html`<div class="overlay">
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
-      <div class="sheet-h"><h3>${entry ? `${isP ? "기도제목" : "감사일기"} 수정` : isP ? "🙏 기도제목 쓰기" : "🌼 오늘의 감사일기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
+      <div class="sheet-h"><h3>${entry ? `${isP ? "기도제목" : "감사일기"} 수정` : isP ? "항아리에 기도 담기" : "🌼 오늘의 감사일기"}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
       ${entry && html`<div class="editing">✎ ${entry.name}님의 ${isP ? "기도제목을" : "감사일기를"} 수정하는 중이에요</div>`}
       <div class="writer"><${Av} a=${avOf(name)} crop="face" /><b>${name}</b><input type="date" value=${date} onInput=${(e) => setDate(e.target.value)} aria-label="날짜" /></div>
       <div class="field">
-        <label>${isP ? "기도제목 (번호는 자동으로 붙어요)" : "오늘 감사한 일"}</label>
+        <label>${isP ? "함께 기도해 주세요" : "오늘 감사한 일"}</label>
         ${items.map((v, i) => html`<div class="item-row">
           <span class="num">${isP ? i + 1 : "♡"}</span>
-          <textarea rows="2" value=${v} onInput=${(e) => setAt(i, e.target.value)}
-            placeholder=${isP ? (i === 0 ? "기도제목을 적어주세요" : "기도제목 (선택)") : i === 0 ? "오늘 감사했던 일을 적어주세요" : "감사한 일 (선택)"}></textarea>
+          <textarea rows="3" aria-label=${(isP ? "기도제목 " : "감사한 일 ") + (i + 1)} value=${v} onInput=${(e) => setAt(i, e.target.value)}
+            placeholder=${isP ? (i === 0 ? "지금 마음에 있는 기도를 적어 주세요" : "기도제목 (선택)") : i === 0 ? "오늘 감사했던 일을 적어주세요" : "감사한 일 (선택)"}></textarea>
           ${items.length > 1 && html`<button class="rm" onClick=${() => setItems(items.filter((_, j) => j !== i))} aria-label="이 줄 지우기">✕</button>`}
         </div>`)}
       </div>
       <button class="addline" onClick=${() => setItems([...items, ""])}>＋ 한 줄 더</button>
       ${err && html`<p class="err">${err}</p>`}
-      <button class="btn full" onClick=${submit} disabled=${busy}>${busy ? "저장 중…" : entry ? "수정 완료" : isP ? "기도나무에 새기기 🍃" : "감사일기 남기기 🌼"}</button>
+      <button class="btn full" onClick=${submit} disabled=${busy}>${busy ? "저장 중…" : entry ? "수정 완료" : isP ? "항아리에 기도 담기" : "감사일기 남기기 🌼"}</button>
     </div>
   </div>`;
 }
