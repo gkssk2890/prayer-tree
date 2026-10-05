@@ -718,6 +718,19 @@ label.people-search { display: flex; align-items: center; gap: 10px; margin: 0 0
 </style>
 <style>.prayer-people{margin:18px 0 4px;padding:14px 0 4px;border-top:1px solid #ebe2d5}.prayer-people-title{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}.prayer-people-title>span{font-size:12px;color:#8a7568}.prayer-people-list{display:flex;flex-wrap:wrap;gap:8px}.prayer-person-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;background:#f4eadd;border:1px solid #eadbcb;border-radius:999px;font-size:13px;color:#45362e}.prayer-person-chip .av{width:28px;height:28px;overflow:hidden;border-radius:50%;flex:0 0 auto}.prayer-person-chip .avatar-image{width:100%;height:100%;display:block}.name-check{margin:0 0 16px;padding:12px 14px;background:#fff4e8;border:1px solid #eadfcd;border-radius:12px;font-size:14px}.name-check p{margin:0 0 5px}.name-check>small{color:#78695e}.name-suggestions{display:grid;gap:8px;margin-top:10px}.name-suggestion{display:grid;grid-template-columns:1fr auto;gap:3px 8px;text-align:left;border:1px solid #d7b5a5;background:#fffdf7;border-radius:10px;padding:10px 12px;min-height:54px;color:#282522}.name-suggestion small{font-size:11px;color:#78695e;grid-column:1}.name-suggestion>span{font-size:12px;grid-column:2;grid-row:1 / span 2;align-self:center;color:#ac1730}.new-name-confirm{display:flex!important;align-items:flex-start;gap:8px;padding:12px;background:#fff8f0;font-size:13px!important;line-height:1.6;font-weight:400!important;border-radius:10px;margin-bottom:14px}.new-name-confirm input{width:20px!important;height:20px!important;min-height:20px!important;padding:0!important;flex:0 0 auto;margin:2px 0 0!important;accent-color:#ac1730}.registered-names{margin-bottom:16px;text-align:left;font-size:13px}.registered-names summary{min-height:44px;cursor:pointer;padding:10px 0}.registered-names>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.rsum>span{overflow-wrap:anywhere}.gate .name-check{text-align:left}@media(max-width:420px){.prayer-person-chip{font-size:12px}.name-suggestion>span{font-size:11px}}
 </style>
+<style>
+/* Single page scroll owner, native scrolling within every overlay. */
+html {overflow-x:clip;}
+body {overflow-x:clip;}
+.overlay {max-height:100dvh;min-height:0;overscroll-behavior:contain;}
+.sheet,.mascot-editor,.character-modal,.dialog {min-height:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y pinch-zoom;}
+.sheet,.mascot-editor {max-height:calc(100dvh - max(12px,env(safe-area-inset-top))) !important;}
+.character-modal,.dialog {max-height:calc(100dvh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom));}
+.mascot-editor-footer {padding-bottom:max(12px,env(safe-area-inset-bottom));}
+textarea {overflow-y:auto;touch-action:pan-y pinch-zoom;}
+.chips,.tabs,.pics,.strip {touch-action:pan-x pan-y pinch-zoom;}
+@media(max-height:600px){.overlay{padding-top:8px}.sheet,.mascot-editor{max-height:calc(100dvh - 8px) !important}.mascot-editor-hero{width:130px!important;height:169px!important}.mascot-editor-preview{margin-bottom:10px}.mascot-editor-choice{min-height:90px}.mascot-editor-thumb{height:56px!important}}
+</style>
 </head>
 <body>
 <div id="root"><div class="boot">🌳<br />기도항아리를 불러오는 중…</div></div>
@@ -1413,7 +1426,35 @@ function App() {
     lsSet("notif", "1"); setNotifOn(true);
     showNotif("🔔 알림이 켜졌어요", "동기가 기도제목을 올리면 알려드릴게요. 내용은 보이지 않아요.");
   }
-  useEffect(() => { document.body.style.overflow = sheet || confirm || lightId || cardOf ? "hidden" : ""; const esc = (e) => { if(e.key === "Escape") { setSheet(null); setConfirm(null); setLightId(null); setCardOf(null); setBellOpen(false); } }; document.addEventListener("keydown",esc); return () => {document.removeEventListener("keydown",esc);document.body.style.overflow="";}; }, [sheet, confirm, lightId, cardOf]);
+  const modalOpen = !!(sheet || confirm || lightId || cardOf || (gate && gate.name) || installOpen || bellOpen);
+  useEffect(() => {
+    if (!modalOpen) return;
+    const body = document.body, root = document.documentElement;
+    const y = window.scrollY, x = window.scrollX;
+    const saved = { overflow: body.style.overflow, position: body.style.position, top: body.style.top, left: body.style.left, width: body.style.width, rootOverflow: root.style.overflow, rootBehavior: root.style.scrollBehavior };
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = -y + "px";
+    body.style.left = -x + "px";
+    body.style.width = "100%";
+    root.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = saved.overflow;
+      body.style.position = saved.position;
+      body.style.top = saved.top;
+      body.style.left = saved.left;
+      body.style.width = saved.width;
+      root.style.overflow = saved.rootOverflow;
+      root.style.scrollBehavior = "auto";
+      window.scrollTo(x, y);
+      root.style.scrollBehavior = saved.rootBehavior;
+    };
+  }, [modalOpen]);
+  useEffect(() => {
+    const esc = (e) => { if (e.key !== "Escape") return; setSheet(null); setConfirm(null); setLightId(null); setCardOf(null); setBellOpen(false); setInstallOpen(false); };
+    document.addEventListener("keydown", esc);
+    return () => document.removeEventListener("keydown", esc);
+  }, []);
 
   function requireMe(fn) { if (me) return fn(); setGate("welcome"); say("이름을 입력하면 참여할 수 있어요"); }
 
@@ -1648,9 +1689,7 @@ function Editor({name,member,stat,onClose,onSave}) {
   const mascotDialogRef=useRef(null);
   const mascotBusyRef=useRef(false);
   useEffect(()=>{
-    const oldOverflow=document.body.style.overflow;
     const oldFocus=document.activeElement;
-    document.body.style.overflow='hidden';
     const root=mascotDialogRef.current;
     root?.querySelector('button')?.focus();
     const handle=(event)=>{
@@ -1658,7 +1697,7 @@ function Editor({name,member,stat,onClose,onSave}) {
       if(event.key==='Tab'&&root){const buttons=[...root.querySelectorAll('button:not([disabled])')];const first=buttons[0],last=buttons[buttons.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
     };
     document.addEventListener('keydown',handle);
-    return ()=>{document.body.style.overflow=oldOverflow;document.removeEventListener('keydown',handle);oldFocus?.focus?.();};
+    return ()=>{document.removeEventListener('keydown',handle);if(oldFocus?.isConnected)oldFocus.focus({preventScroll:true});};
   },[]);
   const options={expression:mascotExpressions,accessory:mascotAccessories,accent:mascotColors,backdrop:mascotBackdrops}[tab];
   const pick=(id)=>{setA(current=>({...current,[tab]:id}));setError('');};
