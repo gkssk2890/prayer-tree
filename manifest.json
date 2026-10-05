@@ -1,0 +1,17 @@
+{
+  "name": "95 기도나무",
+  "short_name": "기도나무",
+  "description": "95 공동체가 함께 키우는 기도나무 · 기도제목 · 감사일기 · 일상",
+  "lang": "ko",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#efe6d2",
+  "theme_color": "#1b1b1b",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
