@@ -763,6 +763,28 @@ button:disabled { cursor: not-allowed; }
 @media(max-width:600px) { .nav button { font-size:11px; } .topbar { gap:8px; } .logo b {font-size:21px;} .top-r{gap:6px;} .jar-panel{padding:18px;} .preview-footer { flex-wrap:wrap; } }
 </style>
 <style>@media(max-width:600px){.jar-hero{gap:10px;padding-top:10px;}.jar-visual .moon-jar-svg{max-width:225px;}.jar-greeting{font-size:12px;flex-wrap:nowrap;}.jar-greeting>.text-link{white-space:nowrap;font-size:12px;}.nav button{white-space:nowrap;}.jar-home .hero-actions{gap:8px;}.hero-actions .btn{padding:12px 10px;min-width:0;font-size:13px;}}</style>
+<style>
+/* Avatar image rendering isolates original SVG colors from page darkening. */
+:root {color-scheme: only light !important;}
+html,body,.app { background:#f7f3eb !important; color:#3f2d26; color-scheme:only light !important; }
+.avatar-image { width:100%;height:100%;display:block;object-fit:contain;background:#fff8ec;filter:none !important;opacity:1 !important;color-scheme:only light; }
+.av {background:#fff8ec;isolation:isolate;}
+.tc-pic {background:#fff8ec !important;filter:none !important;opacity:1 !important;}
+.tcard.ghost .tc-pic {filter:none !important;opacity:1 !important;}
+.tc-in {color:#3a3634;}
+.tc-head,.tc-moves,.tc-foot {color:#3a3634;background:rgba(255,250,240,.92);}
+.jar-summary {grid-template-columns:repeat(2,minmax(0,1fr));}
+.character-home {display:flex;align-items:center;gap:18px;background:#fffdf7;border:1px solid #e3dace;border-radius:16px;padding:18px 22px;margin-bottom:28px;}
+.character-preview {width:76px;height:76px;flex:0 0 auto;border-radius:16px;overflow:hidden;border:1px solid #dccabb;}
+.character-preview .av {width:100%;height:100%;}
+.character-copy {flex:1;min-width:0;}
+.character-copy h2 {margin:0 0 4px;font-size:17px;line-height:1.5;}
+.character-copy p {margin:0;font-size:13px;color:#796a60;}
+.character-home>.btn {white-space:nowrap;}
+.me-btn .avatar-image,.faces .avatar-image,.card-h .avatar-image,.writer .avatar-image,.nrow .avatar-image {width:100%;height:100%;object-fit:cover;}
+.gate-art {display:none;}
+@media(max-width:600px){.character-home{gap:12px;padding:16px;flex-wrap:wrap;}.character-preview{width:62px;height:62px;}.character-copy h2{font-size:15px;}.character-copy p{font-size:12px;}.character-home>.btn{width:100%;}.editor-prev .tcard{width:190px;}.sheet-h h3{font-size:20px;}}
+</style>
 </head>
 <body>
 <div id="root"><div class="boot">🌳<br />기도항아리를 불러오는 중…</div></div>
@@ -1289,7 +1311,7 @@ function avatarSVG(a0, crop) {
   return svg;
 }
 function Av({ a, crop, cls = "av" }) {
-  return html`<div class=${cls} dangerouslySetInnerHTML=${{ __html: avatarSVG(a, crop) }}></div>`;
+  return html`<div class=${cls}><img class="avatar-image" src=${"data:image/svg+xml;charset=utf-8," + encodeURIComponent(avatarSVG(a, crop))} alt="" /></div>`;
 }
 
 /* ---------- 데이터 연결 ---------- */
@@ -1471,7 +1493,7 @@ function TCard({ name, member, stat, big, ghost, mine, onClick, avatarOverride, 
       <div class="tc-pic">
         <${Av} a=${a} />
         <span class="tc-anim">${ANIM[a.animal]?.name || ""}</span>
-        ${fr && html`<span class="tc-fruit" title=${fr.name}>${fr.emoji}</span>`}
+        
         ${ghost && html`<div class="ghost-tag"><span>입장 전</span></div>`}
       </div>
       <div class="tc-moves">
@@ -1618,6 +1640,7 @@ function App() {
   const [gate, setGate] = useState(null);         // null | "welcome" | {name, member}
   const [browse, setBrowse] = useState(true);
   const [pendingWrite, setPendingWrite] = useState(null);
+  const [pendingCharacter, setPendingCharacter] = useState(false);
   const [sheet, setSheet] = useState(null);
   const [confirm, setConfirm] = useState(null);
   const [lightId, setLightId] = useState(null);
@@ -1760,6 +1783,8 @@ function App() {
     if (kind !== tab) go(kind);
     setSheet(null); say(msg); checkIn();
   }
+  const openCharacter = () => { if(me) setGate({name:me.name}); else {setPendingCharacter(true);setGate("welcome");} };
+  useEffect(() => { if(me && pendingCharacter && !gate) {setGate({name:me.name});setPendingCharacter(false);} },[me && me.id,pendingCharacter,gate]);
   const openWrite = (type) => { if (me) setSheet({ type, entry: null }); else { setPendingWrite(type); setGate("welcome"); } };
   useEffect(() => { if (me && pendingWrite && !gate) { setSheet({ type: pendingWrite, entry: null }); setPendingWrite(null); } }, [me && me.id, pendingWrite, gate]);
 
@@ -1767,7 +1792,7 @@ function App() {
   if (gate === "welcome") return html`<${Gate} names=${names} members=${members} byName=${byName} stats=${stats}
       onEnter=${(m) => { lsSet("me", m.id); setMeId(m.id); setGate(null); setBrowse(false); lsSet("browse", "0"); checkIn(); say(`다시 오신 걸 환영해요, ${m.name}님!`); }}
       onCreate=${(name) => saveMember(name, { avatar: defaultAvatar(name) }, null)}
-      onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); setPendingWrite(null); }} />`;
+      onBrowse=${() => { setBrowse(true); lsSet("browse", "1"); setGate(null); setPendingWrite(null); setPendingCharacter(false); }} />`;
 
   const fab = { home: null, prayer: ["prayer", "+ 기도 담기"], thanks: ["thanks", "+ 감사 쓰기"], photo: ["photo", "+ 일상 올리기"], people: null }[tab];
   const light = lightId ? PH.items.find((p) => p.id === lightId.id) : null;
@@ -1797,6 +1822,7 @@ function App() {
       ${tab === "home" && html`<${HomeTab} me=${me} members=${members} stats=${stats} P=${P} G=${G} year=${year} who=${who} setWho=${setWho} names=${names}
           avOf=${avOf} byName=${byName} tick=${tick} unread=${unread} D=${PH.items} onBell=${openBell}
           installCard=${showInstallCard} onInstall=${() => setInstallOpen(true)} onHideInstall=${() => { lsSet("hideInstall", "1"); setShowInstallCard(false); }} onCheckIn=${checkIn} onPickFruit=${pickFruit} onGo=${(t) => { setWho(""); setScope("all"); go(t); }} onWrite=${openWrite} onEnter=${() => setGate("welcome")}
+          onCharacter=${openCharacter}
           onViewPrayer=${(e) => { const d = ym(e.date); setYear(d.y); setMonth(d.m); setScope("month"); setWho(e.name); go("prayer"); }}
           onViewAll=${() => { setScope("all"); setWho(""); go("prayer"); }}
           onMine=${() => { if (!me) return setGate("welcome"); setScope("all"); setWho(me.name); go("prayer"); }}
@@ -1895,11 +1921,10 @@ function Gate({ names, members, byName, stats, onEnter, onCreate, onBrowse }) {
 }
 
 /* ---------- 캐릭터 꾸미기 ---------- */
-const ED_TABS = [["animal", "동물"], ["hair", "헤어"], ["head", "모자·장식"], ["eyes", "눈"], ["mouth", "입"], ["face", "얼굴·액세"], ["item", "소품"], ["outfit", "옷"], ["bg", "배경"], ["card", "카드색"], ["me", "MBTI·열매"]];
+const ED_TABS = [["animal", "동물"], ["hair", "헤어"], ["head", "모자·장식"], ["eyes", "눈"], ["mouth", "입"], ["face", "얼굴·액세"], ["item", "소품"], ["outfit", "옷"], ["bg", "배경"], ["card", "카드색"], ["me", "내 소개"]];
 function Editor({ name, member, stat, onClose, onSave }) {
   const [a, setA] = useState(() => ({ ...DEF, ...(member?.avatar || defaultAvatar(name)) }));
   const [mbti, setMbti] = useState(member?.mbti || "");
-  const [fruit, setFruit] = useState(member?.fruit || "");
   const [bio, setBio] = useState(member?.bio || "");
   const [t, setT] = useState("animal");
   const [busy, setBusy] = useState(false);
@@ -1923,14 +1948,14 @@ function Editor({ name, member, stat, onClose, onSave }) {
   }
   async function save() {
     setBusy(true);
-    try { await onSave({ avatar: a, mbti, fruit, bio: bio.trim() }); }
+    try { await onSave({ avatar: a, mbti, bio: bio.trim() }); }
     catch (e) { console.error(e); alert(e && e.code === "permission-denied" ? "저장 권한이 없어요. 관리자에게 알려주세요." : "저장에 실패했어요. 다시 시도해 주세요."); setBusy(false); }
   }
   return html`<div class="overlay">
     <div class="sheet" role="dialog" aria-modal="true">
       <div class="grip"></div>
-      <div class="sheet-h"><h3>${member ? "내 카드 꾸미기" : `${name}님의 캐릭터 만들기`}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
-      <div class="editor-prev"><${TCard} name=${name} member=${member} stat=${stat} avatarOverride=${a} mbti=${mbti} fruit=${fruit} /></div>
+      <div class="sheet-h"><h3>${member ? "내 캐릭터 꾸미기" : `${name}님의 캐릭터 만들기`}</h3><button class="xbtn" onClick=${onClose} aria-label="닫기">✕</button></div>
+      <div class="editor-prev"><${TCard} name=${name} member=${member} stat=${stat} avatarOverride=${a} mbti=${mbti} /></div>
       <div class="gfilter"><span>스타일</span>
         ${[["", "전체"], ["m", "👦 남자"], ["f", "👧 여자"]].map(([g, l]) => html`<button class=${gf === g ? "on" : ""} onClick=${() => pickG(g)}>${l}</button>`)}
       </div>
@@ -1946,9 +1971,6 @@ function Editor({ name, member, stat, onClose, onSave }) {
       ${t === "me" && html`
         <div class="sw-label">MBTI</div>
         <div class="mbtis" style="margin-top:8px">${MBTIS.map((m) => html`<button class=${mbti === m ? "on" : ""} onClick=${() => setMbti(mbti === m ? "" : m)}>${m}</button>`)}</div>
-        <div class="sw-label" style="margin-top:16px">내가 맺고 싶은 성령의 열매</div>
-        <div class="fruits" style="margin-top:8px">${FRUITS.map((f) => html`<button class=${"fruit" + (fruit === f.id ? " on" : "")} style=${{ "--fc": f.color }} onClick=${() => setFruit(fruit === f.id ? "" : f.id)}>
-          <span class="em">${f.emoji}</span><b>${f.name}</b></button>`)}</div>
         <div class="field" style="margin-top:16px"><label>한 줄 소개 (선택)</label>
           <input value=${bio} maxlength="40" onInput=${(e) => setBio(e.target.value)} placeholder="예) 찬양팀 기타 치는 ENFP 사자예요" /></div>`}
       <div class="editor-actions">
@@ -1966,13 +1988,13 @@ function CardModal({ name, member, stat, mine, onClose, onEdit, onPrayers, onLog
       <${TCard} big name=${name} member=${member} stat=${stat} ghost=${!member} />
       <div class="box" style="margin-top:14px;padding:12px 14px;font-size:14px;line-height:1.6">
         ${member?.bio && html`<div style="font-weight:700;margin-bottom:6px">“${member.bio}”</div>`}
-        ${fr && html`<div>${fr.emoji} <b>${fr.name}</b>의 열매를 구하고 있어요</div>`}
+        
         <div style="color:var(--muted)">🙏 기도제목 ${stat?.topics || 0} · 🍎 응답 ${stat?.answered || 0} · 💌 중보 ${stat?.inter || 0} · 🔥 ${stat?.streak || 0}일 연속</div>
         ${!member && html`<div style="color:var(--muted);margin-top:4px">아직 입장 전이에요. 기도항아리 링크를 보내서 초대해 보세요!</div>`}
       </div>
       <div style="display:flex;gap:8px;margin-top:12px">
         <button class="btn white" style="flex:1" onClick=${onPrayers}>기도제목 보기</button>
-        ${mine && html`<button class="btn" style="flex:1" onClick=${onEdit}>카드 꾸미기</button>`}
+        ${mine && html`<button class="btn" style="flex:1" onClick=${onEdit}>캐릭터 꾸미기</button>`}
       </div>
       ${mine && html`<button class="skip" style="display:block;margin:12px auto 0;background:none;border:0;color:#fff;text-decoration:underline" onClick=${onLogout}>다른 이름으로 입장하기</button>`}
       <button class="btn ink full" style="margin-top:10px" onClick=${onClose}>닫기</button>
@@ -2055,16 +2077,14 @@ function JarVisual({ count = 0 }) {
 }
 
 /* ---------- 홈 ---------- */
-function HomeTab({ me, members, stats, P, G, year, avOf, tick, unread = [], D = [], onBell, installCard, onInstall, onHideInstall, onPickFruit, onGo, onWrite, onEnter, onMonth, onViewPrayer, onViewAll, onMine }) {
-  const [fruitView, setFruitView] = useState(null);
+function HomeTab({ me, members, stats, P, G, year, avOf, tick, unread = [], D = [], onBell, installCard, onInstall, onHideInstall, onPickFruit, onGo, onWrite, onEnter, onMonth, onViewPrayer, onViewAll, onMine, onCharacter }) {
   const total = P.items.reduce((s,e)=>s+(e.prayers||[]).length,0);
   const answered = P.items.reduce((s,e)=>s+(e.answered||[]).filter(Boolean).length,0);
   const recent = [...P.items].filter(e=>e.date).sort(sortDesc).slice(0,3);
   const months = MONTHS.map((label,i)=>({ label, count:P.items.filter(e=>e.date && ym(e.date).y===year && ym(e.date).m===i).reduce((s,e)=>s+(e.prayers||[]).length,0) }));
   const texts = me ? P.items.filter(e=>e.name===me.name).flatMap(e=>e.prayers||[]).slice(0,6) : [];
-  const daily = pickVerses(texts,todayStr()+(me ? me.name : "guest"),me && me.fruit);
+  const daily = pickVerses(texts,todayStr()+(me ? me.name : "guest"),null);
   const verse = daily.verses[0];
-  const fv = fruitView ? FRUIT[fruitView] : null;
   return html`<main class="wrap jar-home">
     <div class="jar-greeting"><span>${me ? me.name+"님, 오늘도 함께 기도해요." : "우리의 기도가 모이는 곳"}</span><button class="text-link" onClick=${me ? onMine : onEnter}>${me ? "내 기도 →" : "내 이름 등록 →"}</button></div>
     <section class="jar-hero" aria-labelledby="jar-title">
@@ -2077,8 +2097,8 @@ function HomeTab({ me, members, stats, P, G, year, avOf, tick, unread = [], D = 
     <div class="jar-summary" aria-label="공동체 기도 기록">
       <div class="summary-stat"><b>${P.status==="ready" ? total : "…"}</b><span>담긴 기도</span></div>
       <div class="summary-stat"><b>${P.status==="ready" ? answered : "…"}</b><span>응답된 기도</span></div>
-      <div class="summary-stat"><b>${members.length}</b><span>함께하는 동기</span></div>
     </div>
+    <section class="character-home"><div class="character-preview"><${Av} a=${me ? me.avatar : defaultAvatar("공동체")} crop="face" /></div><div class="character-copy"><h2>${me ? me.name+"님의 캐릭터" : "나만의 캐릭터를 만들어요"}</h2><p>동물, 헤어, 옷과 소품을 골라 나를 표현해요.</p></div><button class="btn secondary" onClick=${onCharacter}>${me ? "내 캐릭터 꾸미기" : "캐릭터 만들기"}</button></section>
     ${unread.length>0 && html`<button class="jar-status" onClick=${onBell}>새 기도 ${unread.length}건이 도착했어요 <span>확인하기 →</span></button>`}
     <div class="jar-main-grid">
       <section class="jar-panel" aria-labelledby="recent-prayers"><div class="panel-heading"><h2 id="recent-prayers">함께 기도해 주세요</h2><button class="text-link" onClick=${onViewAll}>전체 보기 →</button></div>
@@ -2094,10 +2114,8 @@ function HomeTab({ me, members, stats, P, G, year, avOf, tick, unread = [], D = 
         <button onClick=${()=>onGo("people")}><span class="shortcut-icon" aria-hidden="true">◎</span><span class="shortcut-copy"><b>함께하는 동기들</b><small>친구의 프로필과 기도를 봐요</small></span><span class="shortcut-arrow" aria-hidden="true">→</span></button>
       </div>${verse && html`<div class="jar-verse"><p class="eyebrow">오늘의 말씀</p><blockquote>${verse.text}</blockquote><cite>${refName(verse.ref)} · 개역개정</cite></div>`}</section>
     </div>
-    <details class="jar-extras"><summary>지난 기도와 성령의 열매</summary>
+    <details class="jar-extras"><summary>지난 기도 월별로 보기</summary>
       <section class="jar-panel"><div class="panel-heading"><h2>${year}년 월별 기도</h2></div><div class="jar-months">${months.map((m,i)=>html`<button onClick=${()=>onMonth(i)} aria-label=${year+"년 "+m.label+" 기도 "+m.count+"개 보기"}><b>${m.label}</b><span class="month-count">${m.count}개</span></button>`)}</div>
-        <div class="panel-heading" style="margin-top:24px"><h2>내가 구하는 성령의 열매</h2></div><div class="fruits">${FRUITS.map(f=>html`<button class=${"fruit"+(me && me.fruit===f.id ? " on" : "")} style=${{"--fc":f.color}} onClick=${()=>setFruitView(f.id)}><span class="em">${f.emoji}</span><b>${f.name}</b></button>`)}</div>
-        ${fv && html`<div class="box fdetail"><h4>${fv.name}의 열매</h4><p class="d">${fv.desc}</p>${fv.refs.map(r=>html`<div class="vq"><p>${VERSES[r]}</p><cite>${refName(r)}</cite></div>`)}<button class="btn" onClick=${()=>onPickFruit(fv.id)}>이 열매 구하기</button><button class="btn secondary" onClick=${()=>setFruitView(null)}>닫기</button></div>`}
       </section>
     </details>
     ${installCard && html`<div class="jar-install"><div><b>다음에도 바로 만나요</b><p>휴대폰 홈 화면에 기도항아리를 추가할 수 있어요.</p></div><button class="btn secondary" onClick=${onInstall}>앱처럼 추가</button><button class="text-link" onClick=${onHideInstall}>나중에</button></div>`}
@@ -2203,7 +2221,7 @@ function EntryCard({ kind, e, me, member, a, avOf, fresh, can, onEdit, onDelete,
   return html`<article ref=${ref} class=${"card" + (isP ? "" : " thanks")}>
     <div class="card-h">
       <${Av} a=${a} crop="face" />
-      <div class="who"><b>${e.name}${member?.mbti && html`<i>${member.mbti}</i>`}${member?.fruit && FRUIT[member.fruit] ? FRUIT[member.fruit].emoji : ""}</b><span>${fmtDate(e.date)}</span></div>
+      <div class="who"><b>${e.name}${member?.mbti && html`<i>${member.mbti}</i>`}</b><span>${fmtDate(e.date)}</span></div>
       ${can && html`<button class="mini" onClick=${onEdit}>수정</button><button class="mini del" onClick=${onDelete}>삭제</button>`}
     </div>
     <ul class="plist">
@@ -2410,7 +2428,7 @@ function Lightbox({ p, start = 0, can, onClose, onEdit, onDelete }) {
 
 /* ---------- 동기 카드 도감 ---------- */
 function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter, onEnterName }) {
-  const [view, setView] = useState("check");
+  const [view, setView] = useState("cards");
   const [q, setQ] = useState("");
   const [cq, setCq] = useState("");
   const [sort, setSort] = useState("no");
@@ -2432,7 +2450,7 @@ function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter, onEnter
     const rows = n ? [...new Set([...(names.includes(n) ? [n] : []), ...similarNames(n, names)])] : [];
     return html`<div class="wrap">
       ${seg}
-      <div class="sec" style="margin-top:6px"><h2>🔎 내 이름이 있을까?</h2><small>${members.length} / ${TOTAL}명 입장</small></div>
+      <div class="sec" style="margin-top:6px"><h2>🔎 내 이름이 있을까?</h2></div>
       <input class="select" style="background-image:none;font-size:17px" value=${cq} onInput=${(e) => setCq(e.target.value)} placeholder="내 이름을 적어보세요" />
       <${NameCheck} q=${cq} names=${names} byName=${byName} stats=${stats} onPick=${setCq} />
       ${rows.length > 0 && html`<div class="box" style="padding:4px 14px;margin-bottom:12px">
@@ -2454,7 +2472,7 @@ function PeopleTab({ names, members, byName, stats, me, onOpen, onEnter, onEnter
   }
   return html`<div class="wrap">
     ${seg}
-    <div class="sec" style="margin-top:4px"><h2>🃏 우리 공동체 카드</h2><small>${members.length} / ${TOTAL}명 입장</small></div>
+    <div class="sec" style="margin-top:4px"><h2>🃏 우리 공동체 카드</h2></div>
     ${!me && html`<div class="box hello" style="background:var(--y);margin-bottom:12px"><div style="flex:1"><b>내 카드도 만들어 볼까요?</b><p>캐릭터를 꾸미고 우리 공동체에 입장해요.</p></div><button class="btn white" onClick=${onEnter}>입장</button></div>`}
     <input class="select" style="background-image:none" value=${q} onInput=${(e) => setQ(e.target.value)} placeholder="🔍 이름으로 찾기" />
     <div class="seg"><button class=${sort === "no" ? "on" : ""} onClick=${() => setSort("no")}>입장 번호순</button><button class=${sort === "active" ? "on" : ""} onClick=${() => setSort("active")}>활동 많은 순</button></div>
