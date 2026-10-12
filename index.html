@@ -989,8 +989,15 @@ const mascotAccessories = [['torch','횃불'],['scarf','목도리'],['beanie','�
 const mascotColors = mascotAccent.map((c,i) => [c,['기도의 빨강','잔잔한 파랑','올리브 초록','따뜻한 노랑','연보라','차콜'][i]]);
 const mascotBackdrops = [['cream','따뜻한 크림'],['peach','살구빛'],['blue','맑은 하늘'],['sage','연한 초록'],['white','깨끗한 흰색'],['blush','장밋빛']];
 const mascotBackdropColors = {cream:'#FBF7ED', peach:'#F8E9DF', blue:'#E8F0F3', sage:'#EAF0E6', white:'#FFFFFF', blush:'#F7E8E9'};
-const mascotTabs = [['expression','표정'],['accessory','소품'],['accent','색상'],['backdrop','배경']];
-const DEF = Object.freeze({design:'simple-v1', expression:'calm', accessory:'scarf', accent:'#AC1730', backdrop:'cream'});
+const mascotPoses = [['default','기본 자세'],['pose','포즈 잡기'],['reading','말씀 읽기'],['meditation','묵상하기'],['working','일하기'],['praise','찬양하기'],['heart','하트 전하기'],['walking','산책하기'],['rest','차 한 잔']];
+const mascotPoseExpressions = {default:'calm',pose:'wink',reading:'calm',meditation:'prayer',working:'smile',praise:'happy',heart:'smile',walking:'happy',rest:'sleepy'};
+const mascotTabs = [['pose','동작'],['expression','표정'],['accessory','소품'],['accent','색상'],['backdrop','배경']];
+function mascotPick(a,tab,id) {
+  if(tab==='pose') return {...a,pose:id,expression:mascotPoseExpressions[id]||a.expression,accessory:id!=='default'&&a.accessory==='torch'?'scarf':a.accessory};
+  if(tab==='accessory'&&id==='torch') return {...a,accessory:id,pose:'default'};
+  return {...a,[tab]:id};
+}
+const DEF = Object.freeze({design:'simple-v1', pose:'default', expression:'calm', accessory:'scarf', accent:'#AC1730', backdrop:'cream'});
 // Kept only for older surrounding components. No animal UI or identity is used.
 const ANIM = {};
 const mascotHash = (value) => { let h=2166136261; for(const c of String(value || '공동체')) h=Math.imul(h ^ c.codePointAt(0),16777619); return h >>> 0; };
@@ -1001,7 +1008,7 @@ function mascotNormalize(a0, name) {
   const fallback=defaultAvatar(name || source.name || source.displayName || '공동체');
   if(source.design !== 'simple-v1') return fallback;
   const allowed=(list,value,fallbackValue)=>list.some(([id])=>id===value)?value:fallbackValue;
-  return {design:'simple-v1', expression:allowed(mascotExpressions,source.expression,DEF.expression), accessory:allowed(mascotAccessories,source.accessory,DEF.accessory), accent:mascotAccent.includes(source.accent)?source.accent:fallback.accent, backdrop:allowed(mascotBackdrops,source.backdrop,DEF.backdrop)};
+  return {design:'simple-v1', pose:allowed(mascotPoses,source.pose,DEF.pose), expression:allowed(mascotExpressions,source.expression,DEF.expression), accessory:allowed(mascotAccessories,source.accessory,DEF.accessory), accent:mascotAccent.includes(source.accent)?source.accent:fallback.accent, backdrop:allowed(mascotBackdrops,source.backdrop,DEF.backdrop)};
 }
 const mascotStroke = (w=2.4) => `stroke="${mascotInk}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`;
 function mascotFace(a) {
@@ -1021,6 +1028,7 @@ function mascotTorch() {
   return `<g transform="rotate(-8 42 146)"><path d="M38 119 L47 118 L49 161 Q45 165 41 161Z" fill="#C2A273" ${mascotStroke(2)}/><path d="M35 117 Q34 113 38 113 L49 112 Q53 112 52 117 L50 121 L38 122Z" fill="#D6BA88" ${mascotStroke(2)}/><path d="M42 111 C29 106 33 96 39 89 Q44 82 43 74 C53 83 47 89 54 96 C61 106 51 113 42 111Z" fill="#EAA04B"/><path d="M43 109 C37 104 39 100 44 93 C44 98 51 100 49 105 Q48 110 43 109Z" fill="#FFE6A0"/><path d="M43 107 C40 104 42 101 45 100 Q49 105 43 107Z" fill="#FFF9E4"/></g>`;
 }
 function mascotBody(a) {
+  if(a.pose && a.pose!=='default') return mascotPoseBody(a);
   const line=mascotStroke();
   const torch=a.accessory==='torch';
   const prayer=a.expression==='prayer' && !torch;
@@ -1035,6 +1043,138 @@ function mascotBody(a) {
   if(a.accessory==='bag') s+=`<path d="M80 136 Q101 166 135 188" fill="none" stroke="${mascotInk}" stroke-width="4.8" stroke-linecap="round"/><path d="M80 136 Q101 166 135 188" fill="none" stroke="${a.accent}" stroke-width="2.4" stroke-linecap="round"/><rect x="116" y="178" width="31" height="25" rx="7" fill="${a.accent}" ${mascotStroke(2.1)}/><path d="M117 185 Q132 191 146 184" fill="none" ${mascotStroke(1.7)}/><circle cx="132" cy="189" r="1.6" fill="#FFF2D9"/>`;
   return {body:s, hands:prayer?`<path d="M77 151 C66 155 65 176 78 179 Q87 178 98 156 Q100 150 96 148 Q91 147 87 155 L81 164" fill="#FFFFFF" ${line}/><path d="M124 151 C135 155 134 176 121 179 Q110 177 100 157 Q97 150 101 148 Q106 147 111 156 L116 164" fill="#FFFFFF" ${line}/>`:torch?`<ellipse cx="40" cy="149" rx="7" ry="11" transform="rotate(-12 40 149)" fill="#FFFFFF" ${mascotStroke(2.2)}/>`:''};
 }
+// Additional simple-v1 poses. Load beside mascotBody; no changes to the head,
+// scarf, face, expression, or existing default stance are made here.
+// Integration: const body = mascotPoseBody(a) || mascotBody(a);
+// Render body.body before scarf/head and body.hands after face/accessories.
+// Keep the legacy torch exclusive to the default stance.
+function mascotPoseBody(a) {
+  const supported = ['pose', 'reading', 'meditation', 'working', 'praise', 'heart', 'walking', 'rest'];
+  if (!a || !supported.includes(a.pose)) return null;
+
+  const line = mascotStroke(2.4);
+  const fine = mascotStroke(1.7);
+  const white = '#FFFFFF';
+  const cream = '#FBF5E8';
+  const paper = '#FFFCF5';
+  const accent = a.accent;
+  const shape = (d, fill = white, stroke = line) => `<path d="${d}" fill="${fill}" ${stroke}/>`;
+  const detail = (d, stroke = fine) => shape(d, 'none', stroke);
+  const standing = () => shape('M77 133 C69 147 68 174 71 195 L73 230 Q74 237 85 238 Q99 239 100 230 L100 210 L103 231 Q104 239 118 237 Q129 236 129 228 L131 191 Q134 155 123 133Z')
+    + '<path d="M76 189 Q75 209 78 223" fill="none" stroke="#ECECE7" stroke-width="3" stroke-linecap="round"/>';
+  let body = '';
+  let hands = '';
+
+  switch (a.pose) {
+    case 'pose':
+      // Two clearly bent elbows, little inward mittens, and a jaunty wide stance.
+      body = shape('M78 140 C66 139 50 151 48 165 Q48 173 61 179 L78 184 L84 170 L65 164 L84 153Z')
+        + shape('M124 140 C138 138 151 151 153 165 Q153 174 139 179 L123 184 L117 170 L136 164 L118 153Z')
+        + shape('M77 133 Q65 159 73 194 L65 224 Q62 234 74 237 Q87 241 92 230 L101 209 L109 230 Q113 240 126 237 Q138 234 133 224 L125 194 Q136 159 123 133Z');
+      hands = shape('M66 167 Q72 163 79 168 L85 172 Q89 178 84 182 Q80 185 75 181 L65 176 Q61 172 66 167Z')
+        + shape('M134 167 Q128 163 121 168 L115 172 Q111 178 116 182 Q120 185 125 181 L135 176 Q139 172 134 167Z');
+      break;
+
+    case 'reading':
+      body = shape('M76 140 Q59 145 56 169 Q55 183 68 190 L83 178 L85 150Z')
+        + shape('M125 140 Q143 146 145 169 Q147 184 132 191 L118 177 L116 150Z')
+        + standing();
+      // A low, open Bible: curved page blocks, visible spine and one quiet cross.
+      hands = shape('M58 170 Q77 163 100 176 Q122 163 142 170 L142 202 Q119 196 100 210 Q80 197 58 202Z', accent)
+        + shape('M62 166 Q81 161 100 173 L100 204 Q80 193 62 197Z', paper, mascotStroke(2))
+        + shape('M100 173 Q119 161 138 166 L138 197 Q119 193 100 204Z', paper, mascotStroke(2))
+        + `<path d="M118 172 v15 M113 177 h10" fill="none" stroke="${accent}" stroke-width="2.6" stroke-linecap="round"/>`
+        + '<path d="M70 176 Q79 177 90 182 M70 183 Q79 184 89 189 M109 193 Q119 189 130 189" fill="none" stroke="#D3C8B4" stroke-width="1.6" stroke-linecap="round"/>'
+        + shape('M58 179 Q52 179 53 186 Q53 194 61 195 L66 194 Q70 191 66 188 L61 186 Q65 181 61 179Z')
+        + shape('M142 179 Q148 179 147 186 Q147 194 139 195 L134 194 Q130 191 134 188 L139 186 Q135 181 139 179Z');
+      break;
+
+    case 'meditation':
+      // No head translation: a compact seated trunk and broad crossed legs.
+      body = '<ellipse cx="100" cy="224" rx="53" ry="5" fill="#C8B891" opacity=".12"/>'
+        + shape('M78 133 Q67 150 69 177 L64 196 Q78 207 101 207 Q125 207 139 195 L130 177 Q132 152 123 133Z')
+        + shape('M77 188 C64 183 49 190 48 203 Q46 216 63 220 L116 222 Q128 221 128 213 Q128 206 117 204 L82 199Z')
+        + shape('M122 187 C136 184 152 191 152 204 Q152 217 136 221 L85 221 Q72 221 72 213 Q72 207 85 205 L117 199Z')
+        + detail('M90 213 Q104 214 114 218');
+      hands = shape('M74 146 Q66 148 65 161 L60 181 Q57 190 65 193 Q72 195 77 187 L85 167 Q89 157 84 152Z')
+        + shape('M126 146 Q135 149 135 161 L140 181 Q143 190 135 193 Q128 195 123 187 L115 167 Q112 157 117 152Z')
+        + shape('M62 183 Q66 178 73 182 L80 187 Q83 192 78 195 Q72 198 65 192Z', white, mascotStroke(2.1))
+        + shape('M138 183 Q134 178 127 182 L120 187 Q117 192 122 195 Q128 198 135 192Z', white, mascotStroke(2.1));
+      break;
+
+    case 'working':
+      body = shape('M76 140 Q59 147 57 164 Q55 177 72 180 L89 175 L86 160 L73 162 L85 150Z')
+        + shape('M125 140 Q143 147 145 163 Q147 175 132 180 L113 175 L116 160 L129 163 L116 150Z')
+        + standing();
+      // Foreground desk and laptop. Legs stay visible beneath a slim tabletop.
+      hands = shape('M45 201 L52 201 L52 235 Q49 239 45 235Z', '#E5D6BB', mascotStroke(2))
+        + shape('M148 201 L155 201 L155 235 Q152 239 148 235Z', '#E5D6BB', mascotStroke(2))
+        + `<rect x="35" y="193" width="130" height="10" rx="4" fill="${cream}" ${line}/>`
+        + shape('M71 168 Q79 165 86 170 L90 176 Q89 181 83 181 L71 179 Q65 175 71 168Z')
+        + shape('M128 168 Q120 165 113 170 L109 176 Q110 181 116 181 L128 179 Q134 175 128 168Z')
+        + shape('M65 160 L135 160 Q140 160 139 166 L135 188 L65 188 L61 166 Q60 160 65 160Z', '#F0E9DA')
+        + shape('M61 188 L139 188 L147 192 Q147 195 141 195 L59 195 Q53 195 53 192Z', cream, mascotStroke(2))
+        + `<circle cx="100" cy="175" r="4" fill="${accent}"/>`
+        + `<path d="M92 191 h16" fill="none" stroke="${mascotInk}" stroke-width="1.4" stroke-linecap="round"/>`;
+      break;
+
+    case 'praise':
+      // Raised arms live outside the fixed head silhouette, not across the face.
+      body = shape('M78 141 Q60 135 47 114 L41 97 Q38 88 31 92 Q25 96 30 108 L35 122 Q45 146 64 157 L81 158Z')
+        + shape('M122 141 Q140 135 153 114 L159 97 Q162 88 169 92 Q175 96 170 108 L165 122 Q155 146 136 157 L119 158Z')
+        + standing();
+      hands = `<g fill="${accent}"><ellipse cx="22" cy="73" rx="4" ry="3" transform="rotate(-18 22 73)"/><ellipse cx="179" cy="65" rx="4" ry="3" transform="rotate(-18 179 65)"/></g>`
+        + `<path d="M25 72 V59 l8 3 M182 64 V49 l8 3" fill="none" stroke="${accent}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+      break;
+
+    case 'heart':
+      body = shape('M76 140 Q61 146 59 166 Q58 180 71 187 L84 174 L84 153Z')
+        + shape('M125 140 Q140 146 142 166 Q143 181 129 187 L116 174 L116 153Z')
+        + standing();
+      // Always red, independently of scarf color. A compact hand-held object.
+      hands = shape('M100 174 C90 157 66 161 66 179 C66 192 87 204 100 214 C113 204 134 192 134 179 C134 161 110 157 100 174Z', '#C5434D')
+        + '<path d="M76 175 Q80 169 87 173" fill="none" stroke="#F7C0BA" stroke-width="3" stroke-linecap="round"/>'
+        + shape('M66 179 Q59 177 59 184 Q59 193 69 197 L75 198 Q81 197 79 192 L72 186 Q72 181 66 179Z')
+        + shape('M134 179 Q141 177 141 184 Q141 193 131 197 L125 198 Q119 197 121 192 L128 186 Q128 181 134 179Z');
+      break;
+
+    case 'walking':
+      // Opposing arm swing and separated, asymmetric feet read even at small size.
+      body = shape('M124 140 Q140 144 148 157 L156 163 Q162 169 157 175 Q153 181 146 176 L134 166 L115 154Z')
+        + shape('M77 133 Q67 153 72 182 L76 198 L65 217 L53 224 Q48 230 55 234 Q65 239 75 231 L96 209 L109 224 L112 233 Q114 239 126 238 L142 238 Q150 236 146 230 Q144 226 136 226 L128 226 L120 201 L127 181 Q135 153 123 133Z');
+      hands = shape('M75 143 Q67 141 61 150 L51 167 L43 173 Q36 178 41 184 Q46 191 54 185 L67 176 L84 155 Q86 148 80 145Z')
+        + detail('M30 219 h11 M34 227 h7', `stroke="${accent}" stroke-width="2" stroke-linecap="round"`);
+      break;
+
+    case 'rest':
+      body = shape('M76 140 Q59 147 59 167 Q58 183 72 191 L85 177 L84 152Z')
+        + shape('M125 140 Q142 147 142 167 Q143 183 129 191 L116 177 L116 152Z')
+        + standing();
+      hands = shape('M123 176 L130 176 Q144 176 143 187 Q143 199 128 198 L121 196 L123 189 L128 190 Q135 190 135 186 Q135 183 129 183 L123 184Z', cream, mascotStroke(2))
+        + shape('M77 174 Q100 168 125 174 L122 200 Q100 210 80 200Z', cream)
+        + `<ellipse cx="101" cy="175" rx="24" ry="5" fill="${paper}" ${mascotStroke(2)}/>`
+        + '<path d="M84 176 Q101 172 118 176 Q101 180 84 176Z" fill="#B6936A"/>'
+        + `<path d="M90 193 Q101 198 112 192" fill="none" stroke="${accent}" stroke-width="2.6" stroke-linecap="round"/>`
+        + shape('M74 181 Q67 180 66 187 Q65 195 76 200 L83 201 Q89 199 85 194 L79 190 Q82 185 77 182Z')
+        + shape('M127 181 Q134 180 135 187 Q136 195 125 200 L118 201 Q112 199 116 194 L122 190 Q119 185 124 182Z')
+        + '<path d="M95 164 C89 160 100 157 95 151 M107 163 C102 160 111 156 108 152" fill="none" stroke="#B9AC96" stroke-width="1.8" stroke-linecap="round"/>';
+      break;
+  }
+
+  // The existing optional bag remains a wearable rear layer. Scene props and
+  // hands naturally occlude it; beanie/glasses/scarf are still drawn by avatarSVG.
+  if (a.accessory === 'bag') {
+    const seated = a.pose === 'meditation';
+    const y = seated ? 186 : 192;
+    body += `<path d="M80 136 Q104 166 138 ${y + 5}" fill="none" stroke="${mascotInk}" stroke-width="4.6" stroke-linecap="round"/>`
+      + `<path d="M80 136 Q104 166 138 ${y + 5}" fill="none" stroke="${accent}" stroke-width="2.3" stroke-linecap="round"/>`
+      + `<rect x="124" y="${y}" width="26" height="22" rx="7" fill="${accent}" ${mascotStroke(2)}/>`
+      + detail(`M126 ${y + 6} Q137 ${y + 12} 148 ${y + 6}`, mascotStroke(1.5))
+      + `<circle cx="137" cy="${y + 10}" r="1.4" fill="${cream}"/>`;
+  }
+  return {body, hands};
+}
+
 const mascotSvgCache = new Map();
 function avatarSVG(a0, crop) {
   const a=mascotNormalize(a0);
@@ -1044,7 +1184,7 @@ function avatarSVG(a0, crop) {
   const body=mascotBody(a);
   const cap=a.accessory==='beanie'?`<circle cx="120" cy="24" r="10" fill="${a.accent}" ${mascotStroke(2.1)}/><path d="M50 67 Q53 29 96 28 Q137 26 150 64Z" fill="${a.accent}" ${mascotStroke(2.3)}/><path d="M52 58 Q99 43 145 59 L150 70 Q102 53 50 72Z" fill="${a.accent}" ${mascotStroke(2.1)}/><path d="M63 53 l-2 -8 M75 48 l-1 -9 M87 45 v-9 M101 44 v-9 M115 46 l1 -8 M129 50 l2 -7" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="1.5" stroke-linecap="round"/>`:'';
   const glasses=a.accessory==='glasses'?`<circle cx="84" cy="99" r="12" fill="none" ${mascotStroke(1.8)}/><circle cx="110" cy="99" r="12" fill="none" ${mascotStroke(1.8)}/><path d="M96 98 Q97 96 98 98 M72 96 l-10 -5 M122 96 l11 -5" fill="none" ${mascotStroke(1.8)}/>`:'';
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="${face?200:260}" viewBox="${face?'34 14 132 132':'0 0 200 260'}"><rect x="-30" y="-30" width="260" height="320" fill="${mascotBackdropColors[a.backdrop]}"/>${!face?'<ellipse cx="100" cy="239" rx="51" ry="7" fill="#C8B891" opacity=".16"/>':''}${body.body}${a.accessory==='torch'?mascotTorch():''}${mascotScarf(a)}<path d="M100 25 C130 25 153 48 153 80 C153 111 132 134 100 134 C68 134 47 112 47 81 C47 48 70 25 100 25Z" fill="#FFFFFF" ${mascotStroke(2.5)}/><path d="M55 68 Q58 48 76 37" fill="none" stroke="#F7F7F2" stroke-width="4" stroke-linecap="round"/>${mascotFace(a)}${glasses}${cap}${body.hands}</svg>`;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="${face?200:260}" viewBox="${face?'34 14 132 132':'0 0 200 260'}"><rect x="-30" y="-30" width="260" height="320" fill="${mascotBackdropColors[a.backdrop]}"/>${!face?'<ellipse cx="100" cy="239" rx="51" ry="7" fill="#C8B891" opacity=".16"/>':''}${body.body}${a.accessory==='torch'&&a.pose==='default'?mascotTorch():''}${mascotScarf(a)}<path d="M100 25 C130 25 153 48 153 80 C153 111 132 134 100 134 C68 134 47 112 47 81 C47 48 70 25 100 25Z" fill="#FFFFFF" ${mascotStroke(2.5)}/><path d="M55 68 Q58 48 76 37" fill="none" stroke="#F7F7F2" stroke-width="4" stroke-linecap="round"/>${mascotFace(a)}${glasses}${cap}${body.hands}</svg>`;
   if(mascotSvgCache.size>240) mascotSvgCache.clear();
   mascotSvgCache.set(key,svg);
   return svg;
@@ -1762,8 +1902,8 @@ const mascotEditorCss = `
 .mascot-editor *{box-sizing:border-box}.mascot-editor button{box-shadow:none;transition:background .16s,border-color .16s;min-height:44px}.mascot-editor button:focus-visible{outline:3px solid #507B95;outline-offset:3px}.mascot-editor button:disabled{cursor:wait;opacity:.6}
 .mascot-editor-header{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px}.mascot-editor-header h3{margin:0;text-align:center;font-size:18px;letter-spacing:-.5px;font-weight:700}.mascot-editor-icon{width:44px;height:44px;border:0;border-radius:50%;background:transparent;display:grid;place-items:center;padding:11px}.mascot-editor-icon:hover{background:#EFE9DE}.mascot-editor-icon svg{width:21px;height:21px;fill:none;stroke:#242522;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mascot-editor-preview{display:flex;flex-direction:column;align-items:center;margin:5px 0 18px}.mascot-editor-hero{width:205px;height:267px;border:0!important;border-radius:0!important;overflow:hidden;background:transparent!important}.mascot-editor-preview strong{font-size:16px;line-height:1.5;margin-top:0;font-weight:700}.mascot-editor-preview p{font-size:12px;color:#93897C;margin:4px 0 0}
-.mascot-editor-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 16px}.mascot-editor-tab{border:1px solid #D9A5AD;border-radius:24px;padding:8px 4px;background:transparent;font-size:13px;font-weight:700;color:#4D3B35}.mascot-editor-tab[aria-selected=true]{background:#AC1730;color:#FFF;border-color:#AC1730}
-.mascot-editor-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mascot-editor-choice{position:relative;min-width:0;min-height:112px;border:1px solid #E3DDD0;border-radius:13px;background:#FFFCF5;padding:7px 5px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:500;line-height:1.3;color:#51453D}.mascot-editor-choice[aria-pressed=true]{border:1.7px solid #AC1730;background:#FCF1EB}.mascot-editor-choice:hover{border-color:#C1858D}.mascot-editor-thumb{width:64px;height:73px;border:0!important;background:transparent!important;border-radius:9px!important;overflow:hidden}.mascot-editor-thumb.face{width:64px;height:64px}.mascot-editor-choice .mascot-choice-check{position:absolute;top:5px;right:6px;color:#AC1730;font-size:11px;line-height:1}.mascot-editor-color-dot{width:10px;height:10px;display:inline-block;border:1px solid rgba(36,37,34,.15);border-radius:50%;margin-right:4px;vertical-align:-1px}
+.mascot-editor-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 16px}.mascot-editor-tab{border:1px solid #D9A5AD;border-radius:24px;padding:8px 4px;background:transparent;font-size:13px;font-weight:700;color:#4D3B35}.mascot-editor-tab[aria-selected=true]{background:#AC1730;color:#FFF;border-color:#AC1730}
+.mascot-editor-hint{font-size:12px;line-height:1.6;color:#69666A;margin:-5px 0 12px;word-break:keep-all}.mascot-editor-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mascot-editor-choice{position:relative;min-width:0;min-height:112px;border:1px solid #E3DDD0;border-radius:13px;background:#FFFCF5;padding:7px 5px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:500;line-height:1.3;color:#51453D}.mascot-editor-choice[aria-pressed=true]{border:1.7px solid #AC1730;background:#FCF1EB}.mascot-editor-choice:hover{border-color:#C1858D}.mascot-editor-thumb{width:64px;height:73px;border:0!important;background:transparent!important;border-radius:9px!important;overflow:hidden}.mascot-editor-thumb.face{width:64px;height:64px}.mascot-editor-choice .mascot-choice-check{position:absolute;top:5px;right:6px;color:#AC1730;font-size:11px;line-height:1}.mascot-editor-color-dot{width:10px;height:10px;display:inline-block;border:1px solid rgba(36,37,34,.15);border-radius:50%;margin-right:4px;vertical-align:-1px}
 .mascot-editor-footer{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));background:linear-gradient(transparent,#FBF8EF 14px);padding:24px 0 calc(2px + env(safe-area-inset-bottom));margin-top:8px}.mascot-editor-save{width:100%;min-height:48px!important;border:0;border-radius:28px;background:#AC1730;color:#FFF;font-size:15px;font-weight:700;padding:12px 16px}.mascot-editor-error{font-size:13px;line-height:1.5;color:#AC1730;margin:0 0 10px;text-align:center;word-break:keep-all}
 @media(max-height:760px){.mascot-editor-hero{width:163px;height:212px}.mascot-editor-preview{margin:0 0 13px}.mascot-editor-preview p{display:none}.mascot-editor-choice{min-height:104px}.mascot-editor-thumb{height:66px}.mascot-editor-footer{padding-top:18px}.mascot-editor-tabs{margin-bottom:12px}}
 @media(min-width:700px){.mascot-editor-overlay{align-items:center;padding:24px}.mascot-editor{max-width:440px;border-bottom:1px solid #D9D4C7;border-radius:24px;padding-bottom:20px}.mascot-editor-footer{bottom:-20px;padding-bottom:4px}}
@@ -1771,7 +1911,7 @@ const mascotEditorCss = `
 `;
 function Editor({name,member,stat,onClose,onSave}) {
   const [a,setA]=useState(()=>mascotNormalize(member?.avatar,name));
-  const [tab,setTab]=useState('expression');
+  const [tab,setTab]=useState('pose');
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState('');
   const mascotDialogRef=useRef(null);
@@ -1787,8 +1927,8 @@ function Editor({name,member,stat,onClose,onSave}) {
     document.addEventListener('keydown',handle);
     return ()=>{document.removeEventListener('keydown',handle);if(oldFocus?.isConnected)oldFocus.focus({preventScroll:true});};
   },[]);
-  const options={expression:mascotExpressions,accessory:mascotAccessories,accent:mascotColors,backdrop:mascotBackdrops}[tab];
-  const pick=(id)=>{setA(current=>({...current,[tab]:id}));setError('');};
+  const options={pose:mascotPoses,expression:mascotExpressions,accessory:mascotAccessories,accent:mascotColors,backdrop:mascotBackdrops}[tab];
+  const pick=(id)=>{setA(current=>mascotPick(current,tab,id));setError('');};
   async function save(){
     if(mascotBusyRef.current)return;
     mascotBusyRef.current=true;setBusy(true);setError('');
@@ -1806,9 +1946,10 @@ function Editor({name,member,stat,onClose,onSave}) {
       </header>
       <div class="mascot-editor-preview"><${Av} a=${a} name=${name} cls="av mascot-editor-hero" /><strong>${name || '나의 캐릭터'}</strong><p>작은 모습에 나의 마음을 담아요</p></div>
       <div class="mascot-editor-tabs" role="tablist" aria-label="꾸미기 종류">${mascotTabs.map(([id,label])=>html`<button key=${id} type="button" class="mascot-editor-tab" role="tab" aria-selected=${tab===id} aria-controls="mascot-editor-options" disabled=${busy} onClick=${()=>setTab(id)}>${label}</button>`)}</div>
+      <p class="mascot-editor-hint">${tab==='pose'?'오늘의 나와 닮은 동작을 골라보세요. 표정도 따로 바꿀 수 있어요.':tab==='accessory'?'횃불을 고르면 기본 자세로 돌아가요.':'동작은 그대로, 나만의 모습으로 꾸며보세요.'}</p>
       <div class="mascot-editor-options" id="mascot-editor-options" role="tabpanel" aria-label=${mascotTabs.find(([id])=>id===tab)[1]}>
         ${options.map(([id,label])=>{
-          const preview={...a,[tab]:id};
+          const preview=mascotPick(a,tab,id);
           const crop=tab==='expression' && id!=='prayer' && id!=='happy' ? 'face':undefined;
           return html`<button key=${tab+id} type="button" class="mascot-editor-choice" aria-label=${label} aria-pressed=${a[tab]===id} disabled=${busy} onClick=${()=>pick(id)}>${a[tab]===id?html`<span class="mascot-choice-check" aria-hidden="true">✓</span>`:''}<${Av} a=${preview} cls=${'av mascot-editor-thumb'+(crop?' face':'')} crop=${crop}/><span>${tab==='accent'?html`<i class="mascot-editor-color-dot" style=${{background:id}} aria-hidden="true"></i>`:''}${label}</span></button>`;
         })}
